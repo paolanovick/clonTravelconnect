@@ -3,46 +3,43 @@ import { Grid, Box, Button, CircularProgress, Typography } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import CartaMes from "./CartaMes";
-import { useDatosGenerales, useDestacadosMes } from "../../../contextos/DatosAgenciaContext";
+import { useDatosGenerales, useTarjetas } from "../../../contextos/DatosAgenciaContext";
 import { obtenerPaquetesDestacados } from "../../../servicios/especificos/servicioCartasDestacadoMes";
-import { PaqueteDestacado } from "../../../interfaces/PaqueteDestacado"; // ✅ Importación corregida
-
+import { PaqueteDestacado } from "../../../interfaces/PaqueteDestacado";
 
 const ContenedorCartasMes: React.FC = () => {
-  const destacadosMes = useDestacadosMes();
+  const tarjetas = useTarjetas();
   const datosGenerales = useDatosGenerales();
   const [paquetes, setPaquetes] = useState<PaqueteDestacado[]>([]);
   const [cargando, setCargando] = useState<boolean>(true);
-  const [cantidadVisible, setCantidadVisible] = useState<number>(8);
+  const [cantidadVisible, setCantidadVisible] = useState<number>(window.innerWidth < 768 ? 4 : 8); // 🔥 Mejor visibilidad en móviles
 
-  /** 🔥 Cargar paquetes destacados */
   useEffect(() => {
     const cargarDatos = async () => {
       try {
-        const datos = await obtenerPaquetesDestacados();
+        const datos: PaqueteDestacado[] = await obtenerPaquetesDestacados();
         setPaquetes(datos);
       } catch (error) {
         console.error("Error al cargar paquetes destacados:", error);
+        setPaquetes([]); // 🔥 Evita estados inválidos
       } finally {
         setCargando(false);
       }
     };
-
     cargarDatos();
   }, []);
 
-  /** 🔥 Ver más / Ver menos */
   const cargarMas = () => setCantidadVisible((prev) => prev + 8);
-  const reducir = () => setCantidadVisible(8);
+  const reducir = () => setCantidadVisible(window.innerWidth < 768 ? 4 : 8);
 
   if (!datosGenerales) return <Typography sx={{ textAlign: "center", mt: 4 }}>Cargando estilos...</Typography>;
 
-  /** 🔥 Aplicamos fallbacks desde `Datos Generales` si `DestacadosMes` tiene valores `null` */
-  const tarjetaTipografia = destacadosMes?.tarjetaTipografia || datosGenerales?.tipografiaAgencia || "Arial";
-  const tarjetaTipografiaColor = destacadosMes?.tarjetaTipografiaColor || datosGenerales?.colorTipografiaAgencia || "#FFFFFF";
-  const tarjetaColorPrimario = destacadosMes?.tarjetaColorPrimario || datosGenerales?.colorPrincipalAgencia || "#FF5733";
-  const tarjetaColorSecundario = destacadosMes?.tarjetaColorSecundario || datosGenerales?.colorSecundarioAgencia || "#C70039";
-  const tarjetaColorTerciario = destacadosMes?.tarjetaColorTerciario || datosGenerales?.colorTerciarioAgencia || "#900C3F";
+  /** 🔥 Aplicamos fallbacks correctos desde `tarjetas` y `datosGenerales` */
+  const tarjetaTipografia = tarjetas?.tipografia || datosGenerales?.tipografiaAgencia || "Arial";
+  const tarjetaTipografiaColor = tarjetas?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#FFFFFF";
+  const tarjetaColorPrimario = tarjetas?.color.primario || datosGenerales?.color.primario || "#FF5733";
+  const tarjetaColorSecundario = tarjetas?.color.secundario || datosGenerales?.color.secundario || "#C70039";
+  const tarjetaColorTerciario = tarjetas?.color.terciario || datosGenerales?.color.terciario || "#900C3F";
 
   return (
     <Box
@@ -52,7 +49,10 @@ const ContenedorCartasMes: React.FC = () => {
         alignItems: "center",
         gap: 3,
         width: "100%",
+        maxWidth: { xs: "95%", sm: "90%", md: "85%", lg: "1600px" },
+        margin: "0 auto",
         overflow: "hidden",
+        backgroundColor: "transparent", // ✅ Fondo transparente
       }}
     >
       {cargando ? (
@@ -65,7 +65,7 @@ const ContenedorCartasMes: React.FC = () => {
             justifyContent="center"
             sx={{
               width: "100%",
-              maxWidth: "1200px",
+              maxWidth: { xs: "100%", sm: "95%", md: "90%", lg: "1600px" },
               alignItems: "stretch",
             }}
           >
@@ -74,7 +74,8 @@ const ContenedorCartasMes: React.FC = () => {
                 item
                 xs={12}
                 sm={6}
-                md={3}
+                md={4}
+                lg={3}
                 key={paquete.id}
                 sx={{
                   display: "flex",

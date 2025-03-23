@@ -12,264 +12,157 @@
   <script>
     function cargarSimulacion(idAgencia) {
       const simulaciones = {
-        "001": { // Desierto Aventura
+        "002": { // Océano Profundo
           idAgencia: "001",
-          nombreAgencia: "Desierto Aventura",
+          nombreAgencia: "Océano Profundo",
           logoAgencia: "/logo1.png",
-          tipografiaAgencia: "Arial",
-          colorTipografiaAgencia: "#F4A261", // Naranja claro
-          colorFondoAgencia: "#E76F51", // Rojo tierra
-          colorPrincipalAgencia: "#E9C46A", // Amarillo arena
-          colorSecundarioAgencia: "#264653", // Azul oscuro
-          colorTerciarioAgencia: "#2A9D8F", // Verde desierto
-
-          header: {
-            imagenBackground: "/desierto.jpg",
-            imagenBackgroundOpacidad: 0.9
+          tipografiaAgencia: "Poppins",
+          colorTipografiaAgencia: "#FFFFFF",
+          colorFondoApp: "#F5F5F5",
+          color: {
+            primario: "#1E88E5",
+            secundario: "#90CAF9",
+            terciario: "#1565C0"
           },
-
-          buscador: {
-            tipografia: "Roboto",
-            tipografiaColor: "#FFFFFF", // Blanco
-            fondoColor: "#E76F51", // Rojo tierra
-            inputColor: "#264653", // Azul oscuro
-            calendarioColorPrimario: "#E9C46A", // Amarillo arena
-            calendarioColorSecundario: "#2A9D8F", // Verde desierto
-            botonBuscarColor: "#F4A261", // Naranja claro
-            tabsColor: "#264653" // Azul oscuro
-          },
-
-          publicidadCliente: {
-            existe: true,
-            titulo: "Explora el desierto",
-            tituloTipografia: "Montserrat",
-            tituloTipografiaTamanio: "24px",
-            tituloTipografiaColor: "#FFFFFF", // Blanco
-            flechasColor: "#E9C46A", // Amarillo arena
-            imagenes: ["/desierto.jpg", "/montania.jpg", "/jungla.jpg"]
-          },
-
-          destacadosMes: {
-            titulo: "Lugares destacados",
-            tituloTipografia: "Montserrat",
-            tituloTipografiaTamanio: "28px",
-            tituloTipografiaColor: "#FFFFFF", // Blanco
-            tarjetaTipografia: "Roboto",
-            tarjetaTipografiaColor: "#264653", // Azul oscuro
-            tarjetaColorPrimario: "#E9C46A", // Amarillo arena
-            tarjetaColorSecundario: "#2A9D8F", // Verde desierto
-            tarjetaColorTerciario: "#F4A261" // Naranja claro
-          },
-
-          bannerRegistro: {
-            titulo: "¡Regístrate y obtén descuentos!",
-            tituloTipografia: "Montserrat",
-            tituloTipografiaTamanio: "24px",
-            tituloTipografiaColor: "#FFFFFF", // Blanco
-            bannerColor: "#E76F51" // Rojo tierra
-          },
-
-          footer: {
-            texto: "© 2023 Desierto Aventura. Todos los derechos reservados.",
-            tipografia: "Arial",
-            tipografiaColor: "#FFFFFF", // Blanco
-            fondoColor: "#264653", // Azul oscuro
-            iconosColor: "#E9C46A", // Amarillo arena
-            redes: {
-              facebook: "https://facebook.com",
-              twitter: "https://twitter.com",
-              instagram: "https://instagram.com",
-              whatsapp: "https://wa.me"
-            },
-            datos: {
-              telefono: "+123456789",
-              email: "info@desiertoaventura.com",
-              ubicacion: "Desierto, Chile",
-              direccion: "Calle Desierto 123"
-            },
-            contacto: {
-              telefono: "+123456789",
-              email: "info@desiertoaventura.com"
-            },
-            ubicacion: {
-              direccion: "Calle Desierto 123",
-              ciudad: "Desierto",
-              pais: "Chile"
-            }
-          }
-        },
-
-        "002": { // Jungla EcoTours
-          idAgencia: "002",
-          nombreAgencia: "Jungla EcoTours",
-          logoAgencia: "/logo2.png",
-          tipografiaAgencia: "Georgia",
-          colorTipografiaAgencia: "#2A9D8F", // Verde claro jungla
-          colorFondoAgencia: "#264653", // Verde oscuro selva
-          colorPrincipalAgencia: null, // 🔥 Null (debe usar el valor por defecto)
-          colorSecundarioAgencia: "#E9C46A", // Amarillo sol selva
-          colorTerciarioAgencia: "#F4A261", // Marrón hojas secas
-
-          header: {
-            imagenBackground: "/jungla.jpg",
-            imagenBackgroundOpacidad: 0.8
-          },
-
-          buscador: {
-            tipografia: "Lora",
-            tipografiaColor: "#FFFFFF", // Blanco
-            fondoColor: null, // 🔥 Null (debe usar el valor por defecto)
-            inputColor: "#E9C46A", // Amarillo sol selva
-            calendarioColorPrimario: "#F4A261", // Marrón hojas secas
-            calendarioColorSecundario: "#264653", // Verde oscuro selva
-            botonBuscarColor: "#E9C46A", // Amarillo sol selva
-            tabsColor: "#264653" // Verde oscuro selva
-          },
-
-          publicidadCliente: {
-            existe: false,
-            titulo: "Vive la selva",
-            tituloTipografia: "Montserrat",
-            tituloTipografiaTamanio: "24px",
-            tituloTipografiaColor: "#FFFFFF", // Blanco
-            flechasColor: null, // 🔥 Null (debe usar el valor por defecto)
-            imagenes: ["/jungla.jpg", "/comarca.jpg", "/montania.jpg"]
-          },
-
-          destacadosMes: {
-            titulo: "Aventuras en la selva",
-            tituloTipografia: "Montserrat",
-            tituloTipografiaTamanio: "28px",
-            tituloTipografiaColor: "#FFFFFF", // Blanco
-            tarjetaTipografia: "Lora",
-            tarjetaTipografiaColor: "#2A9D8F", // Verde claro jungla
-            tarjetaColorPrimario: "#F4A261", // Marrón hojas secas
-            tarjetaColorSecundario: "#E9C46A", // Amarillo sol selva
-            tarjetaColorTerciario: null // 🔥 Null (debe usar el valor por defecto)
-          },
-
-          bannerRegistro: {
-            titulo: "¡Únete a nuestras aventuras!",
-            tituloTipografia: "Montserrat",
-            tituloTipografiaTamanio: "24px",
-            tituloTipografiaColor: "#FFFFFF", // Blanco
-            bannerColor: null // 🔥 Null (debe usar el valor por defecto)
-          },
-
-          footer: {
-            texto: "© 2023 Jungla EcoTours. Todos los derechos reservados.",
-            tipografia: "Georgia",
-            tipografiaColor: "#FFFFFF", // Blanco
-            fondoColor: "#2A9D8F", // Verde claro jungla
-            iconosColor: "#F4A261", // Marrón hojas secas
-            redes: {
-              facebook: "https://facebook.com",
-              twitter: "https://twitter.com",
-              instagram: "https://instagram.com",
-              whatsapp: "https://wa.me"
-            },
-            datos: {
-              telefono: "+987654321",
-              email: "info@junglaecotours.com",
-              ubicacion: "Selva, Costa Rica",
-              direccion: "Calle Selva 456"
-            },
-            contacto: {
-              telefono: "+987654321",
-              email: "info@junglaecotours.com"
-            },
-            ubicacion: {
-              direccion: "Calle Selva 456",
-              ciudad: "Selva",
-              pais: "Costa Rica"
-            }
-          }
-        },
-
-        "003": { // Glaciar Explorer
-          idAgencia: "003",
-          nombreAgencia: "Glaciar Explorer",
-          logoAgencia: "/logo1.png",
-          tipografiaAgencia: "Tahoma",
-          colorTipografiaAgencia: "#FFFFFF", // Blanco
-          colorFondoAgencia: "#1B263B", // Azul hielo profundo
-          colorPrincipalAgencia: "#415A77", // Azul medio glaciar
-          colorSecundarioAgencia: "#778DA9", // Azul claro reflejo
-          colorTerciarioAgencia: null, // 🔥 Null (debe usar el valor por defecto)
-
           header: {
             imagenBackground: "/montania.jpg",
-            imagenBackgroundOpacidad: 0.25
+            imagenBackgroundOpacidad: 0.8
           },
-
           buscador: {
-            tipografia: "Verdana",
-            tipografiaColor: "#FFFFFF", // Blanco
-            fondoColor: "#415A77", // Azul medio glaciar
-            inputColor: "#778DA9", // Azul claro reflejo
-            calendarioColorPrimario: "#E0E1DD", // Blanco nieve
-            calendarioColorSecundario: "#1B263B", // Azul hielo profundo
-            botonBuscarColor: null, // 🔥 Null (debe usar el valor por defecto)
-            tabsColor: "#E0E1DD" // Blanco nieve
+            tipografia: "Poppins",
+            tipografiaColor: "#FFFFFF",
+            color: {
+              primario: "#1E88E5",
+              secundario: "#90CAF9",
+              terciario: "#1565C0"
+            }
           },
-
           publicidadCliente: {
             existe: true,
-            titulo: "Explora los glaciares",
-            tituloTipografia: "Trebuchet MS",
-            tituloTipografiaTamanio: "24px",
-            tituloTipografiaColor: "#FFFFFF", // Blanco
-            flechasColor: "#E0E1DD", // Blanco nieve
-            imagenes: ["/montania.jpg", "/jungla.jpg", "/desierto.jpg"]
+            titulo: "Explora el océano",
+            tipografiaColor: "#FFFFFF",
+            color: {
+              primario: "#1E88E5",
+              secundario: "#90CAF9",
+              terciario: "#1565C0"
+            },
+            imagenes: ["/desierto.jpg", "/montania.jpg", "/jungla.jpg"]
           },
-
-          destacadosMes: {
-            titulo: "Aventuras en el hielo",
-            tituloTipografia: "Trebuchet MS",
-            tituloTipografiaTamanio: "28px",
-            tituloTipografiaColor: "#FFFFFF", // Blanco
-            tarjetaTipografia: "Verdana",
-            tarjetaTipografiaColor: "#1B263B", // Azul hielo profundo
-            tarjetaColorPrimario: "#E0E1DD", // Blanco nieve
-            tarjetaColorSecundario: "#778DA9", // Azul claro reflejo
-            tarjetaColorTerciario: null // 🔥 Null (debe usar el valor por defecto)
+          tarjetas: {
+            titulo: "Destacados marinos",
+            tipografia: "Poppins",
+            tipografiaColor: "#333333",
+            color: {
+              primario: "#1E88E5",
+              secundario: "#90CAF9",
+              terciario: "#1565C0"
+            }
           },
-
           bannerRegistro: {
-            titulo: "¡Descubre los glaciares!",
-            tituloTipografia: "Trebuchet MS",
-            tituloTipografiaTamanio: "24px",
-            tituloTipografiaColor: "#FFFFFF", // Blanco
-            bannerColor: "#415A77" // Azul medio glaciar
+            color: {
+              primario: "#1E88E5",
+              secundario: "#90CAF9",
+              terciario: "#1565C0"
+            }
           },
-
           footer: {
-            texto: "© 2023 Glaciar Explorer. Todos los derechos reservados.",
-            tipografia: "Tahoma",
-            tipografiaColor: "#FFFFFF", // Blanco
-            fondoColor: "#1B263B", // Azul hielo profundo
-            iconosColor: "#E0E1DD", // Blanco nieve
+            texto: "© 2025 Océano Profundo. Todos los derechos reservados.",
+            tipografia: "Poppins",
+            tipografiaColor: "#FFFFFF",
+            color: {
+              primario: "#1565C0",
+              secundario: "#90CAF9",
+              terciario: "#1E88E5"
+            },
             redes: {
               facebook: "https://facebook.com",
               twitter: "https://twitter.com",
               instagram: "https://instagram.com",
               whatsapp: "https://wa.me"
             },
-            datos: {
-              telefono: "+1122334455",
-              email: "info@glaciarexplorer.com",
-              ubicacion: "Glaciar, Argentina",
-              direccion: "Calle Glaciar 789"
-            },
             contacto: {
-              telefono: "+1122334455",
-              email: "info@glaciarexplorer.com"
+              telefono: "+123456789",
+              email: "info@oceanoprofundo.com"
             },
             ubicacion: {
-              direccion: "Calle Glaciar 789",
-              ciudad: "Glaciar",
+              direccion: "Calle Mar 123",
+              ciudad: "Mar Azul",
               pais: "Argentina"
             }
+          }
+        },
+
+        "001": { // Citrus Energía
+          idAgencia: "002",
+          nombreAgencia: "Citrus Energía",
+          logoAgencia: "/logo2.png",
+          tipografiaAgencia: "Verdana",
+          colorTipografiaAgencia: "#212121",
+          colorFondoApp: "#F3F3F3",
+          color: {
+            primario: "#FF9800",
+            secundario: "#FFCC80",
+            terciario: "#E65100"
+          },
+          header: {
+            imagenBackground: "/desierto.jpg",
+            imagenBackgroundOpacidad: 0.2,
+            videoBackground:  "/video2.mp4"
+          },
+          buscador: {
+            tipografia: "Verdana",
+            tipografiaColor: "#FFFFFF",
+            tipografiaColorLabel:"#FF9800",
+            color: {
+              primario: "#FF9800",
+              secundario: "#FFCC80",
+              terciario: "white"
+            }
+          },
+          publicidadCliente: {
+            existe: true,
+            titulo: "Hola pao",
+            tipografiaColor: "#FF9800",
+            color: {
+              primario: "#FF9800",
+              secundario: "#FFCC80",
+              terciario: "#E65100"
+            },
+            imagenes: ["/paginaWeb/amigas.jpg", "/paginaWeb/rocas.jpg", "/paginaWeb/ventana.jpg"]
+          },
+          tarjetas: {
+            titulo: "Destinos vibrantes",
+            tipografia: "Verdana",
+            tipografiaColor: "#fdf8f5",
+            tipografiaColorTitulo: "#ff9800",
+            tipografiaColorContenido:"#1b1b1b",
+            color: {
+              primario: "#ff9800",
+              secundario: "#FFF2CC",
+              terciario: "#E65100"
+            }
+          },
+          bannerRegistro: {
+            titulo:"Registrate con  nosotros",
+            tipografiaColor: "#fdf8f5",
+            color: {
+              primario: "#FF9800",
+              secundario: "#FFCC80",
+              terciario: "#E65100"
+            }
+          },
+          footer: {
+            texto: "© 2025 Citrus Energía. Todos los derechos reservados.",
+            tipografia: "Verdana",
+            tipografiaColor: "#fdf8f5",
+            color: {
+              primario: "#E65100",
+              secundario: "#FFCC80",
+              terciario: " #D4AF37"
+            },
+            redes: {facebook: "https://facebook.com", twitter: "https://twitter.com", instagram: "https://instagram.com", whatsapp: "https://wa.me"},
+            contacto: {telefono: "+987654321", email: "info@citrusenergia.com"},
+            ubicacion: {direccion: "Calle Citrus 456", ciudad: "Valencia", pais: "España"}
           }
         }
       };
@@ -278,10 +171,7 @@
       window.dispatchEvent(new Event("cambioSimulacion"));
     }
 
-    // 🔥 Carga la primera simulación por defecto
     cargarSimulacion("001");
-
-    // 🔥 Exponer la función para cambiar la simulación desde React
     window.cambiarSimulacion = cargarSimulacion;
   </script>
 

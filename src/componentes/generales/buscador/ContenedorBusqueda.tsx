@@ -1,20 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Typography } from "@mui/material";
 import { useBuscador, useDatosGenerales } from "../../../contextos/DatosAgenciaContext";
 import SelectorPestanas from "./SelectorPestanas";
 import SearchInputs from "./SearchFields";
-import BotonBusqueda from "./BotonBusqueda"; // 🔥 Importamos el nuevo botón
+import BotonBusqueda from "./BotonBusqueda";
 
 const ContenedorBusqueda: React.FC = () => {
   const buscador = useBuscador();
   const datosGenerales = useDatosGenerales();
+  const [resetTrigger, setResetTrigger] = useState<boolean>(false); // 🔥 Estado para resetear inputs
 
   if (!datosGenerales) {
     return <Typography sx={{ textAlign: "center", mt: 4 }}>Cargando datos de la agencia...</Typography>;
   }
 
   /** 🔥 Aplicamos fallbacks desde `Datos Generales` */
-  const fondoColor = buscador?.fondoColor || datosGenerales.colorTerciarioAgencia || "white";
+  const fondoColor = buscador?.color.terciario || datosGenerales.color.terciario || "white";
 
   return (
     <Box
@@ -24,7 +25,7 @@ const ContenedorBusqueda: React.FC = () => {
         left: "50%",
         transform: "translate(-50%, 0)",
         width: { xs: "90vw", md: "60vw" },
-        backgroundColor: fondoColor, // ✅ Se usa el color de fondo correcto
+        backgroundColor: fondoColor,
         borderRadius: "35px",
         boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.15)",
         display: "flex",
@@ -35,18 +36,18 @@ const ContenedorBusqueda: React.FC = () => {
         zIndex: 1200,
       }}
     >
-      {/* 🔥 Selector de Pestañas (Ahora centrado correctamente) */}
+      {/* 🔥 Selector de Pestañas */}
       <Box sx={{ width: "100%", display: "flex", justifyContent: "center", mb: 4 }}>
         <SelectorPestanas />
       </Box>
 
       {/* 🔥 Sección de Inputs */}
       <Box sx={{ width: "100%", mb: 3 }}>
-        <SearchInputs />
+        <SearchInputs resetTrigger={resetTrigger} />
       </Box>
 
-      {/* 🔥 Botón de Búsqueda superpuesto */}
-      <BotonBusqueda />
+      {/* 🔥 Botón de Búsqueda */}
+      <BotonBusqueda setResetTrigger={setResetTrigger} />
     </Box>
   );
 };

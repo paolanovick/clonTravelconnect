@@ -6,11 +6,12 @@ import ContenedorBusqueda from "../componentes/generales/buscador/ContenedorBusq
 import Footer from "../componentes/generales/Footer";
 import ListadoPaquetes from "../componentes/especificos/paquetes/ListadoPaquetes";
 import PanelFiltros from "../componentes/especificos/filtro/PanelFiltros";
-
+import BannerRegistro from "../componentes/generales/BannerRegistro";
+import { useBuscador } from "../contextos/DatosAgenciaContext";
 
 const PaquetesBusqueda = () => {
-  // const { estilos } = useEstilosAgencia();
   const [mostrarBotonArriba, setMostrarBotonArriba] = useState(false);
+  const buscador = useBuscador(); // ✅ Ahora está dentro del componente
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,7 +24,6 @@ const PaquetesBusqueda = () => {
   return (
     <Box
       sx={{
-        // backgroundColor: estilos?.fondoGeneral.color,
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
@@ -32,57 +32,68 @@ const PaquetesBusqueda = () => {
       }}
     >
       {/* 🔹 Header */}
-      <Header /> 
+      <Header />
 
       {/* 🔹 Contenedor de Búsqueda */}
-       <ContenedorBusqueda /> 
+      <ContenedorBusqueda />
 
       {/* 🔹 Espaciador para evitar superposición */}
       <Box sx={{ height: "100vh" }} />
 
       {/* 🔹 Contenedor para PanelFiltros y ListadoPaquetes */}
-       <Container maxWidth="lg" sx={{ flexGrow: 1, mt: 3 }}>
+      <Container maxWidth="xl" sx={{ flexGrow: 1, mt: 3 }}>
         <Grid container spacing={3} alignItems="flex-start">
-          <Grid item xs={12} md={3}>
-            <Box
-              sx={{
-                position: "sticky",
-                top: 100,
-                width: "100%",
-                padding: 2,
-                bgcolor: "rgba(255, 255, 255, 0.05)",
-                backdropFilter: "blur(12px)",
-                borderRadius: 2,
-                boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
-                minHeight: "calc(100vh - 150px)",
-              }}
-            >
-              <PanelFiltros />
-            </Box>
+          {/* 🔹 Panel de Filtros */}
+          <Grid item xs={12} sm={12} md={4} lg={3}>
+            <PanelFiltros />
           </Grid>
 
-          <Grid item xs={12} md={9}>
-            <Box sx={{ padding: 2, minHeight: "calc(100vh - 150px)" }}>
+          {/* 🔹 Listado de Paquetes (Ahora alineado correctamente) */}
+          <Grid item xs={12} sm={12} md={8} lg={9}>
+            <Box
+              sx={{
+                width: "100%",
+                minHeight: "calc(100vh - 150px)",
+                display: "flex",
+                flexDirection: "column",
+                paddingLeft: { lg: 2 }, // 🔹 Ajuste para mantener espacio sin desalinear
+              }}
+            >
               <ListadoPaquetes />
             </Box>
           </Grid>
         </Grid>
-      </Container> 
+      </Container>
 
-      {/* 🔹 Botón flotante "Volver Arriba" */}
+      {/* 🔹 Más espacio antes de BannerRegistro */}
+      <Box sx={{ height: "80px" }} />
+
+      {/* 🔹 Banner de Registro */}
+      <BannerRegistro />
+
+      {/* 🔹 Botón flotante "Volver Arriba" con color dinámico */}
       <Zoom in={mostrarBotonArriba}>
         <Fab
-          color="primary"
           size="small"
-          sx={{ position: "fixed", bottom: 20, right: 20, zIndex: 1000 }}
+          sx={{
+            position: "fixed",
+            bottom: 20,
+            right: 20,
+            zIndex: 1000,
+            backgroundColor: buscador?.color.primario || "primary.main", // ✅ Usa el color dinámico del buscador
+            color: "#fff",
+            "&:hover": {
+              backgroundColor: buscador?.color.primario ? `${buscador.color.primario}CC` : "primary.dark",
+            },
+          }}
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >
           <KeyboardArrowUpIcon />
         </Fab>
       </Zoom>
 
-      {/* 🔹 Footer con ancho completo */}
-       <Footer /> 
+      {/* 🔹 Footer */}
+      <Footer />
     </Box>
   );
 };

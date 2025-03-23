@@ -3,23 +3,24 @@ import { Box, Typography } from "@mui/material";
 import { LocalizationProvider, DesktopDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import EventIcon from "@mui/icons-material/Event";
-import { useDestacadosMes } from "../../../contextos/DatosAgenciaContext";
+import { useTarjetas } from "../../../contextos/DatosAgenciaContext";
 import { useDatosGenerales } from "../../../contextos/DatosAgenciaContext";
 import dayjs, { Dayjs } from "dayjs";
 
 const FiltroFecha = () => {
-  const destacadosMes = useDestacadosMes();
+  const tarjetas = useTarjetas();
   const datosGenerales = useDatosGenerales();
   const [fechaSeleccionada, setFechaSeleccionada] = useState<Dayjs | null>(dayjs());
 
-  const colorFondo = destacadosMes?.tarjetaColorSecundario || datosGenerales?.colorSecundarioAgencia;
-  const colorTexto = destacadosMes?.tarjetaTipografiaColor || datosGenerales?.colorTipografiaAgencia || "inherit";
+  // 🔹 Colores dinámicos con fallback
+  const colorFondo = tarjetas?.color.primario || datosGenerales?.color.primario || "#1976d2";
+  const colorTexto = tarjetas?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#fff";
 
   return (
     <Box
       sx={{
-        bgcolor: colorFondo,
-        p: 2,
+        backgroundColor: colorFondo, // 🔥 Color de fondo dinámico
+        p: 3,
         borderRadius: 4,
         boxShadow: "0px 4px 8px rgba(0,0,0,0.3)",
         textAlign: "center",
@@ -32,7 +33,7 @@ const FiltroFecha = () => {
           alignItems: "center",
           justifyContent: "center",
           gap: 1,
-          color: colorTexto,
+          color: colorTexto, // 🔥 Color de texto dinámico
           fontWeight: "bold",
         }}
       >
@@ -50,6 +51,9 @@ const FiltroFecha = () => {
                 bgcolor: "white",
                 borderRadius: 2,
                 textAlign: "center",
+                "& .MuiInputBase-input": {
+                  textAlign: "center",
+                },
               },
             },
           }}

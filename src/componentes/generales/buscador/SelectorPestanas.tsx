@@ -11,9 +11,10 @@ const SelectorPestanas: React.FC = () => {
   if (!datosGenerales) return null;
 
   /** 🔥 Aplicamos fallbacks desde `Datos Generales` */
-  const tabsColor = buscador?.tabsColor || datosGenerales.colorPrincipalAgencia || "#007BFF";
-  const fondoColor = datosGenerales.colorTerciarioAgencia || "#E0E0E0";
-  const hoverColor = datosGenerales.colorSecundarioAgencia || "#0056b3";
+  const fondoGeneral = "#F5F5F5"; // Blanco grisáceo
+  const fondoSeleccionado = buscador?.color.secundario || datosGenerales.color.secundario || "#D1E3FF";
+  const hoverColor = buscador?.color.primario || datosGenerales.color.primario || "#0056b3";
+  const tipografiaColorSeleccionado = buscador?.tipografiaColor || datosGenerales.colorTipografiaAgencia || "black";
 
   const opciones = [
     { valor: "paquetes", label: "Paquetes" },
@@ -44,7 +45,7 @@ const SelectorPestanas: React.FC = () => {
           display: "flex",
           width: "100%",
           maxWidth: { xs: "100%", md: "858px" },
-          backgroundColor: fondoColor,
+          backgroundColor: fondoGeneral, // 🔥 Blanco grisáceo
           borderRadius: "35px",
           padding: "4px",
         }}
@@ -60,22 +61,25 @@ const SelectorPestanas: React.FC = () => {
               textTransform: "none",
               fontSize: { xs: "14px", sm: "16px" },
               fontWeight: "600",
-              color: pestanaActiva === opcion.valor ? "white" : tabsColor,
-              backgroundColor: pestanaActiva === opcion.valor ? tabsColor : "white",
+              fontFamily: "Poppins, sans-serif",
+              color: pestanaActiva === opcion.valor ? tipografiaColorSeleccionado : "black",
+              backgroundColor: pestanaActiva === opcion.valor ? fondoSeleccionado : "white",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               gap: 1,
               transition: "all 0.3s ease",
               "&:hover": {
-                backgroundColor: pestanaActiva === opcion.valor ? hoverColor : fondoColor,
+                backgroundColor: pestanaActiva === opcion.valor ? hoverColor : fondoGeneral,
+                color: tipografiaColorSeleccionado,
               },
               "&.Mui-selected": {
-                backgroundColor: tabsColor,
-                color: "white",
+                backgroundColor: fondoSeleccionado,
+                color: tipografiaColorSeleccionado,
               },
               "&.Mui-selected:hover": {
                 backgroundColor: hoverColor,
+                color: tipografiaColorSeleccionado,
               },
             }}
           >

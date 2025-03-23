@@ -12,10 +12,10 @@ const BannerRegistro: React.FC = () => {
   }
 
   /** 🔥 Aplicamos fallbacks desde `Datos Generales` */
-  const fondoColor = bannerRegistro?.bannerColor || datosGenerales.colorPrincipalAgencia || "#FF5733";
-  const tipografia = bannerRegistro?.tituloTipografia || datosGenerales.tipografiaAgencia || "Arial";
-  const tipografiaColor = bannerRegistro?.tituloTipografiaColor || datosGenerales.colorTipografiaAgencia || "#FFFFFF";
-  const colorSecundario = datosGenerales.colorSecundarioAgencia || "#C70039";
+  const fondoColor = bannerRegistro?.color.primario|| datosGenerales.color.primario || "#FF5733";
+  const tipografia = datosGenerales.tipografiaAgencia || "Arial";
+  const tipografiaColor = bannerRegistro?.tipografiaColor || datosGenerales.colorTipografiaAgencia || "#FFFFFF";
+  const colorSecundario = bannerRegistro?.color.secundario || "#C70039";
 
   return (
     <Box
@@ -33,7 +33,7 @@ const BannerRegistro: React.FC = () => {
           <Grid item xs={12} md={6}>
             {bannerRegistro?.titulo && (
               <Typography
-                variant="h5"
+                variant="h4"
                 sx={{
                   fontWeight: "bold",
                   color: tipografiaColor,

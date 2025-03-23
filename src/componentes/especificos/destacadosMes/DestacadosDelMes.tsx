@@ -1,17 +1,17 @@
 import React from "react";
 import ContenedorCartasMes from "./ContenedorCartasMes";
 import { Box, Typography } from "@mui/material";
-import { useDestacadosMes, useDatosGenerales } from "../../../contextos/DatosAgenciaContext";
+import { motion } from "framer-motion";
+import { useTarjetas, useDatosGenerales } from "../../../contextos/DatosAgenciaContext";
 
 const DestacadosDelMes: React.FC = () => {
-  const destacadosMes = useDestacadosMes();
+  const tarjetas = useTarjetas();
   const datosGenerales = useDatosGenerales();
 
-  if (!datosGenerales) return null; // ✅ Prevenir errores si `datosGenerales` es `null`
+  if (!datosGenerales) return null;
 
-  /** 🔥 Aplicamos fallbacks desde `Datos Generales` si `DestacadosMes` tiene valores `null` */
-  const tituloTipografia = destacadosMes?.tituloTipografia || datosGenerales.tipografiaAgencia || "Arial";
-  const tituloTipografiaColor = destacadosMes?.tituloTipografiaColor || datosGenerales.colorTipografiaAgencia || "#000000";
+  const tituloTipografia = tarjetas?.tipografia || datosGenerales.tipografiaAgencia || "Arial";
+  const tituloTipografiaColor = tarjetas?.tipografiaColorTitulo || datosGenerales.colorTipografiaAgencia || "#000000";
 
   return (
     <Box
@@ -23,21 +23,44 @@ const DestacadosDelMes: React.FC = () => {
         overflow: "hidden",
       }}
     >
-      <Typography
-        variant="h3"
-        fontWeight="bold"
-        sx={{
-          mb: 5,
-          color: tituloTipografiaColor, // ✅ Ahora el título usa el color de la tipografía correcta
-          fontFamily: tituloTipografia,
-          textTransform: "uppercase",
-          letterSpacing: "1.5px",
-        }}
+      {/* ✅ Animamos la aparición con fade-in y un sutil desplazamiento */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, ease: "easeOut" }}
       >
-        Destacados del Mes
-      </Typography>
+        <Typography
+          variant="h3"
+          fontWeight="bold"
+          sx={{
+            mb: 5,
+            color: tituloTipografiaColor,
+            fontFamily: tituloTipografia,
+            textTransform: "uppercase",
+            letterSpacing: "2px",
+            position: "relative",
+            display: "inline-block",
+          }}
+        >
+          Destacados del Mes
+          {/* ✅ Agregamos un brillo animado elegante */}
+          <motion.span
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              background: "linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.5) 50%, transparent 70%)",
+              mixBlendMode: "overlay",
+              pointerEvents: "none",
+            }}
+            animate={{ x: ["-100%", "100%"] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+          />
+        </Typography>
+      </motion.div>
 
-      {/* ✅ Ahora `ContenedorCartasMes` obtiene los paquetes internamente desde el contexto */}
       <ContenedorCartasMes />
     </Box>
   );

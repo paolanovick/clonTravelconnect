@@ -1,24 +1,26 @@
 import React from "react";
-import { Box, Button } from "@mui/material";
+import { Box, Button, CircularProgress } from "@mui/material";
 import { motion } from "framer-motion";
+import { useBusqueda } from "./useBusqueda";
 import { useBuscador, useDatosGenerales } from "../../../contextos/DatosAgenciaContext";
-import { useNavigate } from "react-router-dom"; // 🚀 Importamos para redirigir
+import { useFormulario } from "../../../contextos/FormularioContext";
 
 const BotonBusqueda: React.FC = () => {
+  const { enviarFormulario, resetFormulario } = useFormulario();
+  const { loading, handleClick } = useBusqueda(); // 🔥 Eliminamos `{}` ya que los datos vienen del contexto
   const buscador = useBuscador();
   const datosGenerales = useDatosGenerales();
-  const navigate = useNavigate(); // 🚀 Hook de navegación
 
   if (!datosGenerales) return null;
 
-  /** 🔥 Aplicamos fallbacks desde `Datos Generales` */
-  const botonColor = buscador?.botonBuscarColor || datosGenerales.colorPrincipalAgencia || "#007BFF";
-  const textoColor =  buscador?.tipografiaColor|| datosGenerales.colorTipografiaAgencia;
-  const hoverColor = buscador?.inputColor||datosGenerales.colorSecundarioAgencia ;
+  const textoColor = buscador?.tipografiaColor || datosGenerales.colorTipografiaAgencia || "#FFFFFF";
+  const botonColor = buscador?.color.primario || datosGenerales.color.primario || "#007BFF";
+  const hoverColor = buscador?.color.secundario || datosGenerales.color.secundario || botonColor;
 
-  // 🔥 Función para manejar la redirección
-  const handleClick = () => {
-    navigate("/paquetes-busqueda"); // 🔥 Redirige a PaquetesBusqueda.tsx
+  const handleBusqueda = () => {
+    enviarFormulario(); // 🔥 Guarda los valores en el contexto antes de resetear
+    handleClick(); // 🔥 Ejecuta la búsqueda
+    resetFormulario(); // 🔥 Limpia los inputs después de la búsqueda
   };
 
   return (
@@ -31,14 +33,10 @@ const BotonBusqueda: React.FC = () => {
         zIndex: 1300,
       }}
     >
-      <motion.div
-        initial={{ scale: 0.9 }}
-        whileHover={{ scale: 1.05 }}
-        transition={{ duration: 0.2 }}
-      >
+      <motion.div initial={{ scale: 0.9 }} whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
         <Button
           variant="contained"
-          onClick={handleClick} // 🚀 Agregamos la redirección aquí
+          onClick={handleBusqueda}
           sx={{
             borderRadius: "35px",
             padding: "16px 48px",
@@ -46,13 +44,15 @@ const BotonBusqueda: React.FC = () => {
             fontWeight: "bold",
             backgroundColor: botonColor,
             color: textoColor,
+            fontFamily: "Poppins, sans-serif",
             boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.3)",
             "&:hover": {
               backgroundColor: hoverColor,
             },
           }}
+          disabled={loading}
         >
-          Buscar
+          {loading ? <CircularProgress size={24} sx={{ color: textoColor }} /> : "Buscar"}
         </Button>
       </motion.div>
     </Box>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { AppBar, Toolbar, Box, useMediaQuery } from "@mui/material";
 import { motion } from "framer-motion";
 import { useHeader, useDatosGenerales } from "../../contextos/DatosAgenciaContext";
@@ -8,11 +8,21 @@ const Header: React.FC = () => {
   const datosGenerales = useDatosGenerales();
   const isMobile = useMediaQuery("(max-width: 600px)");
 
+  // 🔥 Declaramos los hooks antes de cualquier return
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoBackground = header?.videoBackground || null;
+  const imagenBackground = header?.imagenBackground || null;
+
+  useEffect(() => {
+    if (videoRef.current && videoBackground) {
+      videoRef.current.play().catch((error) => console.error("Error al reproducir el video:", error));
+    }
+  }, [videoBackground]); // 🔥 Se ejecuta solo si `videoBackground` cambia
+
   if (!datosGenerales) {
     return null;
   }
 
-  /** 🔥 Normalizamos la opacidad para evitar valores incorrectos */
   const opacidad = header?.imagenBackgroundOpacidad ?? 1;
   const opacidadNormalizada = opacidad >= 0 && opacidad <= 1 ? opacidad : 1;
 
@@ -20,13 +30,7 @@ const Header: React.FC = () => {
     <AppBar
       position="absolute"
       sx={{
-        backgroundImage: header?.imagenBackground ? `url(${header.imagenBackground})` : "none",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        backgroundColor: !header?.imagenBackground
-          ? datosGenerales.colorFondoAgencia || datosGenerales.colorPrincipalAgencia || "#F5F5F5"
-          : "transparent",
+        backgroundColor: videoBackground || imagenBackground ? "transparent" : "#000",
         boxShadow: "none",
         height: isMobile ? "100vh" : "75vh",
         width: "100vw",
@@ -40,22 +44,60 @@ const Header: React.FC = () => {
         justifyContent: "flex-start",
       }}
     >
-      {/* 🔥 Capa de superposición para oscurecer la imagen sin afectar el contenido */}
-      {header?.imagenBackground && (
+      {/* 🔥 Renderiza el video si está disponible */}
+      {videoBackground ? (
         <Box
+          component="video"
+          ref={videoRef}
+          key={videoBackground} // 🔥 Esto fuerza la recarga si cambia la URL
+          src={videoBackground}
+          autoPlay
+          loop
+          muted
+          playsInline
           sx={{
             position: "absolute",
             top: 0,
             left: 0,
             width: "100%",
             height: "100%",
-            background: `linear-gradient(rgba(0,0,0,${opacidadNormalizada}), rgba(0,0,0,${
-              opacidadNormalizada * 0.5
-            }))`, 
-            zIndex: 1,
+            objectFit: "cover",
+            zIndex: 0,
           }}
         />
+      ) : (
+        // 🔥 Si no hay video, renderiza la imagen de fondo
+        imagenBackground && (
+          <Box
+            component="img"
+            src={imagenBackground}
+            alt="Fondo"
+            onError={(e) => (e.currentTarget.style.display = "none")}
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              zIndex: 0,
+            }}
+          />
+        )
       )}
+
+      {/* 🔥 Capa negra con opacidad dinámica */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          background: `rgba(0, 0, 0, ${opacidadNormalizada})`,
+          zIndex: 1,
+        }}
+      />
 
       <Toolbar
         disableGutters
@@ -68,7 +110,7 @@ const Header: React.FC = () => {
           px: isMobile ? 0 : 4,
           pt: 2,
           position: "relative",
-          zIndex: 2, // Mantiene el contenido sobre la capa oscura
+          zIndex: 2,
         }}
       >
         <motion.div
@@ -84,9 +126,9 @@ const Header: React.FC = () => {
               alt="Logo Agencia"
               onError={(e) => (e.currentTarget.style.display = "none")}
               sx={{
-                height: isMobile ? 180 : 240,
+                height: isMobile ? 360 : 480, // 🔥 Aumento x2 el tamaño del logo
                 width: "auto",
-                maxWidth: "750px",
+                maxWidth: "1500px", // Ajustado proporcionalmente
                 cursor: "pointer",
               }}
             />

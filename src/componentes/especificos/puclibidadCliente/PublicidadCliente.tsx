@@ -17,13 +17,21 @@ const PublicidadCliente: React.FC = () => {
 
   /** 🔥 Aplicamos fallbacks desde `Datos Generales` */
   const titulo = publicidadCliente.titulo || "Promociones Especiales";
-  const tipografia = publicidadCliente.tituloTipografia || datosGenerales.tipografiaAgencia || "Arial";
-  const tamanio = publicidadCliente.tituloTipografiaTamanio || "2rem";
-  const colorTexto = publicidadCliente.tituloTipografiaColor || datosGenerales.colorTipografiaAgencia || "#000000";
-  const colorFlechas = publicidadCliente.flechasColor || datosGenerales.colorPrincipalAgencia || "#007BFF";
+  const tipografia = "Arial Rounded MT Bold "; // ✅ Se fuerza Poppins como tipografía
+  const tamanio = "5rem";
+  const colorTexto =
+    publicidadCliente.tipografiaColor ||
+    datosGenerales.colorTipografiaAgencia ||
+    "#000000";
+  const colorFlechas =
+    publicidadCliente.color.primario ||
+    datosGenerales.color.primario ||
+    "#007BFF";
 
   /** 🔥 Imágenes del carrusel, asegurando que no haya `null` */
-  const imagenes = publicidadCliente.imagenes.map((img) => img || "/public/default-placeholder.jpg").filter(Boolean);
+  const imagenes = publicidadCliente.imagenes.map(
+    (img) => img || "/public/default-placeholder.jpg"
+  );
 
   // Configuración del carrusel con react-slick
   const settings = {
@@ -107,7 +115,7 @@ const PublicidadCliente: React.FC = () => {
           }
           .slick-prev::before, .slick-next::before {
             font-size: 40px;
-            color: ${colorFlechas}; /* ✅ Usa el color de flechas configurado */
+            color: ${colorFlechas}; /* ✅ Usa el color primario de la agencia */
           }
 
           /* 🔥 PUNTOS DEBAJO */

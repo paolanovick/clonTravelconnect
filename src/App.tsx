@@ -12,7 +12,7 @@ const App: React.FC = () => {
   }
 
   /** 🔥 Aplicamos el color de fondo desde `Datos Generales` */
-  const fondoColor = datosGenerales.colorFondoAgencia || "#F5F5F5"; // ✅ Fallback a color gris claro
+  const fondoColor = datosGenerales.colorFondoApp|| "#F5F5F5"; // ✅ Ahora usa `colorFondoApp`
 
   return (
     <Router>
@@ -31,7 +31,7 @@ const App: React.FC = () => {
 
       <Box
         sx={{
-          backgroundColor: fondoColor, // ✅ Ahora usa `colorFondoAgencia`
+          backgroundColor: fondoColor, // ✅ Ahora usa `colorFondoApp`
           minHeight: "100vh",
           width: "100%",
           display: "flex",

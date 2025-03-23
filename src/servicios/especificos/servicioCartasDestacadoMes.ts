@@ -21,19 +21,17 @@ export interface PaqueteDestacado {
   precio: number;
   descripcion: string;
   fecha: string;
+  duracion: number; // ✅ Se corrige a `number` en lugar de `string`
 }
 
 // Función para obtener los paquetes destacados
 export const obtenerPaquetesDestacados = async (): Promise<PaqueteDestacado[]> => {
   try {
     // 🔥 Definir el tipo esperado en la petición
-    const response = await axios.get<PaqueteEndpoint>("http://triptest.com.ar/get_paquetes");
-
-    // 🔥 Verificar si la API devuelve un solo objeto o una lista
-    const paquetesData = Array.isArray(response.data) ? response.data : [response.data];
+    const response = await axios.get<PaqueteEndpoint[]>("http://triptest.com.ar/get_paquetes");
 
     // Transformar los datos
-    const paquetesTransformados: PaqueteDestacado[] = paquetesData
+    const paquetesTransformados: PaqueteDestacado[] = response.data
       .slice(0, 20) // Tomar solo los primeros 20 paquetes
       .map((paquete: PaqueteEndpoint) => {
         // Obtener la primera salida disponible
@@ -46,6 +44,7 @@ export const obtenerPaquetesDestacados = async (): Promise<PaqueteDestacado[]> =
           precio: primeraSalida?.doble_precio ? parseFloat(primeraSalida.doble_precio) : 0, // 🔥 Validación de precio
           descripcion: `${paquete.cant_noches || 1} noches en ${paquete.ciudad}`,
           fecha: primeraSalida?.fecha_desde || "Fecha no disponible",
+          duracion: paquete.cant_noches || 1, // ✅ Ahora es `number`, no `string`
         };
       });
 

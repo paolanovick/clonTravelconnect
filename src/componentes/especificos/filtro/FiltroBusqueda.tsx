@@ -1,21 +1,22 @@
 import { Box, InputBase, Typography } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { useDestacadosMes } from "../../../contextos/DatosAgenciaContext";
+import { useTarjetas } from "../../../contextos/DatosAgenciaContext";
 import { useDatosGenerales } from "../../../contextos/DatosAgenciaContext";
 
 const FiltroBusqueda = () => {
-  const destacadosMes = useDestacadosMes();
+  const tarjetas = useTarjetas();
   const datosGenerales = useDatosGenerales();
 
-  const colorFondo = destacadosMes?.tarjetaColorSecundario || datosGenerales?.colorSecundarioAgencia;
-  const colorTexto = destacadosMes?.tarjetaTipografiaColor || datosGenerales?.colorTipografiaAgencia || "inherit";
-  const colorInputFondo = destacadosMes?.tarjetaColorPrimario || datosGenerales?.colorPrincipalAgencia;
+  // 🔹 Colores dinámicos con fallback
+  const colorFondo = tarjetas?.color.primario || datosGenerales?.color.primario || "#1976d2";
+  const colorTexto = tarjetas?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#fff";
+  const colorInputFondo = tarjetas?.color.secundario || datosGenerales?.color.secundario || "#f0f0f0";
 
   return (
     <Box
       sx={{
-        bgcolor: colorFondo,
-        p: 2,
+        backgroundColor: colorFondo, // 🔥 Color de fondo dinámico
+        p: 3,
         borderRadius: 4,
         boxShadow: "0px 4px 8px rgba(0,0,0,0.3)",
         textAlign: "center",
@@ -28,7 +29,7 @@ const FiltroBusqueda = () => {
           alignItems: "center",
           justifyContent: "center",
           gap: 1,
-          color: colorTexto,
+          color: colorTexto, // 🔥 Color de texto dinámico
           fontWeight: "bold",
         }}
       >
@@ -39,14 +40,24 @@ const FiltroBusqueda = () => {
           display: "flex",
           alignItems: "center",
           mt: 2,
-          bgcolor: colorInputFondo,
+          backgroundColor: colorInputFondo, // 🔥 Input con fondo secundario
           borderRadius: "20px",
           px: 2,
+          py: 1,
+          boxShadow: "inset 0px 2px 5px rgba(0,0,0,0.2)", // 🔹 Sombra interna para mayor realismo
         }}
       >
         <InputBase
           placeholder="Seleccionar"
-          sx={{ flex: 1, color: colorTexto, fontWeight: "bold" }}
+          sx={{
+            flex: 1,
+            color: tarjetas?.tipografiaColorContenido,
+            fontWeight: "bold",
+            fontSize: "0.9rem",
+            "&::placeholder": {
+              color: `${colorTexto}99`, // 🔹 Placeholder con opacidad
+            },
+          }}
         />
         <SearchIcon sx={{ color: colorTexto }} />
       </Box>

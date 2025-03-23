@@ -1,26 +1,25 @@
 import React from "react";
-import {
-  Card,
-  CardMedia,
-  CardContent,
-  Typography,
-  Box,
-  CircularProgress,
-} from "@mui/material";
+import { Card } from "@mui/material";
 import { PaqueteDestacado } from "../../../interfaces/PaqueteDestacado";
+import { useTarjetas, useDatosGenerales } from "../../../contextos/DatosAgenciaContext";
+import CartaMesImagen from "./CartaMesImagen";
+import CartaMesContenido from "./CartaMesContenido";
+import CartaMesPrecio from "./CartaMesPrecio";
 
 interface CartaMesProps {
   paquete: PaqueteDestacado;
   estilos: {
-    tarjetaTipografia: string;
-    tarjetaTipografiaColor: string;
-    tarjetaColorPrimario: string;
-    tarjetaColorSecundario: string;
-    tarjetaColorTerciario: string;
+    tarjetaTipografia: string | null;
+    tarjetaTipografiaColor: string | null;
+    tarjetaColorPrimario: string | null;
+    tarjetaColorSecundario: string | null;
+    tarjetaColorTerciario: string | null;
   };
 }
 
 const CartaMes: React.FC<CartaMesProps> = ({ paquete, estilos }) => {
+  const tarjetas = useTarjetas();
+  const datosGenerales = useDatosGenerales();
   const [cargando, setCargando] = React.useState(true);
 
   React.useEffect(() => {
@@ -28,78 +27,59 @@ const CartaMes: React.FC<CartaMesProps> = ({ paquete, estilos }) => {
     return () => clearTimeout(timer);
   }, []);
 
+  // Aplicar fallback en caso de valores null
+  const tipografia =
+    estilos.tarjetaTipografia || tarjetas?.tipografia || datosGenerales?.tipografiaAgencia || "Arial";
+
+  const colorFondo =
+    estilos.tarjetaColorSecundario || tarjetas?.color.secundario || datosGenerales?.color.secundario || "#f5f5f5";
+
   return (
     <Card
       sx={{
-        width: 280,
-        minHeight: 350,
+        width: "100%",
+        minHeight: "100%",
         borderRadius: "16px",
-        boxShadow: 3,
+        boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)", // Sombra más difusa para evitar bordes marcados
         transition: "transform 0.3s ease-in-out",
         cursor: "pointer",
-        "&:hover": { transform: "scale(1.05)" },
-        backgroundColor: estilos.tarjetaColorPrimario,
+        "&:hover": { 
+          transform: "scale(1.05)",
+          boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.15)", // Sombra más fuerte en hover
+        },
+        backgroundColor: colorFondo, // Fondo asegurado
         color: estilos.tarjetaTipografiaColor,
-        fontFamily: estilos.tarjetaTipografia,
+        fontFamily: tipografia,
+        display: "flex",
+        flexDirection: "column",
+        border: "none", // 🔥 Asegura que no haya contorno
+        outline: "none", // 🔥 Elimina cualquier borde enfocado por accesibilidad
       }}
     >
-      {cargando && (
-        <Box
-          sx={{
-            position: "absolute",
-            width: "100%",
-            height: "100%",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            backdropFilter: "blur(5px)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 2,
-          }}
-        >
-          <CircularProgress sx={{ color: estilos.tarjetaColorSecundario }} />
-        </Box>
-      )}
-
-      <CardMedia
-        component="img"
-        height="150"
-        image={paquete.imagen || "/imagenes/default-image.jpg"}
+      <CartaMesImagen
+        imagen={paquete.imagen || "/imagenes/default-image.jpg"}
         alt={paquete.nombre}
-        sx={{
-          filter: cargando ? "blur(8px)" : "none",
-          transition: "filter 0.5s ease-in-out",
-        }}
+        cargando={cargando}
+        colorSecundario={colorFondo}
       />
 
-      <CardContent
-        sx={{
-          backgroundColor: estilos.tarjetaColorTerciario,
-          padding: "16px",
-          textAlign: "center",
-          opacity: cargando ? 0 : 1,
+      <CartaMesContenido
+        nombre={paquete.nombre}
+        descripcion={paquete.descripcion}
+        estilos={{
+          tarjetaTipografiaColor: estilos.tarjetaTipografiaColor,
         }}
-      >
-        <Typography variant="h6" fontWeight="bold">
-          {paquete.nombre}
-        </Typography>
-        <Typography variant="body2">
-          {paquete.descripcion}
-        </Typography>
-      </CardContent>
+        cargando={cargando}
+      />
 
-      <Box
-        sx={{
-          backgroundColor: estilos.tarjetaColorPrimario,
-          color: "white",
-          padding: "12px",
-          textAlign: "center",
-          fontWeight: "bold",
-          borderRadius: "0 0 16px 16px",
+      <CartaMesPrecio
+        precio={paquete.precio}
+        estilos={{
+          tarjetaTipografia: estilos.tarjetaTipografia,
+          tarjetaTipografiaColor: estilos.tarjetaTipografiaColor,
+          tarjetaColorPrimario: estilos.tarjetaColorPrimario,
         }}
-      >
-        Desde ARS {paquete.precio.toLocaleString("es-AR")}
-      </Box>
+      />
     </Card>
   );
 };

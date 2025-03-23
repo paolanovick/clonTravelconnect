@@ -60,10 +60,8 @@ export const useDatosGenerales = () => {
         logoAgencia: datosAgencia.logoAgencia,
         tipografiaAgencia: datosAgencia.tipografiaAgencia,
         colorTipografiaAgencia: datosAgencia.colorTipografiaAgencia,
-        colorFondoAgencia: datosAgencia.colorFondoAgencia,
-        colorPrincipalAgencia: datosAgencia.colorPrincipalAgencia,
-        colorSecundarioAgencia: datosAgencia.colorSecundarioAgencia,
-        colorTerciarioAgencia: datosAgencia.colorTerciarioAgencia,
+        color: datosAgencia.color,
+        colorFondoApp: datosAgencia.colorFondoApp,
       }
     : null;
 };
@@ -71,7 +69,7 @@ export const useDatosGenerales = () => {
 export const useHeader = () => useDatosAgencia().datosAgencia?.header ?? null;
 export const useBuscador = () => useDatosAgencia().datosAgencia?.buscador ?? null;
 export const usePublicidadCliente = () => useDatosAgencia().datosAgencia?.publicidadCliente ?? null;
-export const useDestacadosMes = () => useDatosAgencia().datosAgencia?.destacadosMes ?? null;
+export const useTarjetas = () => useDatosAgencia().datosAgencia?.tarjetas ?? null;
 export const useBannerRegistro = () => useDatosAgencia().datosAgencia?.bannerRegistro ?? null;
 export const useFooter = () => useDatosAgencia().datosAgencia?.footer ?? null;
 
