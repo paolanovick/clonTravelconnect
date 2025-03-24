@@ -7,15 +7,12 @@ const BannerRegistro: React.FC = () => {
   const bannerRegistro = useBannerRegistro();
   const datosGenerales = useDatosGenerales();
 
-  if (!datosGenerales) {
-    return null;
-  }
 
   /** 🔥 Aplicamos fallbacks desde `Datos Generales` */
-  const fondoColor = bannerRegistro?.color.primario|| datosGenerales.color.primario || "#FF5733";
-  const tipografia = datosGenerales.tipografiaAgencia || "Arial";
-  const tipografiaColor = bannerRegistro?.tipografiaColor || datosGenerales.colorTipografiaAgencia || "#FFFFFF";
-  const colorSecundario = bannerRegistro?.color.secundario || "#C70039";
+  const fondoColor = bannerRegistro?.color?.primario|| datosGenerales?.color?.primario || "#FF5733";
+  const tipografia = datosGenerales?.tipografiaAgencia || "Arial";
+  const tipografiaColor = bannerRegistro?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#FFFFFF";
+  const colorSecundario = bannerRegistro?.color?.secundario || "#C70039";
 
   return (
     <Box
@@ -42,7 +39,7 @@ const BannerRegistro: React.FC = () => {
                   fontFamily: tipografia,
                 }}
               >
-                {bannerRegistro.titulo}
+                {bannerRegistro?.titulo||"Resgistrate por Ofertas Exclusivas"}
               </Typography>
             )}
           </Grid>

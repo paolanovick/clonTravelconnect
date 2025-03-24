@@ -15,7 +15,7 @@ const ContenedorBusqueda: React.FC = () => {
   }
 
   /** 🔥 Aplicamos fallbacks desde `Datos Generales` */
-  const fondoColor = buscador?.color.terciario || datosGenerales.color.terciario || "white";
+  const fondoColor = buscador?.color?.terciario || datosGenerales?.color?.terciario || "white";
 
   return (
     <Box

@@ -13,9 +13,9 @@ const BotonBusqueda: React.FC = () => {
 
   if (!datosGenerales) return null;
 
-  const textoColor = buscador?.tipografiaColor || datosGenerales.colorTipografiaAgencia || "#FFFFFF";
-  const botonColor = buscador?.color.primario || datosGenerales.color.primario || "#007BFF";
-  const hoverColor = buscador?.color.secundario || datosGenerales.color.secundario || botonColor;
+  const textoColor = buscador?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#FFFFFF";
+  const botonColor = buscador?.color.primario || datosGenerales?.color?.primario || "#007BFF";
+  const hoverColor = buscador?.color.secundario || datosGenerales?.color?.secundario || botonColor;
 
   const handleBusqueda = () => {
     enviarFormulario(); // 🔥 Guarda los valores en el contexto antes de resetear

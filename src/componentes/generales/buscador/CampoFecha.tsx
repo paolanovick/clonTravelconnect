@@ -20,8 +20,8 @@ const CampoFecha: React.FC<CampoFechaProps> = ({ label }) => {
   if (!datosGenerales) return null;
 
   /** 🔥 Aplicamos fallbacks desde `Datos Generales` */
-  const fondoColor = buscador?.color.secundario || datosGenerales.color.secundario || "#F5F5F5";
-  const tipografiaColor = buscador?.tipografiaColor || datosGenerales.colorTipografiaAgencia || "#000000";
+  const fondoColor = buscador?.color?.secundario || datosGenerales?.color?.secundario || "#F5F5F5";
+  const tipografiaColor = buscador?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#000000";
 
   /** 🔥 Aplicamos jerarquía correcta para la tipografía del label */
   const labelColor =

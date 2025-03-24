@@ -10,10 +10,10 @@ const Footer: FunctionComponent = () => {
   const footer = useFooter();
   const datosGenerales = useDatosGenerales();
 
-  if (!footer || !datosGenerales) return null;
+  
 
-  const fondoColor = footer.color.terciario || datosGenerales.color.terciario || "rgba(0, 0, 0, 0.7)";
-  const logo = datosGenerales.logoAgencia;
+  const fondoColor = footer?.color?.terciario || datosGenerales?.color?.terciario || "rgba(0, 0, 0, 0.7)";
+  const logo = datosGenerales?.logoAgencia;
   const currentYear = new Date().getFullYear();
 
   return (

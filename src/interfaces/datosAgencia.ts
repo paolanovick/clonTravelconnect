@@ -25,6 +25,8 @@ export interface DatosAgencia {
     tipografia: string | null;
     tipografiaColor: string | null;
     tipografiaColorLabel: string | null;
+    inputColor:string| null;
+    inputFondoColor:string|null;
     color: {
       primario: string | null;
       secundario: string | null;

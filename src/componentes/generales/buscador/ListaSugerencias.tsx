@@ -16,10 +16,10 @@ const ListaSugerencias: React.FC<ListaSugerenciasProps> = ({ mostrarSugerencias,
   const buscador = useBuscador();
 
   /** 🔹 Definir colores y tipografía con fallbacks */
-  const fondoLista = buscador?.inputColor || datosGenerales?.colorPrincipalAgencia || "#FFFFFF";
+  const fondoLista = buscador?.inputColor || datosGenerales?.color?.primario|| "#FFFFFF";
   const colorTipografia = buscador?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#000000";
-  const colorHover = buscador?.calendarioColorSecundario || datosGenerales?.colorSecundarioAgencia || "rgba(255, 102, 0, 0.5)"; // 🔹 Color de hover dinámico
-  const colorSeleccionado = buscador?.calendarioColorPrimario || datosGenerales?.colorPrincipalAgencia || "rgba(255, 102, 0, 0.3)";
+  const colorHover = buscador?.color?.secundario|| datosGenerales?.color?.secundario || "rgba(255, 102, 0, 0.5)"; // 🔹 Color de hover dinámico
+  const colorSeleccionado = buscador?.color?.primario || datosGenerales?.color?.primario|| "rgba(255, 102, 0, 0.3)";
   const tipografia = buscador?.tipografia || datosGenerales?.tipografiaAgencia || "'Poppins', sans-serif";
 
   if (!mostrarSugerencias || sugerencias.length === 0) return null;

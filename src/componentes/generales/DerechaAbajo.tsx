@@ -9,11 +9,11 @@ const DerechaAbajo: FunctionComponent = () => {
   const footer = useFooter();
   const datosGenerales = useDatosGenerales();
 
-  if (!footer || !datosGenerales) return null;
+ 
 
   /** 🔥 Definir tipografía y colores con fallback */
-  const tipografia = footer.tipografia || datosGenerales.tipografiaAgencia || "inherit";
-  const textoColor = footer.tipografiaColor || datosGenerales.colorTipografiaAgencia || "#FFFFFF";
+  const tipografia = footer?.tipografia || datosGenerales?.tipografiaAgencia || "inherit";
+  const textoColor = footer?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#FFFFFF";
 
   return (
     <Box sx={{ backgroundColor: "transparent", padding: 2 }}>
@@ -22,7 +22,7 @@ const DerechaAbajo: FunctionComponent = () => {
           Contacto
         </Typography>
 
-        {footer.contacto.telefono && (
+        {footer?.contacto.telefono && (
           <Stack direction="row" spacing={1} alignItems="center">
             <PhoneIcon sx={{ color: textoColor }} />
             <Typography variant="body2" sx={{ color: textoColor, fontFamily: tipografia }}>
@@ -31,7 +31,7 @@ const DerechaAbajo: FunctionComponent = () => {
           </Stack>
         )}
 
-        {footer.contacto.email && (
+        {footer?.contacto.email && (
           <Stack direction="row" spacing={1} alignItems="center">
             <EmailIcon sx={{ color: textoColor }} />
             <Typography variant="body2" sx={{ color: textoColor, fontFamily: tipografia }}>
@@ -40,7 +40,7 @@ const DerechaAbajo: FunctionComponent = () => {
           </Stack>
         )}
 
-        {footer.ubicacion.direccion && (
+        {footer?.ubicacion.direccion && (
           <>
             <Typography variant="h6" sx={{ color: textoColor, fontFamily: tipografia, mt: 2 }}>
               Ubicación

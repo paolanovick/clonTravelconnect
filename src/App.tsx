@@ -1,22 +1,38 @@
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
-import { Box, GlobalStyles } from "@mui/material";
-import { useDatosGenerales } from "./contextos/DatosAgenciaContext"; // ✅ Reemplazo de EstilosAgencia
-import AppRoutes from "./routers"; // 🚀 Importamos las rutas
+import { Box, CircularProgress, GlobalStyles } from "@mui/material";
+import { useDatosAgencia, useDatosGenerales } from "./contextos/DatosAgenciaContext";
+import AppRoutes from "./routers";
 
 const App: React.FC = () => {
+  const { cargando } = useDatosAgencia();
   const datosGenerales = useDatosGenerales();
+
+  if (cargando) {
+    return (
+      <Box
+        sx={{
+          height: "100vh",
+          width: "100vw",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "#f5f5f5",
+        }}
+      >
+        <CircularProgress size={80} thickness={5} />
+      </Box>
+    );
+  }
 
   if (!datosGenerales) {
     return <Box sx={{ textAlign: "center", mt: 4 }}>No se pudieron cargar los datos de la agencia.</Box>;
   }
 
-  /** 🔥 Aplicamos el color de fondo desde `Datos Generales` */
-  const fondoColor = datosGenerales.colorFondoApp|| "#F5F5F5"; // ✅ Ahora usa `colorFondoApp`
+  const fondoColor = datosGenerales.colorFondoApp || "#F5F5F5";
 
   return (
     <Router>
-      {/* 🔹 Elimina margen y padding global para evitar espacios en blanco */}
       <GlobalStyles
         styles={{
           "html, body, #root": {
@@ -31,7 +47,7 @@ const App: React.FC = () => {
 
       <Box
         sx={{
-          backgroundColor: fondoColor, // ✅ Ahora usa `colorFondoApp`
+          backgroundColor: fondoColor,
           minHeight: "100vh",
           width: "100%",
           display: "flex",
@@ -41,7 +57,7 @@ const App: React.FC = () => {
           boxSizing: "border-box",
         }}
       >
-        <AppRoutes /> {/* 🚀 Todo el contenido puede hacer scroll */}
+        <AppRoutes />
       </Box>
     </Router>
   );

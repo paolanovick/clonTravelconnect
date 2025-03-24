@@ -37,9 +37,9 @@ const ContenedorCartasMes: React.FC = () => {
   /** 🔥 Aplicamos fallbacks correctos desde `tarjetas` y `datosGenerales` */
   const tarjetaTipografia = tarjetas?.tipografia || datosGenerales?.tipografiaAgencia || "Arial";
   const tarjetaTipografiaColor = tarjetas?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#FFFFFF";
-  const tarjetaColorPrimario = tarjetas?.color.primario || datosGenerales?.color.primario || "#FF5733";
-  const tarjetaColorSecundario = tarjetas?.color.secundario || datosGenerales?.color.secundario || "#C70039";
-  const tarjetaColorTerciario = tarjetas?.color.terciario || datosGenerales?.color.terciario || "#900C3F";
+  const tarjetaColorPrimario = tarjetas?.color?.primario || datosGenerales?.color?.primario || "#FF5733";
+  const tarjetaColorSecundario = tarjetas?.color?.secundario || datosGenerales?.color?.secundario || "#C70039";
+  const tarjetaColorTerciario = tarjetas?.color?.terciario || datosGenerales?.color?.terciario || "#900C3F";
 
   return (
     <Box

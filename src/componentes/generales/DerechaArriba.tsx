@@ -8,11 +8,11 @@ const DerechaArriba: FunctionComponent = () => {
   const footer = useFooter();
   const datosGenerales = useDatosGenerales();
 
-  if (!footer || !datosGenerales) return null;
+
 
   /** 🔥 Definir tipografía y colores con fallback */
-  const tipografia = footer.tipografia || datosGenerales.tipografiaAgencia || "inherit";
-  const textoColor = footer.tipografiaColor || datosGenerales.colorTipografiaAgencia || "#FFFFFF";
+  const tipografia = footer?.tipografia || datosGenerales?.tipografiaAgencia || "inherit";
+  const textoColor = footer?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#FFFFFF";
 
   return (
     <Box sx={{ backgroundColor: "transparent", padding: 2 }}>
@@ -26,7 +26,7 @@ const DerechaArriba: FunctionComponent = () => {
               fontSize: 14,
               fontFamily: tipografia,
               textTransform: "none",
-              "&:hover": { color: footer.color.secundario || datosGenerales.color.secundario },
+              "&:hover": { color: footer?.color?.secundario || datosGenerales?.color?.secundario },
             }}
           >
             {item}

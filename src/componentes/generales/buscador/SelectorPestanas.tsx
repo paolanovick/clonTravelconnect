@@ -12,9 +12,9 @@ const SelectorPestanas: React.FC = () => {
 
   /** 🔥 Aplicamos fallbacks desde `Datos Generales` */
   const fondoGeneral = "#F5F5F5"; // Blanco grisáceo
-  const fondoSeleccionado = buscador?.color.secundario || datosGenerales.color.secundario || "#D1E3FF";
-  const hoverColor = buscador?.color.primario || datosGenerales.color.primario || "#0056b3";
-  const tipografiaColorSeleccionado = buscador?.tipografiaColor || datosGenerales.colorTipografiaAgencia || "black";
+  const fondoSeleccionado = buscador?.color?.secundario || datosGenerales?.color?.secundario || "#D1E3FF";
+  const hoverColor = buscador?.color?.primario || datosGenerales?.color?.primario || "#0056b3";
+  const tipografiaColorSeleccionado = buscador?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "black";
 
   const opciones = [
     { valor: "paquetes", label: "Paquetes" },

@@ -41,9 +41,9 @@ const CampoBusqueda: React.FC<CampoBusquedaProps> = ({ label }) => {
 
   if (!datosGenerales) return null;
 
-  const colorPrimario = buscador?.color.primario || datosGenerales.color.primario || "#007bff";
-  const fondoColor = buscador?.color.secundario || datosGenerales.color.secundario || "#F5F5F5";
-  const tipografiaColor = buscador?.tipografiaColor || datosGenerales.colorTipografiaAgencia || "#000000";
+  const colorPrimario = buscador?.color?.primario || datosGenerales?.color?.primario || "#007bff";
+  const fondoColor = buscador?.color?.secundario || datosGenerales?.color?.secundario || "#F5F5F5";
+  const tipografiaColor = buscador?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#000000";
   const labelColor = buscador?.tipografiaColorLabel || buscador?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#000000";
   const tipografia = buscador?.tipografia || datosGenerales?.tipografiaAgencia || "Poppins, sans-serif";
 
