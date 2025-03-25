@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import Header from "../componentes/generales/Header";
 import ContenedorBusqueda from "../componentes/generales/buscador/ContenedorBusqueda";
 import Footer from "../componentes/generales/Footer";
-import SelectorSimulacion from "../componentes/selectorSimulacion";
+
 
 import PublicidadCliente from "../componentes/especificos/puclibidadCliente/PublicidadCliente";
 import DestacadosDelMes from "../componentes/especificos/destacadosMes/DestacadosDelMes";
@@ -31,7 +31,7 @@ const Home: React.FC = () => {
       <DestacadosDelMes /> 
        <BannerRegistro /> 
 
-      <SelectorSimulacion />
+      
       <Footer /> {/* ✅ Faltaba Footer, lo agregué aquí */}
     </Box>
   );
