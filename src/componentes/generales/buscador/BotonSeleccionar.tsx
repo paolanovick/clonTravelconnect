@@ -12,7 +12,7 @@ const BotonSeleccionar: React.FC<BotonSeleccionarProps> = ({ seleccion, onSelecc
   const datosGenerales = useDatosGenerales();
   const buscador = useBuscador();
 
-  const colorBoton = datosGenerales?.colorPrincipalAgencia || "#FF6600"; // 🔹 Naranja por defecto
+  const colorBoton = datosGenerales?.color.primario || "#FF6600"; // 🔹 Naranja por defecto
   const colorTipografia = buscador?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#FFFFFF";
   const tipografia = datosGenerales?.tipografiaAgencia || "'Poppins', sans-serif";
 

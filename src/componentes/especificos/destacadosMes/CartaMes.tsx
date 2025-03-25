@@ -32,7 +32,7 @@ const CartaMes: React.FC<CartaMesProps> = ({ paquete, estilos }) => {
     estilos.tarjetaTipografia || tarjetas?.tipografia || datosGenerales?.tipografiaAgencia || "Arial";
 
   const colorFondo =
-    estilos.tarjetaColorSecundario || tarjetas?.color.secundario || datosGenerales?.color.secundario || "#f5f5f5";
+    estilos.tarjetaColorSecundario || tarjetas?.color?.secundario || datosGenerales?.color?.secundario || "#f5f5f5";
 
   return (
     <Card

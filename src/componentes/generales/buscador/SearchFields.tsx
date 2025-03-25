@@ -11,9 +11,9 @@ import CampoPasajeros from "./CampoPasajeros";
 import type {} from "@mui/x-date-pickers/themeAugmentation";
 
 const SearchInputs: React.FC = () => {
-  const datosGenerales = useDatosGenerales();
+  
 
-  if (!datosGenerales) return null;
+  
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>

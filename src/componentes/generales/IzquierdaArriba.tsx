@@ -15,8 +15,7 @@ const IzquierdaArriba: FunctionComponent<IzquierdaArribaProps> = ({ logo }) => {
   /** 🔥 Definir tipografía, colores y fondo con fallback */
   const tipografia = footer?.tipografia || datosGenerales?.tipografiaAgencia || "inherit";
   const textoColor = footer?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#FFFFFF";
-  const textoFooter =
-    footer?.texto ||
+  const textoFooter =    footer?.texto ||
     "Somos una agencia especializada en brindar soluciones digitales y estrategias innovadoras para potenciar tu negocio.";
 
   return (

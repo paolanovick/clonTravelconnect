@@ -10,8 +10,8 @@ const DestacadosDelMes: React.FC = () => {
 
   if (!datosGenerales) return null;
 
-  const tituloTipografia = tarjetas?.tipografia || datosGenerales.tipografiaAgencia || "Arial";
-  const tituloTipografiaColor = tarjetas?.tipografiaColorTitulo || datosGenerales.colorTipografiaAgencia || "#000000";
+  const tituloTipografia = tarjetas?.tipografia || datosGenerales?.tipografiaAgencia || "Arial";
+  const tituloTipografiaColor = tarjetas?.tipografiaColorTitulo || datosGenerales?.colorTipografiaAgencia || "#000000";
 
   return (
     <Box

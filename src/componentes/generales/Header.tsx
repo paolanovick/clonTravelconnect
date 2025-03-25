@@ -19,9 +19,7 @@ const Header: React.FC = () => {
     }
   }, [videoBackground]); // 🔥 Se ejecuta solo si `videoBackground` cambia
 
-  if (!datosGenerales) {
-    return null;
-  }
+  
 
   const opacidad = header?.imagenBackgroundOpacidad ?? 1;
   const opacidadNormalizada = opacidad >= 0 && opacidad <= 1 ? opacidad : 1;
@@ -119,7 +117,7 @@ const Header: React.FC = () => {
           transition={{ duration: 1 }}
           whileHover={{ scale: 1.2 }}
         >
-          {datosGenerales.logoAgencia && (
+          {datosGenerales?.logoAgencia && (
             <Box
               component="img"
               src={datosGenerales.logoAgencia}

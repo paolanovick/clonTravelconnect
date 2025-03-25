@@ -23,7 +23,7 @@ const CartaMesPrecio: React.FC<CartaMesPrecioProps> = ({ precio, estilos }) => {
     tarjetas?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#000000";
 
   const colorPrimario =
-    estilos.tarjetaColorPrimario || tarjetas?.color.primario || datosGenerales?.color.primario || "#FFFFFF";
+    estilos.tarjetaColorPrimario || tarjetas?.color?.primario || datosGenerales?.color?.primario || "#FFFFFF";
 
   return (
     <Box

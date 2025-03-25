@@ -9,8 +9,8 @@ const TabsPaquete = () => {
   const [tabSeleccionada, setTabSeleccionada] = useState(0);
 
   // 🔹 Colores dinámicos con fallback
-  const colorFondo = tarjetas?.color.secundario || datosGenerales?.color.secundario || "#f5f5f5";
-  const colorIndicador = tarjetas?.color.primario || datosGenerales?.color.primario || "#1976d2";
+  const colorFondo = tarjetas?.color?.secundario || datosGenerales?.color?.secundario || "#f5f5f5";
+  const colorIndicador = tarjetas?.color?.primario || datosGenerales?.color?.primario || "#1976d2";
   const colorTexto = tarjetas?.tipografiaColorContenido || datosGenerales?.colorTipografiaAgencia || "#000";
 
   return (

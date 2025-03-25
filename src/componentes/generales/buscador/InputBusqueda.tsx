@@ -12,7 +12,7 @@ const InputBusqueda: React.FC<InputBusquedaProps> = ({ busqueda, setBusqueda, se
   const datosGenerales = useDatosGenerales();
   const buscador = useBuscador();
 
-  const inputColor = buscador?.inputColor || datosGenerales?.colorPrincipalAgencia || "#FFFFFF";
+  const inputColor = buscador?.inputColor || datosGenerales?.color.secundario || "#FFFFFF";
   const colorTipografia = buscador?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#000000";
   const tipografia = datosGenerales?.tipografiaAgencia || "'Poppins', sans-serif";
 

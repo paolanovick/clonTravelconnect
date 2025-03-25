@@ -17,15 +17,15 @@ const PublicidadCliente: React.FC = () => {
 
   /** 🔥 Aplicamos fallbacks desde `Datos Generales` */
   const titulo = publicidadCliente.titulo || "Promociones Especiales";
-  const tipografia = "Arial Rounded MT Bold "; // ✅ Se fuerza Poppins como tipografía
+  const tipografia = "Verdana "; // ✅ Se fuerza Poppins como tipografía
   const tamanio = "5rem";
   const colorTexto =
-    publicidadCliente.tipografiaColor ||
-    datosGenerales.colorTipografiaAgencia ||
+    publicidadCliente?.tipografiaColor ||
+    datosGenerales?.colorTipografiaAgencia ||
     "#000000";
   const colorFlechas =
-    publicidadCliente.color.primario ||
-    datosGenerales.color.primario ||
+    publicidadCliente?.color?.primario ||
+    datosGenerales?.color?.primario ||
     "#007BFF";
 
   /** 🔥 Imágenes del carrusel, asegurando que no haya `null` */

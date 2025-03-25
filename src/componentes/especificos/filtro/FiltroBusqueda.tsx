@@ -8,9 +8,9 @@ const FiltroBusqueda = () => {
   const datosGenerales = useDatosGenerales();
 
   // 🔹 Colores dinámicos con fallback
-  const colorFondo = tarjetas?.color.primario || datosGenerales?.color.primario || "#1976d2";
+  const colorFondo = tarjetas?.color.primario || datosGenerales?.color?.primario || "#1976d2";
   const colorTexto = tarjetas?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#fff";
-  const colorInputFondo = tarjetas?.color.secundario || datosGenerales?.color.secundario || "#f0f0f0";
+  const colorInputFondo = tarjetas?.color.secundario || datosGenerales?.color?.secundario || "#f0f0f0";
 
   return (
     <Box

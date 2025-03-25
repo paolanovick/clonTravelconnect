@@ -17,7 +17,7 @@ const TarifaPaquete = ({ tarifa, impuestos, total, cargando = false }: TarifaPaq
   const datosGenerales = useDatosGenerales();
 
   // 🔹 Colores con fallback
-  const colorPrimario = tarjetas?.color.primario || datosGenerales?.color.primario || "#FF9800"; // Naranja
+  const colorPrimario = tarjetas?.color?.primario || datosGenerales?.color?.primario || "#FF9800"; // Naranja
   const colorTipografia = tarjetas?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#fff";
 
   /** ✅ Evita `null` o `undefined` en los valores */

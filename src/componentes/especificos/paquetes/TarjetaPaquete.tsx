@@ -28,7 +28,7 @@ const TarjetaPaquete = ({ paquete, cargando = false }: TarjetaPaqueteProps) => {
   // 🔥 Colores dinámicos desde el contexto
   const tarjetas = useTarjetas();
   const datosGenerales = useDatosGenerales();
-  const colorFondo = tarjetas?.color.secundario || datosGenerales?.color.secundario || "#f5f5f5";
+  const colorFondo = tarjetas?.color?.secundario || datosGenerales?.color?.secundario || "#f5f5f5";
 
   return (
     <Card

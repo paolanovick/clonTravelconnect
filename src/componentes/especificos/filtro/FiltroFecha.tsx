@@ -13,7 +13,7 @@ const FiltroFecha = () => {
   const [fechaSeleccionada, setFechaSeleccionada] = useState<Dayjs | null>(dayjs());
 
   // 🔹 Colores dinámicos con fallback
-  const colorFondo = tarjetas?.color.primario || datosGenerales?.color.primario || "#1976d2";
+  const colorFondo = tarjetas?.color.primario || datosGenerales?.color?.primario || "#1976d2";
   const colorTexto = tarjetas?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#fff";
 
   return (

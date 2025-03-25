@@ -7,9 +7,9 @@ const BotonEliminarFiltros = () => {
   const tarjetas = useTarjetas(); // 🔥 Usa los estilos específicos de tarjetas
 
   /** 🔹 Define colores dinámicos */
-  const bgcolor = tarjetas?.color.terciario || datosGenerales?.color.terciario || "success.light";
+  const bgcolor = tarjetas?.color.terciario || datosGenerales?.color?.terciario || "success.light";
   const colorTexto = tarjetas?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#000";
-  const hoverColor = tarjetas?.color.secundario || datosGenerales?.color.secundario || "success.dark";
+  const hoverColor = tarjetas?.color.secundario || datosGenerales?.color?.secundario || "success.dark";
 
   return (
     <Button
