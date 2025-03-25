@@ -43,7 +43,7 @@ const datosAgenciaPreset: DatosAgencia = {
       secundario: "#FFCC80",
       terciario: "#E65100",
     },
-    imagenes: ["/colombia.jpg", "/arboleda.jpg", "/amigas.jpg"],
+    imagenes: ["paginaWeb/colombia.jpg", "paginaWeb/arboleda.jpg", "paginaWeb/amigas.jpg"],
   },
   tarjetas: {
     titulo: "Nuestros Destacados",
