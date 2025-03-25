@@ -23,9 +23,8 @@ interface TarjetaPaqueteProps {
 }
 
 const TarjetaPaquete = ({ paquete, cargando = false }: TarjetaPaqueteProps) => {
-  console.log("🔍 Datos del paquete recibido en TarjetaPaquete:", paquete); // ✅ Depuración
+  console.log("🔍 Datos del paquete recibido en TarjetaPaquete:", paquete);
 
-  // 🔥 Colores dinámicos desde el contexto
   const tarjetas = useTarjetas();
   const datosGenerales = useDatosGenerales();
   const colorFondo = tarjetas?.color?.secundario || datosGenerales?.color?.secundario || "#f5f5f5";
@@ -34,7 +33,7 @@ const TarjetaPaquete = ({ paquete, cargando = false }: TarjetaPaqueteProps) => {
     <Card
       sx={{
         display: "flex",
-        flexDirection: "column", // 🔥 Mantiene la estructura en columna
+        flexDirection: "column",
         borderRadius: 3,
         overflow: "hidden",
         boxShadow: 4,
@@ -47,20 +46,33 @@ const TarjetaPaquete = ({ paquete, cargando = false }: TarjetaPaqueteProps) => {
         position: "relative",
       }}
     >
-      {/* 🔹 Contenedor principal: 3 subcomponentes en fila */}
+      {/* 🔝 Tabs en la parte superior */}
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        <TabsPaquete />
+      </Box>
+
+      {/* 🔹 Contenido principal de la tarjeta */}
       <Box
         sx={{
           display: "flex",
           flexDirection: "row",
           width: "100%",
           flexGrow: 1,
-          height: "auto", // 🔥 Permite que la tarjeta crezca según su contenido
+          height: "auto",
         }}
       >
-        {/* 🔹 Imagen (Ahora más ancha) */}
+        {/* Imagen del paquete */}
         <Box
           sx={{
-            flex: 1.5, // 🔥 Más espacio para la imagen
+            flex: 1.5,
             display: "flex",
             height: "100%",
           }}
@@ -68,15 +80,15 @@ const TarjetaPaquete = ({ paquete, cargando = false }: TarjetaPaqueteProps) => {
           <ImagenPaquete imagen={paquete.imagen || "/imagenes/default-image.jpg"} cargando={cargando} />
         </Box>
 
-        {/* 🔹 InfoPaquete (Reducido) */}
+        {/* Información del paquete */}
         <Box
           sx={{
-            flex: 1.5, // 🔥 Se reduce el espacio de InfoPaquete
+            flex: 1.5,
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
             height: "100%",
-            px: 2, // 🔹 Espaciado interno
+            px: 2,
           }}
         >
           <InfoPaquete
@@ -89,18 +101,18 @@ const TarjetaPaquete = ({ paquete, cargando = false }: TarjetaPaqueteProps) => {
           />
         </Box>
 
-        {/* 🔹 TarifaPaquete (Mismo ancho, sin desbordar) */}
+        {/* Tarifa y precio */}
         <Box
           sx={{
-            flex: 1, // 🔥 Mantiene su tamaño sin desbordar
+            flex: 1,
             display: "flex",
             flexDirection: "column",
-            alignItems: "center", // 🔥 Centrado total
+            alignItems: "center",
             justifyContent: "center",
             height: "100%",
-            px: 2, // 🔹 Espaciado interno
-            minWidth: "250px", // 🔹 Evita que se haga demasiado angosto
-            flexShrink: 1, // 🔹 Permite que se reduzca sin desbordar
+            px: 2,
+            minWidth: "250px",
+            flexShrink: 1,
           }}
         >
           <TarifaPaquete
@@ -110,19 +122,6 @@ const TarjetaPaquete = ({ paquete, cargando = false }: TarjetaPaqueteProps) => {
             cargando={cargando}
           />
         </Box>
-      </Box>
-
-      {/* 🔹 Tabs (Siempre abajo, sin desbordes) */}
-      <Box
-        sx={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          mt: "auto", // 🔥 Se asegura de que las tabs estén siempre al fondo
-        }}
-      >
-        <TabsPaquete />
       </Box>
     </Card>
   );

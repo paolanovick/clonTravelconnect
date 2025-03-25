@@ -4,7 +4,7 @@ import App from "./App";
 import { DatosAgenciaProvider } from "./contextos/DatosAgenciaContext"; // ✅ Contexto principal
 import { PaquetesProvider } from "./contextos/PaquetesContext"; // ✅ Contexto de paquetes
 import { FormularioProvider } from "./contextos/FormularioContext"; // ✅ Nuevo contexto de formulario
-
+import { FiltrosYOrdenamientoProvider } from "./contextos/FiltrosYOrdenamientoContext";
 // Obtener el elemento root
 const rootElement = document.getElementById("root");
 
@@ -22,7 +22,9 @@ root.render(
     <DatosAgenciaProvider> {/* ✅ Contexto de datos de la agencia */}
       <PaquetesProvider> {/* ✅ Contexto de paquetes */}
         <FormularioProvider> {/* ✅ Nuevo contexto de formulario */}
+        <FiltrosYOrdenamientoProvider>
           <App />
+        </FiltrosYOrdenamientoProvider>
         </FormularioProvider>
       </PaquetesProvider>
     </DatosAgenciaProvider>

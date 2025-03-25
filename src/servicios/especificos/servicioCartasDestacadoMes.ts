@@ -28,7 +28,7 @@ export interface PaqueteDestacado {
 export const obtenerPaquetesDestacados = async (): Promise<PaqueteDestacado[]> => {
   try {
     // 🔥 Definir el tipo esperado en la petición
-    const response = await axios.get<PaqueteEndpoint[]>("http://triptest.com.ar/get_paquetes");
+    const response = await axios.get<PaqueteEndpoint[]>("https://triptest.com.ar/get_paquetes");
 
     // Transformar los datos
     const paquetesTransformados: PaqueteDestacado[] = response.data

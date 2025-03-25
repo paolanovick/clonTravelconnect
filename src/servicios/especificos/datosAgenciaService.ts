@@ -53,7 +53,7 @@ const datosAgenciaPreset: DatosAgencia = {
     tipografiaColorContenido: "#555555",
     color: {
       primario: "#FF9800",
-      secundario: "#FFCC80",
+      secundario: "#FFE0B3",
       terciario: "#E65100",
     },
   },
@@ -100,7 +100,7 @@ export const fetchDatosAgencia = async (): Promise<DatosAgencia> => {
     return datosAgenciaPreset;
   }
 
-  const response = await fetch("http://triptest.com.ar/agencia", {
+  const response = await fetch("https://triptest.com.ar/agencia", {
     headers: {
       'Accept': 'application/json',
     },

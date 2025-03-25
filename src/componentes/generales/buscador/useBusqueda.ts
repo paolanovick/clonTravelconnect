@@ -18,7 +18,7 @@ export const useBusqueda = () => {
     });
 
     try {
-      const response = await fetch("http://triptest.com.ar/paquetes/filtrar", {
+      const response = await fetch("https://triptest.com.ar/paquetes/filtrar", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
