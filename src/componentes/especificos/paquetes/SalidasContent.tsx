@@ -20,11 +20,11 @@ const SalidasContent: React.FC<SalidasContentProps> = ({ salidas, fechaSalida })
     return <Typography>No hay salidas disponibles</Typography>;
   }
 
-  const mostrarCampo = (valor?: string | number) => {
+  const mostrarCampo = (valor?: string | number): boolean => {
     const numero = typeof valor === "string" ? parseFloat(valor) : valor;
-    return numero && numero !== 0;
+    return typeof numero === "number" && !isNaN(numero) && numero !== 0;
   };
-
+  
   const formatearUSD = (valor: string | number | undefined) => {
     const numero = typeof valor === "string" ? parseFloat(valor) : valor;
     return numero ? `$${numero.toLocaleString("en-US")}` : null;

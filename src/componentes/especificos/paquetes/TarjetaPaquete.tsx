@@ -7,11 +7,16 @@ import TabsPaquete from "./TabsPaquete";
 import ExpansionContainer from "./ExpansionContainer";
 import { useTarjetas, useDatosGenerales } from "../../../contextos/DatosAgenciaContext";
 
-// Importamos los componentes de contenido para cada pestaña
 import HotelesContent from "./HotelesContent";
 import DescripcionContent from "./DescripcionContent";
 import SalidasContent from "./SalidasContent";
 import TransporteContent from "./TransporteContent";
+
+interface HotelData {
+  nombre: string;
+  id_hotel: string;
+  categoria_hotel: string;
+}
 
 interface TarjetaPaqueteProps {
   paquete: {
@@ -26,13 +31,7 @@ interface TarjetaPaqueteProps {
     impuestos: number | null | undefined;
     total: number | null | undefined;
 
-    hoteles?: {
-      hotel: {
-        nombre: string;
-        id_hotel: string;
-        categoria_hotel: string;
-      };
-    };
+    hoteles?: Array<{ hotel: HotelData }>;
     descripcion?: string | null;
     salidas?: Array<{
       id: number;
