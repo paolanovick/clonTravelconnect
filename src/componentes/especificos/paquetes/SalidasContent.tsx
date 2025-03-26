@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Typography, Divider } from "@mui/material";
 import { useTarjetas, useDatosGenerales } from "../../../contextos/DatosAgenciaContext";
-import TarjetaSalida from "./tarjetaSalida";
+import TarjetaSalida from "./TarjetaSalida"; // ✅ Import corregido (con mayúscula)
 
 interface SalidasContentProps {
   salidas?: Array<any>;
