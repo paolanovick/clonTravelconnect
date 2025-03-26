@@ -8,6 +8,7 @@ import Footer from "../componentes/generales/Footer";
 import PublicidadCliente from "../componentes/especificos/puclibidadCliente/PublicidadCliente";
 import DestacadosDelMes from "../componentes/especificos/destacadosMes/DestacadosDelMes";
 import BannerRegistro from "../componentes/generales/BannerRegistro";
+import ZocaloPoweredBy from "../componentes/generales/ZocaloPoweredBy"; // Ensure this path is correct
 
 const Home: React.FC = () => {
   return (
@@ -33,6 +34,7 @@ const Home: React.FC = () => {
 
       
       <Footer /> {/* ✅ Faltaba Footer, lo agregué aquí */}
+      <ZocaloPoweredBy />
     </Box>
   );
 };

@@ -8,7 +8,6 @@ const Header: React.FC = () => {
   const datosGenerales = useDatosGenerales();
   const isMobile = useMediaQuery("(max-width: 600px)");
 
-  // 🔥 Declaramos los hooks antes de cualquier return
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoBackground = header?.videoBackground || null;
   const imagenBackground = header?.imagenBackground || null;
@@ -17,9 +16,7 @@ const Header: React.FC = () => {
     if (videoRef.current && videoBackground) {
       videoRef.current.play().catch((error) => console.error("Error al reproducir el video:", error));
     }
-  }, [videoBackground]); // 🔥 Se ejecuta solo si `videoBackground` cambia
-
-  
+  }, [videoBackground]);
 
   const opacidad = header?.imagenBackgroundOpacidad ?? 1;
   const opacidadNormalizada = opacidad >= 0 && opacidad <= 1 ? opacidad : 1;
@@ -42,12 +39,11 @@ const Header: React.FC = () => {
         justifyContent: "flex-start",
       }}
     >
-      {/* 🔥 Renderiza el video si está disponible */}
       {videoBackground ? (
         <Box
           component="video"
           ref={videoRef}
-          key={videoBackground} // 🔥 Esto fuerza la recarga si cambia la URL
+          key={videoBackground}
           src={videoBackground}
           autoPlay
           loop
@@ -64,7 +60,6 @@ const Header: React.FC = () => {
           }}
         />
       ) : (
-        // 🔥 Si no hay video, renderiza la imagen de fondo
         imagenBackground && (
           <Box
             component="img"
@@ -84,7 +79,6 @@ const Header: React.FC = () => {
         )
       )}
 
-      {/* 🔥 Capa negra con opacidad dinámica */}
       <Box
         sx={{
           position: "absolute",
@@ -101,7 +95,7 @@ const Header: React.FC = () => {
         disableGutters
         sx={{
           display: "flex",
-          alignItems: "flex-start",
+          alignItems: "center", // 🔥 centrado vertical
           justifyContent: isMobile ? "center" : "flex-start",
           width: "100%",
           height: "100%",
@@ -124,9 +118,9 @@ const Header: React.FC = () => {
               alt="Logo Agencia"
               onError={(e) => (e.currentTarget.style.display = "none")}
               sx={{
-                height: isMobile ? 360 : 480, // 🔥 Aumento x2 el tamaño del logo
+                height: isMobile ? 160 : 220, // 🔥 más grande que un tercio
                 width: "auto",
-                maxWidth: "1500px", // Ajustado proporcionalmente
+                maxWidth: "1500px",
                 cursor: "pointer",
               }}
             />

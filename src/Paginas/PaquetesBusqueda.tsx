@@ -8,6 +8,7 @@ import ListadoPaquetes from "../componentes/especificos/paquetes/ListadoPaquetes
 import PanelFiltros from "../componentes/especificos/filtro/PanelFiltros";
 import BannerRegistro from "../componentes/generales/BannerRegistro";
 import { useBuscador } from "../contextos/DatosAgenciaContext";
+import ZocaloPoweredBy from "../componentes/generales/ZocaloPoweredBy";
 
 const PaquetesBusqueda = () => {
   const [mostrarBotonArriba, setMostrarBotonArriba] = useState(false);
@@ -94,6 +95,7 @@ const PaquetesBusqueda = () => {
 
       {/* 🔹 Footer */}
       <Footer />
+      <ZocaloPoweredBy/>
     </Box>
   );
 };

@@ -10,21 +10,23 @@ const IzquierdaArriba: FunctionComponent<IzquierdaArribaProps> = ({ logo }) => {
   const footer = useFooter();
   const datosGenerales = useDatosGenerales();
 
-
-
-  /** 🔥 Definir tipografía, colores y fondo con fallback */
   const tipografia = footer?.tipografia || datosGenerales?.tipografiaAgencia || "inherit";
   const textoColor = footer?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#FFFFFF";
-  const textoFooter =    footer?.texto ||
-    "Somos una agencia especializada en brindar soluciones digitales y estrategias innovadoras para potenciar tu negocio.";
+  const textoFooter =
+    footer?.texto || "© 2025 Citrus Energía - Todos los derechos reservados";
 
   return (
     <Stack
+      direction="row"
       spacing={2}
+      alignItems="center" // ✅ Alinea el texto con el centro del logo
+      justifyContent="flex-start"
       sx={{
-        backgroundColor: "transparent", // 🔥 Fondo completamente transparente
-        padding: 2,
-        borderRadius: 2,
+        backgroundColor: "transparent",
+        borderRadius: 0,
+        width: "100%",
+        m: 0,
+        p: 0,
       }}
     >
       {logo && (
@@ -32,15 +34,20 @@ const IzquierdaArriba: FunctionComponent<IzquierdaArribaProps> = ({ logo }) => {
           component="img"
           src={logo}
           alt="Logo"
-          sx={{ width: 120, height: "auto" }}
+          sx={{
+            width: 300,
+            maxHeight: 400,
+            objectFit: "contain",
+            display: "block",
+          }}
         />
       )}
       <Typography
         variant="body2"
         sx={{
-          maxWidth: 350,
           color: textoColor,
           fontFamily: tipografia,
+          lineHeight: 1.6,
         }}
       >
         {textoFooter}

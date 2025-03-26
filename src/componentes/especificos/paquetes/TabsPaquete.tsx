@@ -1,17 +1,39 @@
+// TabsPaquete.tsx
+import React, { useState } from "react";
 import { Box, Tabs, Tab } from "@mui/material";
-import { useState } from "react";
-import { useTarjetas } from "../../../contextos/DatosAgenciaContext";
-import { useDatosGenerales } from "../../../contextos/DatosAgenciaContext";
+import { useTarjetas, useDatosGenerales } from "../../../contextos/DatosAgenciaContext";
 
-const TabsPaquete = () => {
+export interface TabsPaqueteProps {
+  onTabChange?: (tabIndex: number, expansionOpen: boolean) => void;
+}
+
+const TabsPaquete: React.FC<TabsPaqueteProps> = ({ onTabChange }) => {
+  // Inicialmente, ninguna pestaña está seleccionada
+  const [tabSeleccionada, setTabSeleccionada] = useState<number | null>(null);
+  const [expansionOpen, setExpansionOpen] = useState<boolean>(false);
+
   const tarjetas = useTarjetas();
   const datosGenerales = useDatosGenerales();
-  const [tabSeleccionada, setTabSeleccionada] = useState(0);
 
-  // 🔹 Colores dinámicos con fallback
   const colorFondo = tarjetas?.color?.secundario || datosGenerales?.color?.secundario || "#f5f5f5";
   const colorIndicador = tarjetas?.color?.primario || datosGenerales?.color?.primario || "#1976d2";
   const colorTexto = tarjetas?.tipografiaColorContenido || datosGenerales?.colorTipografiaAgencia || "#000";
+
+  // Se dispara cuando se selecciona una pestaña distinta
+  const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
+    setTabSeleccionada(newValue);
+    setExpansionOpen(true);
+    onTabChange?.(newValue, true);
+  };
+
+  // Si se vuelve a hacer clic en la misma pestaña, se hace toggle en la expansión
+  const handleTabClick = (index: number) => {
+    if (index === tabSeleccionada) {
+      const newExpansionState = !expansionOpen;
+      setExpansionOpen(newExpansionState);
+      onTabChange?.(index, newExpansionState);
+    }
+  };
 
   return (
     <Box
@@ -21,31 +43,30 @@ const TabsPaquete = () => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: colorFondo, // 🔥 Color de fondo dinámico
+        backgroundColor: colorFondo,
         p: 1,
-        borderRadius: 2, // 🔹 Bordes redondeados sutiles
-        boxShadow: 2, // 🔹 Pequeña sombra para resaltar
+        borderRadius: 2,
+        boxShadow: 2,
       }}
     >
       <Tabs
-        value={tabSeleccionada}
-        onChange={(_, newValue) => setTabSeleccionada(newValue)}
+        value={tabSeleccionada === null ? false : tabSeleccionada}
+        onChange={handleTabChange}
         textColor="inherit"
         indicatorColor="primary"
         sx={{
           width: "100%",
           display: "flex",
           justifyContent: "center",
-          "& .MuiTabs-flexContainer": {
-            justifyContent: "center",
-          },
+          "& .MuiTabs-flexContainer": { justifyContent: "center" },
           "& .MuiTabs-indicator": { backgroundColor: colorIndicador },
         }}
       >
-        {["Hoteles", "Descripción", "Itinerario", "Asistencia"].map((label, index) => (
+        {["Hoteles", "Descripción", "Salidas", "Transporte"].map((label, index) => (
           <Tab
             key={index}
             label={label}
+            onClick={() => handleTabClick(index)}
             sx={{
               color: colorTexto,
               flex: 1,

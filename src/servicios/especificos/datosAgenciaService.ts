@@ -36,7 +36,7 @@ const datosAgenciaPreset: DatosAgencia = {
   },
   publicidadCliente: {
     existe: true,
-    titulo: "Hola pao",
+    titulo: "No te lo podes perder",
     tipografiaColor: "#FF9800",
     color: {
       primario: "#FF9800",
@@ -69,11 +69,11 @@ const datosAgenciaPreset: DatosAgencia = {
   footer: {
     texto: "© 2025 Citrus Energía - Todos los derechos reservados",
     tipografia: "Verdana",
-    tipografiaColor: "#212121",
+    tipografiaColor: "white",
     color: {
       primario: "#FF9800",
       secundario: "#FFCC80",
-      terciario: "#E65100",
+      terciario: "#D86F45",
     },
     redes: {
       facebook: "https://facebook.com/citrusenergia",
