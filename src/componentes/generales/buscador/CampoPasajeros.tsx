@@ -14,14 +14,16 @@ const CampoPasajeros: React.FC<CampoPasajerosProps> = ({ label }) => {
   const { viajeros, setViajeros } = useFormulario();
 
   useEffect(() => {
-    const valoresGuardados = localStorage.getItem("valoresPrevios");
-    if (valoresGuardados) {
-      const { viajeros: viajerosGuardados } = JSON.parse(valoresGuardados);
-      if (viajerosGuardados !== undefined && viajerosGuardados !== null) {
-        setViajeros(viajerosGuardados);
+    if (!viajeros || viajeros === 0) {
+      const valoresGuardados = localStorage.getItem("valoresPrevios");
+      if (valoresGuardados) {
+        const { viajeros: viajerosGuardados } = JSON.parse(valoresGuardados);
+        if (viajerosGuardados !== undefined && viajerosGuardados !== null) {
+          setViajeros(viajerosGuardados);
+        }
       }
     }
-  }, [setViajeros]);
+  }, []);
 
   if (!datosGenerales) return null;
 

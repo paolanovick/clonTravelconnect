@@ -18,15 +18,17 @@ const CampoFecha: React.FC<CampoFechaProps> = ({ label }) => {
   const { fechaSalida, setFechaSalida } = useFormulario();
 
   useEffect(() => {
-    const valoresGuardados = localStorage.getItem("valoresPrevios");
-    if (valoresGuardados) {
-      const { fechaSalida: fechaGuardada } = JSON.parse(valoresGuardados);
-      if (fechaGuardada) {
-        const fecha = new Date(fechaGuardada);
-        setFechaSalida(fecha);
+    if (!fechaSalida) {
+      const valoresGuardados = localStorage.getItem("valoresPrevios");
+      if (valoresGuardados) {
+        const { fechaSalida: fechaGuardada } = JSON.parse(valoresGuardados);
+        if (fechaGuardada) {
+          const fecha = new Date(fechaGuardada);
+          setFechaSalida(fecha);
+        }
       }
     }
-  }, [setFechaSalida]);
+  }, []);
 
   if (!datosGenerales) return null;
 

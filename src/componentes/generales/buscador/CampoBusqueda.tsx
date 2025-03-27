@@ -24,7 +24,9 @@ const CampoBusqueda: React.FC<CampoBusquedaProps> = ({ label }) => {
 
   useEffect(() => {
     const valoresGuardados = localStorage.getItem("valoresPrevios");
-    if (valoresGuardados) {
+    const yaHayValor = label === "Ciudad de Salida" ? ciudadOrigen : destino;
+
+    if (!yaHayValor && valoresGuardados) {
       const { ciudadOrigen: guardadoOrigen, destino: guardadoDestino } = JSON.parse(valoresGuardados);
 
       if (label === "Ciudad de Salida" && guardadoOrigen) {
@@ -35,14 +37,14 @@ const CampoBusqueda: React.FC<CampoBusquedaProps> = ({ label }) => {
         setDestino(guardadoDestino);
       }
     } else {
-      // Fallback al contexto si no hay valores guardados
+      // Si ya hay valor, lo mostramos directamente
       if (label === "Ciudad de Salida") {
         setInputValue(ciudadOrigen ?? "");
       } else if (label === "Ciudad de Destino") {
         setInputValue(destino ?? "");
       }
     }
-  }, [label, ciudadOrigen, destino, setCiudadOrigen, setDestino]);
+  }, []);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
