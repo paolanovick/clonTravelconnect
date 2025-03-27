@@ -100,7 +100,7 @@ const TarifaPaquete = ({ tarifa, impuestos, total, cargando = false }: TarifaPaq
 
           {/* 🔹 Botón separado con mayor margen superior */}
           <Box sx={{ mt: 4, width: "100%" }}> {/* 🔥 Aumentado `mt` para mayor separación */}
-            <BotonConsultar colorPrimario={colorPrimario} />
+            <BotonConsultar  />
           </Box>
         </>
       )}
