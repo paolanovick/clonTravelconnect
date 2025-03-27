@@ -5,7 +5,25 @@ import { useFormulario } from "../../../contextos/FormularioContext"; // 🔥 Im
 export const useBusqueda = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { ciudadOrigen, destino, fechaSalida, viajeros, resetFormulario } = useFormulario(); // 🔥 Ahora obtenemos resetFormulario
+  const {
+    ciudadOrigen,
+    destino,
+    fechaSalida,
+    viajeros,
+    resetFormulario,
+  } = useFormulario();
+
+  const guardarValoresPrevios = () => {
+    localStorage.setItem(
+      "valoresPrevios",
+      JSON.stringify({
+        ciudadOrigen,
+        destino,
+        fechaSalida,
+        viajeros,
+      })
+    );
+  };
 
   const handleClick = async () => {
     setLoading(true);
@@ -13,7 +31,7 @@ export const useBusqueda = () => {
     console.log("📤 Enviando solicitud con los siguientes datos:", {
       ciudadOrigen,
       destino,
-      fechaSalida: fechaSalida ? fechaSalida.toISOString() : null, // Convertimos la fecha
+      fechaSalida: fechaSalida ? fechaSalida.toISOString() : null,
       viajeros,
     });
 
@@ -26,7 +44,7 @@ export const useBusqueda = () => {
         body: JSON.stringify({
           ciudadOrigen,
           destino,
-          fechaSalida: fechaSalida ? fechaSalida.toISOString() : null, // Enviamos la fecha en formato ISO
+          fechaSalida: fechaSalida ? fechaSalida.toISOString() : null,
           viajeros,
         }),
       });
@@ -43,10 +61,18 @@ export const useBusqueda = () => {
         data = await response.json();
       }
 
+      // ✅ Guardar resultados
       localStorage.setItem("resultadosBusqueda", JSON.stringify(data));
-      window.dispatchEvent(new Event("actualizarPaquetes"));
+
+      // ✅ Guardar los valores actuales en localStorage para persistencia
+      guardarValoresPrevios();
+
+      // ✅ Limpiar contexto (pero no los inputs visuales gracias al localStorage)
       resetFormulario();
-      navigate("/paquetes-busqueda"); // 🔥 Ahora siempre redirige
+
+      // ✅ Redirigir a resultados
+      window.dispatchEvent(new Event("actualizarPaquetes"));
+      navigate("/paquetes-busqueda");
     } catch (error) {
       console.error("❌ Error en la búsqueda:", error);
       alert("Hubo un error en la búsqueda. Por favor, intenta nuevamente.");

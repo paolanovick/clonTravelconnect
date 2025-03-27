@@ -1,12 +1,14 @@
 import React, { useRef, useEffect } from "react";
 import { AppBar, Toolbar, Box, useMediaQuery } from "@mui/material";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom"; // 👉 Importamos navegación
 import { useHeader, useDatosGenerales } from "../../contextos/DatosAgenciaContext";
 
 const Header: React.FC = () => {
   const header = useHeader();
   const datosGenerales = useDatosGenerales();
   const isMobile = useMediaQuery("(max-width: 600px)");
+  const navigate = useNavigate(); // 👉 Hook de navegación
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoBackground = header?.videoBackground || null;
@@ -95,7 +97,7 @@ const Header: React.FC = () => {
         disableGutters
         sx={{
           display: "flex",
-          alignItems: "center", // 🔥 centrado vertical
+          alignItems: "center",
           justifyContent: isMobile ? "center" : "flex-start",
           width: "100%",
           height: "100%",
@@ -109,19 +111,22 @@ const Header: React.FC = () => {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1 }}
-          whileHover={{ scale: 1.2 }}
+          whileHover={{ scale: 1.25  }}
         >
           {datosGenerales?.logoAgencia && (
             <Box
               component="img"
               src={datosGenerales.logoAgencia}
               alt="Logo Agencia"
+              onClick={() => navigate("/")} // 👉 Redirección a Home
               onError={(e) => (e.currentTarget.style.display = "none")}
               sx={{
-                height: isMobile ? 160 : 220, // 🔥 más grande que un tercio
+                height: isMobile ? 200 : 300,
                 width: "auto",
                 maxWidth: "1500px",
                 cursor: "pointer",
+                 // 👉 Inclinado y más al centro
+                transition: "transform 0.3s ease-in-out",
               }}
             />
           )}

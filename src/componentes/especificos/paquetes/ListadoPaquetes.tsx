@@ -1,21 +1,25 @@
-// ListadoPaquetes.tsx
 import { useState, useEffect } from "react";
-import { Grid, Typography, Box, CircularProgress, Button } from "@mui/material";
+import { Grid, Box, CircularProgress, Button } from "@mui/material";
 import TarjetaPaquete from "./TarjetaPaquete";
+import MensajeSinPaquetes from "./MensajeSinPaquetes";
 import { useTarjetas } from "../../../contextos/DatosAgenciaContext";
 
 const ListadoPaquetes = () => {
   const [paquetes, setPaquetes] = useState<any[]>([]);
   const [cargando, setCargando] = useState(true);
-  const [cantidadVisible, setCantidadVisible] = useState(10); // Mostrar solo 10 paquetes al inicio
+  const [cantidadVisible, setCantidadVisible] = useState(10);
   const tarjeta = useTarjetas();
 
   const cargarPaquetes = () => {
     const data = localStorage.getItem("resultadosBusqueda");
     if (data) {
-      const paquetesParseados = JSON.parse(data);
+      const paquetesParseados = JSON.parse(data).filter(
+        (p: any) => p?.id && p.id !== "error"
+      );
       console.log("🔍 Paquetes actualizados:", paquetesParseados);
       setPaquetes(paquetesParseados);
+    } else {
+      setPaquetes([]);
     }
     setCargando(false);
   };
@@ -23,7 +27,6 @@ const ListadoPaquetes = () => {
   useEffect(() => {
     cargarPaquetes();
 
-    // Escuchar cambios en localStorage mediante un evento personalizado
     const actualizarPaquetes = () => cargarPaquetes();
     window.addEventListener("actualizarPaquetes", actualizarPaquetes);
 
@@ -32,7 +35,6 @@ const ListadoPaquetes = () => {
     };
   }, []);
 
-  /** Función para cargar 10 paquetes más */
   const cargarMas = () => setCantidadVisible((prev) => prev + 10);
 
   return (
@@ -50,58 +52,15 @@ const ListadoPaquetes = () => {
           <CircularProgress size={40} />
         </Box>
       ) : paquetes.length === 0 ? (
-        <Typography variant="h6" sx={{ textAlign: "center" }}>
-          No se encontraron paquetes. Intenta con otros criterios de búsqueda.
-        </Typography>
-      ) : paquetes.length === 1 && paquetes[0].id === "error" ? (
-        // Caso en el que no se encontraron paquetes (Error 404)
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            mt: 3,
-          }}
-        >
-          <TarjetaPaquete
-            paquete={{
-              id: "error",
-              titulo: "No se encontraron paquetes",
-              imagen: "/imagenes/default-image.jpg",
-              fechaSalida: "----",
-              duracion: "-- No disponible --",
-              regimen: "--",
-              destinos: "--",
-              tarifa: 0,
-              impuestos: 0,
-              total: 0,
-            }}
-            cargando={true}
-          />
-        </Box>
+        <MensajeSinPaquetes />
       ) : (
         <>
-          {/* Renderizar solo los paquetes visibles */}
           <Grid container spacing={3} justifyContent="center">
             {paquetes.slice(0, cantidadVisible).map((paquete) => {
-              // Obtener tarifa, impuestos y total de la mejor salida disponible
-              const mejorSalida = paquete.salidas?.[0]; // Tomamos la primera salida disponible
+              const mejorSalida = paquete.salidas?.[0];
               const tarifa = mejorSalida?.doble_precio ? parseFloat(mejorSalida.doble_precio) : 0;
               const impuestos = mejorSalida?.doble_impuesto ? parseFloat(mejorSalida.doble_impuesto) : 0;
               const total = tarifa + impuestos;
-
-              console.log("🔍 Datos pasados a TarjetaPaquete:", {
-                id: paquete.id,
-                titulo: `Viaje a ${paquete.ciudad}`,
-                imagen: paquete.imagen_principal || "/imagenes/default-image.jpg",
-                fechaSalida: mejorSalida?.fecha_desde || "Fecha no disponible",
-                duracion: paquete.cant_noches ? `${paquete.cant_noches} noches` : "Duración no disponible",
-                regimen: paquete.regimen || "Según Itinerario",
-                destinos: paquete.ciudad,
-                tarifa,
-                impuestos,
-                total,
-              });
 
               return (
                 <Grid
@@ -124,7 +83,6 @@ const ListadoPaquetes = () => {
                       tarifa,
                       impuestos,
                       total,
-                      // Campos adicionales para las tabs:
                       hoteles: paquete.hoteles,
                       descripcion: paquete.descripcion,
                       salidas: paquete.salidas,
@@ -137,7 +95,6 @@ const ListadoPaquetes = () => {
             })}
           </Grid>
 
-          {/* Botón para cargar más si hay más paquetes disponibles */}
           {cantidadVisible < paquetes.length && (
             <Button
               variant="contained"

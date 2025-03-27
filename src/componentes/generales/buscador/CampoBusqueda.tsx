@@ -20,23 +20,36 @@ const CampoBusqueda: React.FC<CampoBusquedaProps> = ({ label }) => {
   const datosGenerales = useDatosGenerales();
   const { ciudadOrigen, destino, setCiudadOrigen, setDestino } = useFormulario();
 
-  // 🔥 Estado local del input (sincronizado con el contexto)
   const [inputValue, setInputValue] = useState<string>("");
 
   useEffect(() => {
-    if (label === "Ciudad de Salida") {
-      setInputValue(ciudadOrigen ?? ""); // 🔥 Asegura que nunca sea undefined
-    } else if (label === "Ciudad de Destino") {
-      setInputValue(destino ?? ""); // 🔥 Asegura que nunca sea undefined
+    const valoresGuardados = localStorage.getItem("valoresPrevios");
+    if (valoresGuardados) {
+      const { ciudadOrigen: guardadoOrigen, destino: guardadoDestino } = JSON.parse(valoresGuardados);
+
+      if (label === "Ciudad de Salida" && guardadoOrigen) {
+        setInputValue(guardadoOrigen);
+        setCiudadOrigen(guardadoOrigen);
+      } else if (label === "Ciudad de Destino" && guardadoDestino) {
+        setInputValue(guardadoDestino);
+        setDestino(guardadoDestino);
+      }
+    } else {
+      // Fallback al contexto si no hay valores guardados
+      if (label === "Ciudad de Salida") {
+        setInputValue(ciudadOrigen ?? "");
+      } else if (label === "Ciudad de Destino") {
+        setInputValue(destino ?? "");
+      }
     }
-  }, [ciudadOrigen, destino, label]);
+  }, [label, ciudadOrigen, destino, setCiudadOrigen, setDestino]);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
   const [opcionesFiltradas, setOpcionesFiltradas] = useState<UbicacionIATA[]>([]);
 
   useEffect(() => {
-    setOpcionesFiltradas(obtenerUbicaciones(inputValue || "")); // 🔥 Asegura que inputValue nunca sea undefined
+    setOpcionesFiltradas(obtenerUbicaciones(inputValue || ""));
   }, [inputValue]);
 
   if (!datosGenerales) return null;
@@ -60,7 +73,6 @@ const CampoBusqueda: React.FC<CampoBusquedaProps> = ({ label }) => {
     setInputValue(ubicacion.nombre);
     handleClose();
 
-    // 🔥 Actualiza el contexto solo cuando el usuario selecciona una opción
     if (label === "Ciudad de Salida") {
       setCiudadOrigen(ubicacion.nombre);
     } else if (label === "Ciudad de Destino") {
@@ -69,11 +81,10 @@ const CampoBusqueda: React.FC<CampoBusquedaProps> = ({ label }) => {
   };
 
   const handleBlur = () => {
-    // 🔥 Guarda en el contexto cuando el usuario deja de escribir
     if (label === "Ciudad de Salida") {
-      setCiudadOrigen(inputValue || ""); // 🔥 Evita valores undefined
+      setCiudadOrigen(inputValue || "");
     } else if (label === "Ciudad de Destino") {
-      setDestino(inputValue || ""); // 🔥 Evita valores undefined
+      setDestino(inputValue || "");
     }
   };
 
@@ -93,8 +104,8 @@ const CampoBusqueda: React.FC<CampoBusquedaProps> = ({ label }) => {
           placeholder={`Escriba una ${label.toLowerCase()}...`}
           variant="outlined"
           size="small"
-          onChange={(e) => setInputValue(e.target.value || "")} // 🔥 Evita valores undefined
-          onBlur={handleBlur} // 🔥 Guarda en el contexto al perder foco
+          onChange={(e) => setInputValue(e.target.value || "")}
+          onBlur={handleBlur}
           onClick={handleToggleMenu}
           sx={{
             backgroundColor: fondoColor,
@@ -102,9 +113,9 @@ const CampoBusqueda: React.FC<CampoBusquedaProps> = ({ label }) => {
             fontFamily: tipografia,
             "& .MuiOutlinedInput-root": {
               color: tipografiaColor,
-              "& fieldset": { borderColor: "transparent" }, // 🚨 Borde invisible por defecto
-              "&:hover fieldset": { borderColor: tipografiaColor }, // 🚨 Borde cuando pasa el mouse
-              "&.Mui-focused fieldset": { borderColor: "transparent" }, // 🔥 Quita el contorno azul en focus
+              "& fieldset": { borderColor: "transparent" },
+              "&:hover fieldset": { borderColor: tipografiaColor },
+              "&.Mui-focused fieldset": { borderColor: "transparent" },
             },
             "& .MuiInputBase-input::placeholder": {
               color: tipografiaColor,

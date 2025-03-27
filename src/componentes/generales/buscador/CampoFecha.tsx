@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Typography } from "@mui/material";
 import { DesktopDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import EventIcon from "@mui/icons-material/Event";
-import dayjs from "dayjs"; // Importamos dayjs directamente
+import dayjs from "dayjs";
 import { useBuscador, useDatosGenerales } from "../../../contextos/DatosAgenciaContext";
-import { useFormulario } from "../../../contextos/FormularioContext"; // Importamos el contexto del formulario
+import { useFormulario } from "../../../contextos/FormularioContext";
 
 interface CampoFechaProps {
   label: string;
@@ -15,31 +15,36 @@ interface CampoFechaProps {
 const CampoFecha: React.FC<CampoFechaProps> = ({ label }) => {
   const buscador = useBuscador();
   const datosGenerales = useDatosGenerales();
-  const { fechaSalida, setFechaSalida } = useFormulario(); // Usamos el contexto para la fecha
+  const { fechaSalida, setFechaSalida } = useFormulario();
+
+  useEffect(() => {
+    const valoresGuardados = localStorage.getItem("valoresPrevios");
+    if (valoresGuardados) {
+      const { fechaSalida: fechaGuardada } = JSON.parse(valoresGuardados);
+      if (fechaGuardada) {
+        const fecha = new Date(fechaGuardada);
+        setFechaSalida(fecha);
+      }
+    }
+  }, [setFechaSalida]);
 
   if (!datosGenerales) return null;
 
-  /** 🔥 Aplicamos fallbacks desde `Datos Generales` */
   const fondoColor = buscador?.color?.secundario || datosGenerales?.color?.secundario || "#F5F5F5";
   const tipografiaColor = buscador?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#000000";
-
-  /** 🔥 Aplicamos jerarquía correcta para la tipografía del label */
   const labelColor =
     buscador?.tipografiaColorLabel ||
     buscador?.tipografiaColor ||
     datosGenerales?.colorTipografiaAgencia ||
-    "#000000"; // Fallback a negro
+    "#000000";
 
-  // Convertimos la fecha del contexto (Date) a un objeto dayjs para el DatePicker
   const fechaDayjs = fechaSalida ? dayjs(fechaSalida) : null;
 
-  // Manejador de cambio de fecha
   const handleChangeFecha = (newValue: dayjs.Dayjs | null) => {
     if (newValue) {
-      const fechaDate = newValue.toDate(); // Convertimos dayjs a Date
-      setFechaSalida(fechaDate); // Guardamos la fecha como Date en el contexto
+      setFechaSalida(newValue.toDate());
     } else {
-      setFechaSalida(null); // Si no hay fecha, la limpiamos
+      setFechaSalida(null);
     }
   };
 
@@ -63,20 +68,16 @@ const CampoFecha: React.FC<CampoFechaProps> = ({ label }) => {
                 variant: "outlined",
                 size: "small",
                 sx: {
-                  backgroundColor: fondoColor, // 🔹 Color de fondo del input
+                  backgroundColor: fondoColor,
                   borderRadius: "25px",
-                  fontFamily: "Poppins, sans-serif", // 🔹 Tipografía
+                  fontFamily: "Poppins, sans-serif",
                   "& .MuiOutlinedInput-root": {
                     color: tipografiaColor,
-                    "& fieldset": {
-                      borderColor: "transparent", // 🔹 Sin borde visible
-                    },
-                    "&:hover fieldset": {
-                      borderColor: tipografiaColor, // 🔹 Borde visible al pasar el mouse
-                    },
+                    "& fieldset": { borderColor: "transparent" },
+                    "&:hover fieldset": { borderColor: tipografiaColor },
                   },
                   "& .MuiSvgIcon-root": {
-                    color: tipografiaColor, // 🔹 Color del icono del calendario
+                    color: tipografiaColor,
                   },
                 },
               },

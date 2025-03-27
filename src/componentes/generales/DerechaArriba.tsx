@@ -30,7 +30,7 @@ const DerechaArriba: FunctionComponent = () => {
         py: 2,
         display: "flex",
         justifyContent: "flex-end",
-        alignItems: "flex-start", // 🔝 Alineado arriba
+        alignItems: "flex-start",
       }}
     >
       <Stack
@@ -84,7 +84,7 @@ const DerechaArriba: FunctionComponent = () => {
                 sx={{
                   color: textoColor,
                   fontFamily: tipografia,
-                  mt: 2,
+                  mt: 4, // 🔥 Aumenta la separación con Contacto
                 }}
               >
                 Ubicación
@@ -96,9 +96,7 @@ const DerechaArriba: FunctionComponent = () => {
                   sx={{ color: textoColor, fontFamily: tipografia }}
                 >
                   {footer.ubicacion.direccion}
-                  {footer.ubicacion.ciudad
-                    ? `, ${footer.ubicacion.ciudad}`
-                    : ""}
+                  {footer.ubicacion.ciudad ? `, ${footer.ubicacion.ciudad}` : ""}
                   {footer.ubicacion.pais ? `, ${footer.ubicacion.pais}` : ""}
                 </Typography>
               </Stack>

@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, TextField, Typography } from "@mui/material";
 import PeopleIcon from "@mui/icons-material/People";
 import { useBuscador, useDatosGenerales } from "../../../contextos/DatosAgenciaContext";
-import { useFormulario } from "../../../contextos/FormularioContext"; // Importamos el contexto del formulario
+import { useFormulario } from "../../../contextos/FormularioContext";
 
 interface CampoPasajerosProps {
   label: string;
@@ -11,30 +11,34 @@ interface CampoPasajerosProps {
 const CampoPasajeros: React.FC<CampoPasajerosProps> = ({ label }) => {
   const buscador = useBuscador();
   const datosGenerales = useDatosGenerales();
-  const { viajeros, setViajeros } = useFormulario(); // Usamos el contexto para la cantidad de viajeros
+  const { viajeros, setViajeros } = useFormulario();
+
+  useEffect(() => {
+    const valoresGuardados = localStorage.getItem("valoresPrevios");
+    if (valoresGuardados) {
+      const { viajeros: viajerosGuardados } = JSON.parse(valoresGuardados);
+      if (viajerosGuardados !== undefined && viajerosGuardados !== null) {
+        setViajeros(viajerosGuardados);
+      }
+    }
+  }, [setViajeros]);
 
   if (!datosGenerales) return null;
 
-  /** 🔥 Aplicamos fallbacks desde `Datos Generales` */
   const fondoColor = buscador?.color?.secundario || datosGenerales?.color?.secundario || "#F5F5F5";
   const tipografiaColor = buscador?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#000000";
-
-  /** 🔥 Aplicamos jerarquía correcta para la tipografía del label */
   const labelColor =
     buscador?.tipografiaColorLabel ||
     buscador?.tipografiaColor ||
     datosGenerales?.colorTipografiaAgencia ||
-    "#000000"; // Fallback a negro
+    "#000000";
 
-  // Manejador de cambio de cantidad de viajeros
   const handleChangeCantidadViajeros = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-
-    // Si el valor es una cadena vacía, se establece como 0
     if (value === "") {
       setViajeros(0);
-    } else if (/^\d*$/.test(value)) { // Solo permite números
-      setViajeros(Number(value)); // Actualiza la cantidad de viajeros en el contexto
+    } else if (/^\d*$/.test(value)) {
+      setViajeros(Number(value));
     }
   };
 
@@ -48,28 +52,28 @@ const CampoPasajeros: React.FC<CampoPasajerosProps> = ({ label }) => {
       </Box>
       <TextField
         name="viajeros"
-        value={viajeros === 0 ? "" : viajeros} // Muestra cadena vacía si el valor es 0
+        value={viajeros === 0 ? "" : viajeros}
         onChange={handleChangeCantidadViajeros}
         fullWidth
         placeholder="Seleccionar"
         variant="outlined"
         size="small"
         sx={{
-          backgroundColor: fondoColor, // 🔹 Color de fondo del input
+          backgroundColor: fondoColor,
           borderRadius: "25px",
-          fontFamily: "Poppins, sans-serif", // 🔹 Tipografía
+          fontFamily: "Poppins, sans-serif",
           "& .MuiOutlinedInput-root": {
-            color: tipografiaColor, // 🔹 Color del texto dentro del input
+            color: tipografiaColor,
             "& fieldset": {
-              borderColor: "transparent", // 🔹 Sin borde visible
+              borderColor: "transparent",
             },
             "&:hover fieldset": {
-              borderColor: tipografiaColor, // 🔹 Borde visible al pasar el mouse
+              borderColor: tipografiaColor,
             },
           },
           "& .MuiInputBase-input::placeholder": {
             color: tipografiaColor,
-            opacity: 0.7, // 🔹 Mantiene el color de placeholder igual al original
+            opacity: 0.7,
           },
         }}
       />

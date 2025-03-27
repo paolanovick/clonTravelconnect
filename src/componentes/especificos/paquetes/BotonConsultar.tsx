@@ -1,18 +1,25 @@
 import { useState } from "react";
 import { Button, IconButton, Box } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import PopperOpciones from "./PopperOpciones";
 import ModalConsultar from "./ModalConsultar";
 import ModalReservar from "./ModalReservar";
+import { useTarjetas } from "../../../contextos/DatosAgenciaContext"; // Ajustá el path si es necesario
 
 interface BotonConsultarProps {
-  colorPrimario: string;
   tipografia?: string;
 }
 
-const BotonConsultar = ({ colorPrimario, tipografia = "Arial" }: BotonConsultarProps) => {
+const BotonConsultar = ({ tipografia = "Arial" }: BotonConsultarProps) => {
+  const tarjeta = useTarjetas();
+
+  const colorPrimario = tarjeta?.color?.primario || "#1976d2";
+  const colorSecundario = tarjeta?.color?.secundario || "#FBC02D"; // ✅ agregado color secundario
+  const colorFlechaHover = colorSecundario;
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [opcionSeleccionada, setOpcionSeleccionada] = useState<string>("Consultar"); 
+  const [opcionSeleccionada, setOpcionSeleccionada] = useState<string>("WhatsApp");
   const [openModalConsultar, setOpenModalConsultar] = useState(false);
   const [openModalReservar, setOpenModalReservar] = useState(false);
 
@@ -24,17 +31,21 @@ const BotonConsultar = ({ colorPrimario, tipografia = "Arial" }: BotonConsultarP
   };
 
   const handleClickBoton = () => {
-    if (opcionSeleccionada.toLowerCase() === "whatsapp") {
-      window.open("https://wa.me/123456789", "_blank");
-    } else if (opcionSeleccionada.toLowerCase() === "consultar") {
+    const opcion = opcionSeleccionada.toLowerCase();
+    if (opcion === "whatsapp") {
+      window.open("https://wa.me/5491155786993", "_blank");
+    } else if (opcion === "consultar") {
       setOpenModalConsultar(true);
-    } else if (opcionSeleccionada.toLowerCase() === "reservar") {
+    } else if (opcion === "reservar") {
       setOpenModalReservar(true);
     }
   };
 
-  const esWhatsApp = opcionSeleccionada.toLowerCase() === "whatsapp";
-  const botonColor = esWhatsApp ? "#25D366" : "#fff"; 
+  const tipo = opcionSeleccionada.toLowerCase();
+  const esWhatsApp = tipo === "whatsapp";
+  const esConsultarOReservar = tipo === "consultar" || tipo === "reservar";
+
+  const botonColor = esWhatsApp ? "#25D366" : "#fff";
   const textoColor = esWhatsApp ? "#fff" : colorPrimario;
 
   return (
@@ -54,13 +65,34 @@ const BotonConsultar = ({ colorPrimario, tipografia = "Arial" }: BotonConsultarP
           boxShadow: esWhatsApp ? "inset 0 0 0 3px white" : "none",
           transition: "all 0.3s ease-in-out",
           "&:hover": {
-            backgroundColor: esWhatsApp ? "#fff" : "#FBC02D",
-            color: esWhatsApp ? "#25D366" : "#fff",
+            backgroundColor: esWhatsApp
+              ? "#fff"
+              : esConsultarOReservar
+              ? colorSecundario
+              : "#FBC02D", // fallback
+            color: esWhatsApp
+              ? "#25D366"
+              : esConsultarOReservar
+              ? "#fff"
+              : "#fff",
             boxShadow: esWhatsApp ? "inset 0 0 0 3px #25D366" : "none",
           },
         }}
       >
-        {opcionSeleccionada}
+        {esWhatsApp ? (
+          <Box
+            component={WhatsAppIcon}
+            sx={{
+              color: "#fff",
+              transition: "color 0.3s ease-in-out",
+              [`button:hover &`]: {
+                color: "#25D366",
+              },
+            }}
+          />
+        ) : (
+          opcionSeleccionada
+        )}
       </Button>
 
       <IconButton
@@ -74,7 +106,12 @@ const BotonConsultar = ({ colorPrimario, tipografia = "Arial" }: BotonConsultarP
           color: "#fff",
           width: 32,
           height: 32,
-          "&:hover": { backgroundColor: "#FBC02D" },
+          transition: "all 0.3s ease-in-out",
+          "&:hover": {
+            backgroundColor: colorFlechaHover,
+            opacity: 1,
+            boxShadow: "0 0 4px rgba(0, 0, 0, 0.2)",
+          },
         }}
       >
         <KeyboardArrowDownIcon />
@@ -88,11 +125,19 @@ const BotonConsultar = ({ colorPrimario, tipografia = "Arial" }: BotonConsultarP
         tipografia={tipografia}
       />
 
-      {/* 🔹 Modal de Consultar */}
-      <ModalConsultar open={openModalConsultar} onClose={() => setOpenModalConsultar(false)} colorPrimario={colorPrimario} tipografia={tipografia} />
+      <ModalConsultar
+        open={openModalConsultar}
+        onClose={() => setOpenModalConsultar(false)}
+        colorPrimario={colorPrimario}
+        tipografia={tipografia}
+      />
 
-      {/* 🔹 Modal de Reservar */}
-      <ModalReservar open={openModalReservar} onClose={() => setOpenModalReservar(false)} colorPrimario={colorPrimario} tipografia={tipografia} />
+      <ModalReservar
+        open={openModalReservar}
+        onClose={() => setOpenModalReservar(false)}
+        colorPrimario={colorPrimario}
+        tipografia={tipografia}
+      />
     </Box>
   );
 };
