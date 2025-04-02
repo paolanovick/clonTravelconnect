@@ -1,86 +1,115 @@
 import { Button, Typography, Box } from "@mui/material";
 import { useState } from "react";
-import { useTarjetas } from "../../../contextos/DatosAgenciaContext";
-import { useDatosGenerales } from "../../../contextos/DatosAgenciaContext";
 import { ReactNode } from "react";
 
 interface FiltroItemProps {
   label: string;
   icon: ReactNode;
+  isSmallScreen: boolean;
+  colorPrimario: string;
+  colorTipografia: string;
+  tipografia: string;
 }
 
-const FiltroItem = ({ label, icon }: FiltroItemProps) => {
-  const [hover, setHover] = useState(false);
-  const tarjetas = useTarjetas();
-  const datosGenerales = useDatosGenerales();
+const FiltroItem = ({ 
+  label, 
+  icon, 
+  isSmallScreen, 
+  colorPrimario, 
+  colorTipografia,
+  tipografia
+}: FiltroItemProps) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [isSelected, setIsSelected] = useState(false);
 
-  // 🔹 Colores dinámicos con fallback
-  const colorFondo = tarjetas?.color?.primario || datosGenerales?.color?.primario || "#1976d2";
-  const colorTexto = tarjetas?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#fff";
-  const tipografia = tarjetas?.tipografiaColorContenido || datosGenerales?.tipografiaAgencia || "Arial";
+  // Comportamiento diferente para mobile/desktop
+  const shouldShowText = isSmallScreen ? true : (isHovered || isSelected);
+  const buttonWidth = isSmallScreen ? "240px" : (isHovered || isSelected ? "240px" : "40px");
+
+  // Estilos coherentes para selección en todos los dispositivos
+  const getBackgroundColor = () => {
+    if (isSelected) {
+      return colorPrimario; // Color primario cuando está seleccionado
+    }
+    return isSmallScreen ? "rgba(245, 245, 245, 0.9)" : "transparent";
+  };
+
+  const getColor = () => {
+    return isSelected ? colorTipografia : colorPrimario;
+  };
+
+  const handleClick = () => {
+    setIsSelected(!isSelected);
+  };
 
   return (
     <Button
-      fullWidth
-      variant="contained"
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      onClick={() => setHover(!hover)} // 🔥 Para móviles, expandir al hacer click/tap
+      variant={isSelected ? "contained" : "outlined"}
+      onMouseEnter={() => !isSmallScreen && setIsHovered(true)}
+      onMouseLeave={() => !isSmallScreen && setIsHovered(false)}
+      onClick={handleClick}
+      disableRipple={isSmallScreen}
       sx={{
-        backgroundColor: colorFondo,
-        color: colorTexto,
-        borderRadius: hover ? "50px" : "50%", // 🔥 Cambia entre circular y expandido
-        boxShadow: "0px 2px 5px rgba(0,0,0,0.3)",
+        backgroundColor: getBackgroundColor(),
+        color: getColor(),
+        borderColor: colorPrimario,
+        borderRadius: "20px",
+        padding: "8px 16px",
         textTransform: "none",
         fontFamily: tipografia,
         fontSize: "0.9rem",
         fontWeight: "bold",
         display: "flex",
         alignItems: "center",
-        justifyContent: hover ? "flex-start" : "center", // 🔥 Centrado cuando es círculo
-        gap: hover ? 1.5 : 0, // 🔥 Espacio entre icono y texto solo cuando está expandido
-        py: "8px",
-        px: hover ? "16px" : "10px", // 🔥 Padding reducido cuando es círculo
+        justifyContent: isSmallScreen ? "flex-start" : "center",
+        gap: shouldShowText ? 1.5 : 0,
         minHeight: 40,
-        width: hover ? "100%" : "40px", // 🔥 Se expande solo en hover
-        maxWidth: hover ? "95%" : "40px",
-        transition: "all 0.3s ease-in-out",
+        width: buttonWidth,
+        maxWidth: "240px",
+        transition: isSmallScreen 
+          ? "background-color 0.2s ease, transform 0.1s ease" 
+          : "all 0.3s ease",
         "&:hover": {
-          backgroundColor: `${colorFondo}CC`, // 🔥 Hover con opacidad
-          transform: "scale(1.02)",
+          backgroundColor: !isSelected 
+            ? (isSmallScreen ? "rgba(240, 240, 240, 0.9)" : `${colorPrimario}20`)
+            : colorPrimario,
         },
         "&:active": {
-          transform: "scale(0.98)",
+          transform: isSmallScreen ? "scale(0.98)" : "none",
+          backgroundColor: isSelected 
+            ? colorPrimario 
+            : isSmallScreen 
+              ? "rgba(235, 235, 235, 0.9)" 
+              : `${colorPrimario}30`,
         },
+        overflow: "hidden",
+        whiteSpace: "nowrap",
+        boxSizing: "border-box",
+        flexShrink: 0,
+        // Sombra sutil cuando está seleccionado en mobile/tablet
+        boxShadow: isSelected && isSmallScreen ? `0 2px 4px 0 ${colorPrimario}40` : 'none',
       }}
     >
-      {/* 🔥 Ícono centrado cuando es un círculo */}
-      <Box
-        sx={{
-          color: colorTexto,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          width: "24px",
-          height: "24px",
-        }}
-      >
+      <Box sx={{ 
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        minWidth: "24px",
+        flexShrink: 0,
+      }}>
         {icon}
       </Box>
-
-      {/* 🔥 Texto solo visible cuando está expandido */}
-      {hover && (
+      
+      {shouldShowText && (
         <Typography
           sx={{
-            color: colorTexto,
             fontFamily: tipografia,
             fontWeight: "bold",
-            textAlign: "left",
-            flexGrow: 1,
-            pr: 2,
-            whiteSpace: "nowrap",
             overflow: "hidden",
             textOverflow: "ellipsis",
+            color: "inherit",
+            flexShrink: 1,
+            minWidth: 0,
           }}
         >
           {label}

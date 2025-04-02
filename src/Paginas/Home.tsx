@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "@mui/material";
-import Header from "../componentes/generales/Header";
-import ContenedorBusqueda from "../componentes/generales/buscador/ContenedorBusqueda";
+
+
 import Footer from "../componentes/generales/Footer";
 
 
@@ -9,6 +9,8 @@ import PublicidadCliente from "../componentes/especificos/puclibidadCliente/Publ
 import DestacadosDelMes from "../componentes/especificos/destacadosMes/DestacadosDelMes";
 import BannerRegistro from "../componentes/generales/BannerRegistro";
 import ZocaloPoweredBy from "../componentes/generales/ZocaloPoweredBy"; // Ensure this path is correct
+import TopHeader from "../componentes/generales/HeaderTop";
+import Divisor from "../componentes/generales/divisor";
 
 const Home: React.FC = () => {
   return (
@@ -23,9 +25,11 @@ const Home: React.FC = () => {
         padding: 0,
       }}
     >
-      <Header />
-      <ContenedorBusqueda />
+      <TopHeader />
+      
       <Box sx={{ height: "100vh" }} />
+      <Divisor/>
+
       
       {/* Componentes comentados temporalmente */}
        <PublicidadCliente /> 

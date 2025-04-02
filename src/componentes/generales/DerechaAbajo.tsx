@@ -5,6 +5,8 @@ import { useFooter, useDatosGenerales } from "../../contextos/DatosAgenciaContex
 const menuItems = [
   { label: "Condiciones Generales", href: "#" },
   { label: "Botón de Arrepentimiento", href: "#" },
+  { label: "Contacto", href: "#" },
+  { label: "Sobre nosotros", href: "#" },
 ];
 
 const DerechaAbajo: FunctionComponent = () => {
@@ -19,8 +21,22 @@ const DerechaAbajo: FunctionComponent = () => {
     footer?.color?.secundario || datosGenerales?.color?.secundario;
 
   return (
-    <Box sx={{ backgroundColor: "transparent", p: 2 }}>
-      <Stack direction="row" spacing={3} justifyContent="flex-end">
+    <Box
+      sx={{
+        backgroundColor: "transparent",
+        py: { xs: 1, sm: 2 },
+        px: { xs: 1, sm: 2, md: 0 },
+        width: "100%",
+      }}
+    >
+      <Stack
+        direction={{ xs: "column", sm: "column", md: "row" }}
+        spacing={{ xs: 1, sm: 1.5, md: 2 }}
+        justifyContent={{ xs: "center", md: "flex-end" }}
+        alignItems={{ xs: "center", md: "center" }}
+        textAlign="center"
+        width="100%"
+      >
         {menuItems.map((item, index) => (
           <Button
             key={index}
@@ -28,9 +44,14 @@ const DerechaAbajo: FunctionComponent = () => {
             variant="text"
             sx={{
               color: textoColor,
-              fontSize: 14,
+              fontSize: { xs: "0.72rem", sm: "0.78rem", md: "0.82rem" },
               fontFamily: tipografia,
               textTransform: "none",
+              padding: "4px 8px",
+              minWidth: "auto",
+              maxWidth: { xs: "100%", md: "220px" },
+              width: { xs: "100%", md: "auto" },
+              whiteSpace: "nowrap",
               "&:hover": {
                 color: colorHover,
               },

@@ -10,8 +10,12 @@ const DestacadosDelMes: React.FC = () => {
 
   if (!datosGenerales) return null;
 
-  const tituloTipografia = tarjetas?.tipografia || datosGenerales?.tipografiaAgencia || "Arial";
-  const tituloTipografiaColor = tarjetas?.tipografiaColorTitulo || datosGenerales?.colorTipografiaAgencia || "#000000";
+  const tituloTipografia =
+    tarjetas?.tipografia || datosGenerales?.tipografiaAgencia || "Arial";
+  const tituloTipografiaColor =
+    tarjetas?.tipografiaColorTitulo ||
+    datosGenerales?.colorTipografiaAgencia ||
+    "#000000";
 
   return (
     <Box
@@ -20,10 +24,9 @@ const DestacadosDelMes: React.FC = () => {
         mt: 8,
         mb: 5,
         width: "100%",
-        overflow: "hidden",
+        px: 0, // ✅ Eliminamos el padding lateral que afectaba la alineación
       }}
     >
-      {/* ✅ Animamos la aparición con fade-in y un sutil desplazamiento */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -40,10 +43,15 @@ const DestacadosDelMes: React.FC = () => {
             letterSpacing: "2px",
             position: "relative",
             display: "inline-block",
+            fontSize: {
+              xs: "1.8rem",
+              sm: "2.4rem",
+              md: "3.2rem",
+              lg: "4rem",
+            },
           }}
         >
           Destacados del Mes
-          {/* ✅ Agregamos un brillo animado elegante */}
           <motion.span
             style={{
               position: "absolute",
@@ -51,7 +59,8 @@ const DestacadosDelMes: React.FC = () => {
               left: 0,
               width: "100%",
               height: "100%",
-              background: "linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.5) 50%, transparent 70%)",
+              background:
+                "linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.4) 50%, transparent 70%)",
               mixBlendMode: "overlay",
               pointerEvents: "none",
             }}

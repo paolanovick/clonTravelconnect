@@ -27,23 +27,28 @@ const DerechaArriba: FunctionComponent = () => {
     <Box
       sx={{
         backgroundColor: "transparent",
-        py: 2,
+        py: { xs: 2, md: 3 },
+        px: { xs: 0, md: 0 },
         display: "flex",
-        justifyContent: "flex-end",
-        alignItems: "flex-start",
+        justifyContent: { xs: "center", md: "flex-end" },
+        alignItems: "center",
+        width: "100%",
       }}
     >
       <Stack
         direction={{ xs: "column", md: "row" }}
-        spacing={{ xs: 3, md: 4 }}
-        alignItems="flex-start"
-        justifyContent="flex-end"
+        spacing={{ xs: 4, md: 6 }}
+        alignItems={{ xs: "center", md: "flex-start" }}
+        justifyContent={{ xs: "center", md: "flex-end" }}
+        textAlign={{ xs: "center", md: "right" }}
+        width="100%"
+        maxWidth="1200px"
       >
         {/* Información de contacto */}
         <Stack
           spacing={1.5}
-          alignItems="flex-end"
-          textAlign="right"
+          alignItems={{ xs: "center", md: "flex-end" }}
+          textAlign={{ xs: "center", md: "right" }}
           sx={{ flex: 1 }}
         >
           <Typography
@@ -54,7 +59,7 @@ const DerechaArriba: FunctionComponent = () => {
           </Typography>
 
           {footer?.contacto.telefono && (
-            <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-end">
+            <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
               <PhoneIcon sx={{ color: textoColor }} />
               <Typography
                 variant="body2"
@@ -66,7 +71,7 @@ const DerechaArriba: FunctionComponent = () => {
           )}
 
           {footer?.contacto.email && (
-            <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-end">
+            <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
               <EmailIcon sx={{ color: textoColor }} />
               <Typography
                 variant="body2"
@@ -84,12 +89,12 @@ const DerechaArriba: FunctionComponent = () => {
                 sx={{
                   color: textoColor,
                   fontFamily: tipografia,
-                  mt: 4, // 🔥 Aumenta la separación con Contacto
+                  mt: 4,
                 }}
               >
                 Ubicación
               </Typography>
-              <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-end">
+              <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
                 <LocationOnIcon sx={{ color: textoColor }} />
                 <Typography
                   variant="body2"
@@ -104,8 +109,14 @@ const DerechaArriba: FunctionComponent = () => {
           )}
         </Stack>
 
-        {/* Redes sociales a la derecha */}
-        <Stack spacing={1} alignItems="flex-end">
+        {/* Redes sociales */}
+        <Stack
+          direction={{ xs: "row", md: "column" }}
+          spacing={1}
+          justifyContent="center"
+          alignItems="center"
+          flexWrap="wrap"
+        >
           {redes.map(({ icon, link, label }, index) => (
             <IconButton
               key={index}

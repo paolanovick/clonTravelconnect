@@ -23,7 +23,12 @@ const ContenedorBusqueda: React.FC = () => {
         top: "62.5vh",
         left: "50%",
         transform: "translate(-50%, 0)",
-        width: { xs: "90vw", md: "60vw" },
+        width: {
+          xs: "100vw", // Mobile
+          sm: "100vw", // Small tablets
+          md: "100vw", // iPads
+          lg: "60vw",  // Desktop
+        },
         backgroundColor: fondoColor,
         borderRadius: "35px",
         boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.15)",

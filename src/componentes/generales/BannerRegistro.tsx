@@ -1,17 +1,32 @@
 import React from "react";
-import { Box, Typography, TextField, Button, InputAdornment, Container, Grid } from "@mui/material";
+import {
+  Box,
+  Typography,
+  TextField,
+  Button,
+  InputAdornment,
+  Container,
+  Grid,
+} from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
-import { useBannerRegistro, useDatosGenerales } from "../../contextos/DatosAgenciaContext";
+import {
+  useBannerRegistro,
+  useDatosGenerales,
+} from "../../contextos/DatosAgenciaContext";
 
 const BannerRegistro: React.FC = () => {
   const bannerRegistro = useBannerRegistro();
   const datosGenerales = useDatosGenerales();
 
-
-  /** 🔥 Aplicamos fallbacks desde `Datos Generales` */
-  const fondoColor = bannerRegistro?.color?.primario|| datosGenerales?.color?.primario || "#FF5733";
+  const fondoColor =
+    bannerRegistro?.color?.primario ||
+    datosGenerales?.color?.primario ||
+    "#FF5733";
   const tipografia = datosGenerales?.tipografiaAgencia || "Arial";
-  const tipografiaColor = bannerRegistro?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#FFFFFF";
+  const tipografiaColor =
+    bannerRegistro?.tipografiaColor ||
+    datosGenerales?.colorTipografiaAgencia ||
+    "#FFFFFF";
   const colorSecundario = bannerRegistro?.color?.secundario || "#C70039";
 
   return (
@@ -19,87 +34,121 @@ const BannerRegistro: React.FC = () => {
       sx={{
         width: "100vw",
         backgroundColor: fondoColor,
-        padding: { xs: "50px 20px", md: "70px 0" },
+        py: { xs: 5, sm: 6, md: 8 },
+        px: 0, // ✅ quitamos el padding externo para permitir centrado real
         display: "flex",
         justifyContent: "center",
       }}
     >
-      <Container maxWidth="lg">
-        <Grid container alignItems="center" spacing={5}>
-          {/* 🔥 Texto alineado a la izquierda */}
+      <Container
+        maxWidth="lg"
+        disableGutters
+        sx={{
+          px: { xs: 2, sm: 4 }, // ✅ aplicamos padding interno dentro del container
+        }}
+      >
+        <Grid
+          container
+          spacing={{ xs: 4, sm: 5 }}
+          alignItems="center"
+          justifyContent={{ xs: "center", md: "center", lg: "space-between" }}
+          textAlign={{ xs: "center", md: "center", lg: "left" }}
+        >
+          {/* 🔥 Título */}
           <Grid item xs={12} md={6}>
-            {bannerRegistro?.titulo && (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: { xs: "center", md: "center", lg: "flex-start" },
+              }}
+            >
               <Typography
                 variant="h4"
                 sx={{
                   fontWeight: "bold",
                   color: tipografiaColor,
-                  textAlign: { xs: "center", md: "left" },
-                  maxWidth: "450px",
                   fontFamily: tipografia,
+                  fontSize: {
+                    xs: "1.6rem",
+                    sm: "2rem",
+                    md: "2.2rem",
+                    lg: "2.5rem",
+                  },
+                  lineHeight: 1.3,
+                  maxWidth: "600px",
                 }}
               >
-                {bannerRegistro?.titulo||"Resgistrate por Ofertas Exclusivas"}
+                {bannerRegistro?.titulo ||
+                  "Registrate por Ofertas Exclusivas"}
               </Typography>
-            )}
+            </Box>
           </Grid>
 
-          {/* 🔥 Input y botón alineados a la derecha */}
-          <Grid item xs={12} md={6} display="flex" justifyContent={{ xs: "center", md: "flex-end" }}>
+          {/* 🔥 Input + Botón */}
+          <Grid item xs={12} md={6}>
             <Box
               sx={{
                 display: "flex",
-                flexDirection: { xs: "column", md: "row" },
+                flexDirection: { xs: "column", sm: "row" },
                 alignItems: "center",
-                gap: "12px",
-                width: { xs: "100%", md: "auto" },
+                justifyContent: {
+                  xs: "center",
+                  md: "center",
+                  lg: "flex-end",
+                },
+                gap: { xs: 2, sm: 2.5 },
+                width: "100%",
+                maxWidth: "100%",
               }}
             >
-              {/* 🔥 Input de Email */}
-              <TextField
-                placeholder="Ingrese su email aquí"
-                variant="outlined"
-                size="small"
-                sx={{
-                  backgroundColor: "white",
-                  borderRadius: "25px",
-                  width: { xs: "100%", md: "280px" },
-                  "& .MuiOutlinedInput-root": {
+              <Box sx={{ width: { xs: "100%", sm: "auto" } }}>
+                <TextField
+                  fullWidth
+                  placeholder="Ingrese su email aquí"
+                  variant="outlined"
+                  size="small"
+                  sx={{
+                    backgroundColor: "white",
                     borderRadius: "25px",
-                    color: "#333",
-                  },
-                  "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "transparent",
-                  },
-                  "&:hover .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "#ccc",
-                  },
-                  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                    borderColor: colorSecundario,
-                  },
-                }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <EmailIcon sx={{ color: "#666" }} />
-                    </InputAdornment>
-                  ),
-                }}
-              />
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: "25px",
+                      color: "#333",
+                    },
+                    "& .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "transparent",
+                    },
+                    "&:hover .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "#ccc",
+                    },
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                      borderColor: colorSecundario,
+                    },
+                  }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <EmailIcon sx={{ color: "#666" }} />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Box>
 
-              {/* 🔥 Botón de Registro */}
               <Button
                 variant="outlined"
                 sx={{
+                  width: { xs: "100%", sm: "auto" },
+                  whiteSpace: "nowrap",
                   borderRadius: "50px",
-                  padding: "12px 32px",
+                  padding: "12px 28px",
                   fontSize: "16px",
                   fontWeight: "bold",
                   textTransform: "none",
                   border: `3px solid ${tipografiaColor}`,
                   color: tipografiaColor,
                   backgroundColor: "transparent",
-                  transition: "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
+                  transition:
+                    "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
                   "&:hover": {
                     backgroundColor: tipografiaColor,
                     color: fondoColor,

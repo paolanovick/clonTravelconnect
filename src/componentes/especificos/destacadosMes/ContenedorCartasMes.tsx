@@ -1,9 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Box, Button, CircularProgress, Typography } from "@mui/material";
+import {
+  Grid,
+  Box,
+  Button,
+  CircularProgress,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import CartaMes from "./CartaMes";
-import { useDatosGenerales, useTarjetas } from "../../../contextos/DatosAgenciaContext";
+import {
+  useDatosGenerales,
+  useTarjetas,
+} from "../../../contextos/DatosAgenciaContext";
 import { obtenerPaquetesDestacados } from "../../../servicios/especificos/servicioCartasDestacadoMes";
 import { PaqueteDestacado } from "../../../interfaces/PaqueteDestacado";
 
@@ -12,7 +23,10 @@ const ContenedorCartasMes: React.FC = () => {
   const datosGenerales = useDatosGenerales();
   const [paquetes, setPaquetes] = useState<PaqueteDestacado[]>([]);
   const [cargando, setCargando] = useState<boolean>(true);
-  const [cantidadVisible, setCantidadVisible] = useState<number>(window.innerWidth < 768 ? 4 : 8); // 🔥 Mejor visibilidad en móviles
+  const [cantidadVisible, setCantidadVisible] = useState<number>(8);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   useEffect(() => {
     const cargarDatos = async () => {
@@ -21,25 +35,45 @@ const ContenedorCartasMes: React.FC = () => {
         setPaquetes(datos);
       } catch (error) {
         console.error("Error al cargar paquetes destacados:", error);
-        setPaquetes([]); // 🔥 Evita estados inválidos
+        setPaquetes([]);
       } finally {
         setCargando(false);
       }
     };
+
     cargarDatos();
   }, []);
 
+  useEffect(() => {
+    setCantidadVisible(isMobile ? 4 : 8);
+  }, [isMobile]);
+
   const cargarMas = () => setCantidadVisible((prev) => prev + 8);
-  const reducir = () => setCantidadVisible(window.innerWidth < 768 ? 4 : 8);
+  const reducir = () => setCantidadVisible(isMobile ? 4 : 8);
 
-  if (!datosGenerales) return <Typography sx={{ textAlign: "center", mt: 4 }}>Cargando estilos...</Typography>;
+  if (!datosGenerales)
+    return (
+      <Typography sx={{ textAlign: "center", mt: 4 }}>
+        Cargando estilos...
+      </Typography>
+    );
 
-  /** 🔥 Aplicamos fallbacks correctos desde `tarjetas` y `datosGenerales` */
-  const tarjetaTipografia = tarjetas?.tipografia || datosGenerales?.tipografiaAgencia || "Arial";
-  const tarjetaTipografiaColor = tarjetas?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#FFFFFF";
-  const tarjetaColorPrimario = tarjetas?.color?.primario || datosGenerales?.color?.primario || "#FF5733";
-  const tarjetaColorSecundario = tarjetas?.color?.secundario || datosGenerales?.color?.secundario || "#C70039";
-  const tarjetaColorTerciario = tarjetas?.color?.terciario || datosGenerales?.color?.terciario || "#900C3F";
+  const tarjetaTipografia =
+    tarjetas?.tipografia || datosGenerales?.tipografiaAgencia || "Arial";
+  const tarjetaTipografiaColor =
+    tarjetas?.tipografiaColor ||
+    datosGenerales?.colorTipografiaAgencia ||
+    "#FFFFFF";
+  const tarjetaColorPrimario =
+    tarjetas?.color?.primario || datosGenerales?.color?.primario || "#FF5733";
+  const tarjetaColorSecundario =
+    tarjetas?.color?.secundario ||
+    datosGenerales?.color?.secundario ||
+    "#C70039";
+  const tarjetaColorTerciario =
+    tarjetas?.color?.terciario ||
+    datosGenerales?.color?.terciario ||
+    "#900C3F";
 
   return (
     <Box
@@ -52,7 +86,7 @@ const ContenedorCartasMes: React.FC = () => {
         maxWidth: { xs: "95%", sm: "90%", md: "85%", lg: "1600px" },
         margin: "0 auto",
         overflow: "hidden",
-        backgroundColor: "transparent", // ✅ Fondo transparente
+        backgroundColor: "transparent",
       }}
     >
       {cargando ? (
@@ -118,15 +152,24 @@ const ContenedorCartasMes: React.FC = () => {
                 gap: 1,
               }}
             >
-              <Typography variant="button" sx={{ color: tarjetaTipografiaColor }}>
+              <Typography
+                variant="button"
+                sx={{ color: tarjetaTipografiaColor }}
+              >
                 {cantidadVisible < paquetes.length ? "Ver más" : "Ver menos"}
               </Typography>
-              {cantidadVisible < paquetes.length ? <ExpandMoreIcon /> : <ExpandLessIcon />}
+              {cantidadVisible < paquetes.length ? (
+                <ExpandMoreIcon />
+              ) : (
+                <ExpandLessIcon />
+              )}
             </Button>
           )}
         </>
       ) : (
-        <Typography sx={{ textAlign: "center", mt: 4 }}>No hay paquetes disponibles.</Typography>
+        <Typography sx={{ textAlign: "center", mt: 4 }}>
+          No hay paquetes disponibles.
+        </Typography>
       )}
     </Box>
   );

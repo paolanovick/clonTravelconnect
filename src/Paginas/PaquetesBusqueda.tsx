@@ -1,18 +1,18 @@
 import { useState, useEffect } from "react";
 import { Box, Container, Grid, Fab, Zoom } from "@mui/material";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import Header from "../componentes/generales/Header";
-import ContenedorBusqueda from "../componentes/generales/buscador/ContenedorBusqueda";
 import Footer from "../componentes/generales/Footer";
 import ListadoPaquetes from "../componentes/especificos/paquetes/ListadoPaquetes";
 import PanelFiltros from "../componentes/especificos/filtro/PanelFiltros";
 import BannerRegistro from "../componentes/generales/BannerRegistro";
 import { useBuscador } from "../contextos/DatosAgenciaContext";
 import ZocaloPoweredBy from "../componentes/generales/ZocaloPoweredBy";
+import HeaderTop from "../componentes/generales/HeaderTop";
+import Divisor from "../componentes/generales/divisor";
 
 const PaquetesBusqueda = () => {
   const [mostrarBotonArriba, setMostrarBotonArriba] = useState(false);
-  const buscador = useBuscador(); // ✅ Ahora está dentro del componente
+  const buscador = useBuscador();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,24 +32,24 @@ const PaquetesBusqueda = () => {
         overflowX: "hidden",
       }}
     >
-      {/* 🔹 Header */}
-      <Header />
-
-      {/* 🔹 Contenedor de Búsqueda */}
-      <ContenedorBusqueda />
-
-      {/* 🔹 Espaciador para evitar superposición */}
+      <HeaderTop/>
+      <Divisor/>
       <Box sx={{ height: "100vh" }} />
 
-      {/* 🔹 Contenedor para PanelFiltros y ListadoPaquetes */}
+      {/* Contenedor principal con padding entre componentes */}
       <Container maxWidth="xl" sx={{ flexGrow: 1, mt: 3 }}>
-        <Grid container spacing={3} alignItems="flex-start">
-          {/* 🔹 Panel de Filtros */}
+        <Grid container spacing={4}> {/* Aumenté el spacing a 4 para más padding entre columnas */}
+          {/* Panel de Filtros con padding derecho */}
           <Grid item xs={12} sm={12} md={4} lg={3}>
-            <PanelFiltros />
+            <Box sx={{ 
+              paddingRight: { md: 3, lg: 4 }, // Padding derecho responsivo
+              height: "100%"
+            }}>
+              <PanelFiltros />
+            </Box>
           </Grid>
 
-          {/* 🔹 Listado de Paquetes (Ahora alineado correctamente) */}
+          {/* Listado de Paquetes con padding izquierdo */}
           <Grid item xs={12} sm={12} md={8} lg={9}>
             <Box
               sx={{
@@ -57,7 +57,7 @@ const PaquetesBusqueda = () => {
                 minHeight: "calc(100vh - 150px)",
                 display: "flex",
                 flexDirection: "column",
-                paddingLeft: { lg: 2 }, // 🔹 Ajuste para mantener espacio sin desalinear
+                paddingLeft: { md: 3, lg: 4 }, // Padding izquierdo responsivo
               }}
             >
               <ListadoPaquetes />
@@ -66,13 +66,9 @@ const PaquetesBusqueda = () => {
         </Grid>
       </Container>
 
-      {/* 🔹 Más espacio antes de BannerRegistro */}
       <Box sx={{ height: "80px" }} />
-
-      {/* 🔹 Banner de Registro */}
       <BannerRegistro />
 
-      {/* 🔹 Botón flotante "Volver Arriba" con color dinámico */}
       <Zoom in={mostrarBotonArriba}>
         <Fab
           size="small"
@@ -81,7 +77,7 @@ const PaquetesBusqueda = () => {
             bottom: 20,
             right: 20,
             zIndex: 1000,
-            backgroundColor: buscador?.color.primario || "primary.main", // ✅ Usa el color dinámico del buscador
+            backgroundColor: buscador?.color.primario || "primary.main",
             color: "#fff",
             "&:hover": {
               backgroundColor: buscador?.color.primario ? `${buscador.color.primario}CC` : "primary.dark",
@@ -93,7 +89,6 @@ const PaquetesBusqueda = () => {
         </Fab>
       </Zoom>
 
-      {/* 🔹 Footer */}
       <Footer />
       <ZocaloPoweredBy/>
     </Box>

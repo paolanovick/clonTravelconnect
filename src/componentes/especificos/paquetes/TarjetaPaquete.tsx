@@ -1,67 +1,20 @@
 import React, { useState } from "react";
-import { Card, Box } from "@mui/material";
+import { Card, Box, Grid, useMediaQuery, useTheme } from "@mui/material";
 import ImagenPaquete from "./ImagenPaquete";
 import InfoPaquete from "./InfoPaquete";
 import TarifaPaquete from "./TarifaPaquete";
 import TabsPaquete from "./TabsPaquete";
 import ExpansionContainer from "./ExpansionContainer";
 import { useTarjetas, useDatosGenerales } from "../../../contextos/DatosAgenciaContext";
-
 import HotelesContent from "./HotelesContent";
 import DescripcionContent from "./DescripcionContent";
 import SalidasContent from "./SalidasContent";
 import TransporteContent from "./TransporteContent";
-
-interface HotelData {
-  nombre: string;
-  id_hotel: string;
-  categoria_hotel: string;
-}
-
-interface TarjetaPaqueteProps {
-  paquete: {
-    id: string;
-    titulo: string;
-    imagen: string;
-    fechaSalida: string;
-    duracion: string;
-    regimen: string;
-    destinos: string;
-    tarifa: number | null | undefined;
-    impuestos: number | null | undefined;
-    total: number | null | undefined;
-
-    hoteles?: Array<{ hotel: HotelData }>;
-    descripcion?: string | null;
-    salidas?: Array<{
-      id: number;
-      paquete_id: number;
-      fecha_desde: string | null;
-      fecha_hasta: string | null;
-      fecha_viaje?: string;
-      single_precio?: number;
-      single_impuesto?: number;
-      single_otro?: number;
-      single_otro2?: number;
-      doble_precio?: number;
-      doble_impuesto?: number;
-      doble_otro?: number;
-      doble_otro2?: number;
-      triple_precio?: number;
-      triple_impuesto?: number;
-      triple_otro?: number;
-      triple_otro2?: number;
-      cuadruple_precio?: number;
-      cuadruple_impuesto?: number;
-      cuadruple_otro?: number;
-      cuadruple_otro2?: number;
-    }>;
-    transporte?: string;
-  };
-  cargando?: boolean;
-}
+import { TarjetaPaqueteProps } from "./tarjetasInterfaces";
 
 const TarjetaPaquete: React.FC<TarjetaPaqueteProps> = ({ paquete, cargando = false }) => {
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up("lg"));
   const tarjetas = useTarjetas();
   const datosGenerales = useDatosGenerales();
   const colorFondo = tarjetas?.color?.secundario || datosGenerales?.color?.secundario || "#f5f5f5";
@@ -111,7 +64,6 @@ const TarjetaPaquete: React.FC<TarjetaPaqueteProps> = ({ paquete, cargando = fal
         position: "relative",
       }}
     >
-      {/* Tabs en la parte superior */}
       <Box
         sx={{
           width: "100%",
@@ -119,77 +71,146 @@ const TarjetaPaquete: React.FC<TarjetaPaqueteProps> = ({ paquete, cargando = fal
           justifyContent: "center",
           alignItems: "center",
           borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+          order: !isDesktop ? 1 : undefined,
         }}
       >
         <TabsPaquete onTabChange={handleTabChange} />
       </Box>
 
-      {/* Contenido principal */}
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          width: "100%",
-          flexGrow: 1,
-          height: "auto",
-        }}
-      >
-        {/* Imagen */}
-        <Box sx={{ flex: 1.5, display: "flex", height: "100%" }}>
-          <ImagenPaquete
-            imagen={paquete.imagen || "/imagenes/default-image.jpg"}
-            cargando={cargando}
-          />
-        </Box>
-
-        {/* Info general */}
+      {isDesktop ? (
         <Box
           sx={{
-            flex: 1.5,
             display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            height: "100%",
-            px: 2,
+            flexDirection: "row",
+            width: "100%",
+            flexGrow: 1,
+            height: "auto",
           }}
         >
-          <InfoPaquete
-            titulo={paquete.titulo || "Título no disponible"}
-            fechaSalida={paquete.fechaSalida || "Fecha no disponible"}
-            duracion={paquete.duracion || "Duración no disponible"}
-            regimen={paquete.regimen || "Según Itinerario"}
-            destinos={paquete.destinos || "Destino no disponible"}
-            cargando={cargando}
-          />
-        </Box>
+          <Box sx={{ flex: 1.5, display: "flex", height: "100%" }}>
+            <ImagenPaquete
+              imagen={paquete.imagen || "/imagenes/default-image.jpg"}
+              cargando={cargando}
+            />
+          </Box>
 
-        {/* Precio */}
-        <Box
-          sx={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            height: "100%",
-            px: 2,
-            minWidth: "250px",
-            flexShrink: 1,
-          }}
-        >
-          <TarifaPaquete
-            tarifa={paquete.tarifa ?? null}
-            impuestos={paquete.impuestos ?? null}
-            total={paquete.total ?? null}
-            cargando={cargando}
-          />
+          <Box
+            sx={{
+              flex: 1.5,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              height: "100%",
+              px: 2,
+            }}
+          >
+            <InfoPaquete
+              titulo={paquete.titulo || "Título no disponible"}
+              fechaSalida={paquete.fechaSalida || "Fecha no disponible"}
+              duracion={paquete.duracion || "Duración no disponible"}
+              regimen={paquete.regimen || "Según Itinerario"}
+              destinos={paquete.destinos || "Destino no disponible"}
+              cargando={cargando}
+            />
+          </Box>
+
+          <Box
+            sx={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "100%",
+              px: 2,
+              minWidth: "250px",
+              flexShrink: 1,
+            }}
+          >
+            <TarifaPaquete
+              tarifa={paquete.tarifa ?? null}
+              impuestos={paquete.impuestos ?? null}
+              total={paquete.total ?? null}
+              cargando={cargando}
+            />
+          </Box>
         </Box>
+      ) : (
+        <>
+          <Grid
+            container
+            sx={{
+              order: 2,
+              width: "100%",
+              flexGrow: 1,
+            }}
+          >
+            <Grid
+              item
+              xs={12}
+              order={2}
+              sx={{
+                height: "300px",
+                display: "flex",
+              }}
+            >
+              <ImagenPaquete
+                imagen={paquete.imagen || "/imagenes/default-image.jpg"}
+                cargando={cargando}
+              />
+            </Grid>
+
+            <Grid
+              item
+              xs={12}
+              order={3}
+              sx={{
+                px: 2,
+                py: 2,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+            >
+              <InfoPaquete
+                titulo={paquete.titulo || "Título no disponible"}
+                fechaSalida={paquete.fechaSalida || "Fecha no disponible"}
+                duracion={paquete.duracion || "Duración no disponible"}
+                regimen={paquete.regimen || "Según Itinerario"}
+                destinos={paquete.destinos || "Destino no disponible"}
+                cargando={cargando}
+              />
+            </Grid>
+
+            <Grid
+              item
+              xs={12}
+              order={4}
+              sx={{
+                px: 2,
+                py: 2,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <TarifaPaquete
+                tarifa={paquete.tarifa ?? null}
+                impuestos={paquete.impuestos ?? null}
+                total={paquete.total ?? null}
+                cargando={cargando}
+              />
+            </Grid>
+          </Grid>
+        </>
+      )}
+
+      <Box sx={{ order: !isDesktop ? 5 : undefined }}>
+        <ExpansionContainer open={expansionOpen}>
+          {renderExpansionContent()}
+        </ExpansionContainer>
       </Box>
-
-      {/* Expansión al hacer clic en tab */}
-      <ExpansionContainer open={expansionOpen}>
-        {renderExpansionContent()}
-      </ExpansionContainer>
     </Card>
   );
 };
