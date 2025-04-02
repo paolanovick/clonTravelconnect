@@ -8,7 +8,7 @@ import BannerRegistro from "../componentes/generales/BannerRegistro";
 import { useBuscador } from "../contextos/DatosAgenciaContext";
 import ZocaloPoweredBy from "../componentes/generales/ZocaloPoweredBy";
 import HeaderTop from "../componentes/generales/HeaderTop";
-import Divisor from "../componentes/generales/divisor";
+import Divisor from "../componentes/generales/Divisor";
 
 const PaquetesBusqueda = () => {
   const [mostrarBotonArriba, setMostrarBotonArriba] = useState(false);

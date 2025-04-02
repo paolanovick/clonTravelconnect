@@ -203,7 +203,7 @@ const ModalReservar = ({ open, onClose, colorPrimario, tipografia }: ModalReserv
                 "&:hover": { backgroundColor: "#0056b3" } 
               }}
               onClick={() => {
-                console.log("Pasajeros:", pasajeros);s
+                console.log("Pasajeros:", pasajeros);
                 onClose();
               }}
             >

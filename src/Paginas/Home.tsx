@@ -10,7 +10,7 @@ import DestacadosDelMes from "../componentes/especificos/destacadosMes/Destacado
 import BannerRegistro from "../componentes/generales/BannerRegistro";
 import ZocaloPoweredBy from "../componentes/generales/ZocaloPoweredBy"; // Ensure this path is correct
 import TopHeader from "../componentes/generales/HeaderTop";
-import Divisor from "../componentes/generales/divisor";
+import Divisor from "../componentes/generales/Divisor";
 
 const Home: React.FC = () => {
   return (
