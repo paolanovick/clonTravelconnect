@@ -11,6 +11,7 @@ import BannerRegistro from "../componentes/generales/BannerRegistro";
 import ZocaloPoweredBy from "../componentes/generales/ZocaloPoweredBy"; // Ensure this path is correct
 import TopHeader from "../componentes/generales/HeaderTop";
 import Divisor from "../componentes/generales/Divisor";
+import SeccionQuienesSomos from "../componentes/especificos/SeccionQuienesSomos/SeccionQuienesSomos";
 
 const Home: React.FC = () => {
   return (
@@ -34,11 +35,13 @@ const Home: React.FC = () => {
       {/* Componentes comentados temporalmente */}
        <PublicidadCliente /> 
       <DestacadosDelMes /> 
+      <SeccionQuienesSomos/>
        <BannerRegistro /> 
 
       
       <Footer /> {/* ✅ Faltaba Footer, lo agregué aquí */}
       <ZocaloPoweredBy />
+      
     </Box>
   );
 };

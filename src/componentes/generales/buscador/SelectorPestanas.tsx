@@ -83,7 +83,7 @@ const SelectorPestanas: React.FC = () => {
     { valor: "vuelos", label: "Vuelos" },
     { valor: "hoteles", label: "Hoteles" },
     { valor: "autos", label: "Autos" },
-    { valor: "cruceros", label: "Cruceros" },
+    { valor: "circuitos", label: "Circuitos" },
   ];
 
   const getBorderRadius = (index: number) => {

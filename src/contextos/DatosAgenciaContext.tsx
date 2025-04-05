@@ -71,3 +71,4 @@ export const usePublicidadCliente = () => useDatosAgencia().datosAgencia?.public
 export const useTarjetas = () => useDatosAgencia().datosAgencia?.tarjetas ?? null;
 export const useBannerRegistro = () => useDatosAgencia().datosAgencia?.bannerRegistro ?? null;
 export const useFooter = () => useDatosAgencia().datosAgencia?.footer ?? null;
+export const useQuienesSomos = () => useDatosAgencia().datosAgencia?.quienesSomos ?? null;

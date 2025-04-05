@@ -72,6 +72,12 @@ export interface DatosAgencia {
     };
   };
 
+  quienesSomos: {
+    quienes_somos_es: string | null;
+    quienes_somos_en: string | null;
+    quienes_somos_pt: string | null;
+  }
+
   /** 🔥 Footer */
   footer: {
     texto: string | null;

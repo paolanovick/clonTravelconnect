@@ -4,6 +4,7 @@ import { Box, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import { useTarjetas, useDatosGenerales } from "../../../contextos/DatosAgenciaContext";
 
+
 const DestacadosDelMes: React.FC = () => {
   const tarjetas = useTarjetas();
   const datosGenerales = useDatosGenerales();
@@ -71,6 +72,7 @@ const DestacadosDelMes: React.FC = () => {
       </motion.div>
 
       <ContenedorCartasMes />
+      
     </Box>
   );
 };

@@ -5,8 +5,7 @@ import { useFooter, useDatosGenerales } from "../../contextos/DatosAgenciaContex
 const menuItems = [
   { label: "Condiciones Generales", href: "#" },
   { label: "Botón de Arrepentimiento", href: "#" },
-  { label: "Contacto", href: "#" },
-  { label: "Sobre nosotros", href: "#" },
+ 
 ];
 
 const DerechaAbajo: FunctionComponent = () => {
