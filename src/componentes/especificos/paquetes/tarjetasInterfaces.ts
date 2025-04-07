@@ -43,9 +43,11 @@ export interface HotelData {
     descripcion?: string | null;
     salidas?: SalidaData[];
     transporte?: string;
+    usuario?: string;
   }
   
   export interface TarjetaPaqueteProps {
     paquete: PaqueteData;
     cargando?: boolean;
+    
   }

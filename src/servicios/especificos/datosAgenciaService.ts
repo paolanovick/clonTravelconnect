@@ -3,7 +3,7 @@ import { transformarAgenciaBackData, AgenciaBackData } from "./transformarAgenci
 import { fetchDatosAgenciaMock } from "./fetchDatosAgenciaMock";
 import { fetchDatosAgenciaReal } from "./fetchDatosAgenciaReal";
 
-const usarMock = false;
+const usarMock = true;
 
 export const fetchDatosAgencia = async (): Promise<DatosAgencia> => {
   const datosBack: AgenciaBackData = usarMock

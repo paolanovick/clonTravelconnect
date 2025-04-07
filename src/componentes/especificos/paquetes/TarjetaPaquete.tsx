@@ -10,7 +10,7 @@ import HotelesContent from "./HotelesContent";
 import DescripcionContent from "./DescripcionContent";
 import SalidasContent from "./SalidasContent";
 import TransporteContent from "./TransporteContent";
-import { TarjetaPaqueteProps } from "./tarjetasInterfaces";
+import { TarjetaPaqueteProps} from "./tarjetasInterfaces";
 
 const TarjetaPaquete: React.FC<TarjetaPaqueteProps> = ({ paquete, cargando = false }) => {
   const theme = useTheme();
@@ -131,6 +131,7 @@ const TarjetaPaquete: React.FC<TarjetaPaqueteProps> = ({ paquete, cargando = fal
               tarifa={paquete.tarifa ?? null}
               impuestos={paquete.impuestos ?? null}
               total={paquete.total ?? null}
+              wp={paquete ?? null}
               cargando={cargando}
             />
           </Box>
@@ -199,6 +200,7 @@ const TarjetaPaquete: React.FC<TarjetaPaqueteProps> = ({ paquete, cargando = fal
                 tarifa={paquete.tarifa ?? null}
                 impuestos={paquete.impuestos ?? null}
                 total={paquete.total ?? null}
+                wp={paquete??null}
                 cargando={cargando}
               />
             </Grid>

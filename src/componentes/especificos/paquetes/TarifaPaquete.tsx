@@ -4,15 +4,18 @@ import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import { useTarjetas } from "../../../contextos/DatosAgenciaContext";
 import { useDatosGenerales } from "../../../contextos/DatosAgenciaContext";
 import BotonConsultar from "./BotonConsultar";
+import { PaqueteData } from "./tarjetasInterfaces";
 
 interface TarifaPaqueteProps {
   tarifa: number | null | undefined;
   impuestos: number | null | undefined;
   total: number | null | undefined;
+  wp:PaqueteData;
+
   cargando?: boolean;
 }
 
-const TarifaPaquete = ({ tarifa, impuestos, total, cargando = false }: TarifaPaqueteProps) => {
+const TarifaPaquete = ({ tarifa, impuestos, total, wp, cargando = false }: TarifaPaqueteProps) => {
   const tarjetas = useTarjetas();
   const datosGenerales = useDatosGenerales();
 
@@ -100,7 +103,9 @@ const TarifaPaquete = ({ tarifa, impuestos, total, cargando = false }: TarifaPaq
 
           {/* 🔹 Botón separado con mayor margen superior */}
           <Box sx={{ mt: 4, width: "100%" }}> {/* 🔥 Aumentado `mt` para mayor separación */}
-            <BotonConsultar  />
+            <BotonConsultar 
+            paquete ={wp}
+            />
           </Box>
         </>
       )}

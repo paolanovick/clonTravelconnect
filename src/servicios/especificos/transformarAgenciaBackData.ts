@@ -1,7 +1,7 @@
 import { DatosAgencia } from "../../interfaces/datosAgencia"; // Ajustá esta ruta según tu estructura
 
 export interface AgenciaBackData {
-  idAgencia: string;
+  idAgencia: number;
   nombre: string;
   logo: string | null;
   tipografia_agencia: string | null;

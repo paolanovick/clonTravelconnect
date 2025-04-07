@@ -87,6 +87,7 @@ const ListadoPaquetes = () => {
                       descripcion: paquete.descripcion,
                       salidas: paquete.salidas,
                       transporte: paquete.transporte,
+                      usuario:paquete.usuario,
                     }}
                     cargando={false}
                   />
