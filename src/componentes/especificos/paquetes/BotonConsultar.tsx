@@ -42,7 +42,8 @@ const BotonConsultar = ({ tipografia = "Arial" ,paquete}: BotonConsultarProps) =
       const mensaje = `Me gustaría conocer más acerca del paquete “${nombrePaquete}” (ID: ${idPaquete}) ofrecido a través de ${operador}.`;
       const encodedMessage = encodeURIComponent(mensaje);
       
-      window.open(`https://wa.me/14067406473?text=${encodedMessage}`, "_blank");
+      window.open(`https://wa.me/5493518521370?text=${encodedMessage}`, "_blank");
+
       
     } else if (opcion === "consultar") {
       setOpenModalConsultar(true);
