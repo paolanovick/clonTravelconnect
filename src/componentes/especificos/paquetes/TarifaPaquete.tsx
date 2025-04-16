@@ -4,7 +4,7 @@ import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import { useTarjetas } from "../../../contextos/DatosAgenciaContext";
 import { useDatosGenerales } from "../../../contextos/DatosAgenciaContext";
 import BotonConsultar from "./BotonConsultar";
-import { PaqueteData } from "./tarjetasInterfaces";
+import { PaqueteData } from "../../../interfaces/tarjetasInterfaces";
 
 interface TarifaPaqueteProps {
   tarifa: number | null | undefined;

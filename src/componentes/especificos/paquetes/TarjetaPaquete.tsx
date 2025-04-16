@@ -10,7 +10,7 @@ import HotelesContent from "./HotelesContent";
 import DescripcionContent from "./DescripcionContent";
 import SalidasContent from "./SalidasContent";
 import TransporteContent from "./TransporteContent";
-import { TarjetaPaqueteProps} from "./tarjetasInterfaces";
+import { TarjetaPaqueteProps} from "../../../interfaces/tarjetasInterfaces";
 
 const TarjetaPaquete: React.FC<TarjetaPaqueteProps> = ({ paquete, cargando = false }) => {
   const theme = useTheme();

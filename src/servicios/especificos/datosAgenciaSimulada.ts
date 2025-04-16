@@ -61,7 +61,7 @@ export const datosAgenciaSimuladaBack: AgenciaBackData = {
   footer_facebook: "https://www.facebook.com/profile.php?id=61560226755026",
   footer_twitter: "",
   footer_instagram: "https://www.instagram.com/vagu_viajes_",
-  footer_whatsapp: "https://wa.me/351-8521370",
+  footer_whatsapp: "291-4120487",
   footer_telefono: "+54 1173905607",
   footer_email: "",
   footer_direccion: "Dr. José Ramón Aguirre 3236",

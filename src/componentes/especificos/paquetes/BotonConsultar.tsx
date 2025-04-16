@@ -5,8 +5,8 @@ import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import PopperOpciones from "./PopperOpciones";
 import ModalConsultar from "./ModalConsultar";
 import ModalReservar from "./ModalReservar";
-import { useTarjetas } from "../../../contextos/DatosAgenciaContext"; // Ajustá el path si es necesario
-import { PaqueteData } from "./tarjetasInterfaces";
+import { useTarjetas, useFooter} from "../../../contextos/DatosAgenciaContext"; // Ajustá el path si es necesario
+import { PaqueteData } from "../../../interfaces/tarjetasInterfaces";
 
 interface BotonConsultarProps {
   tipografia?: string;
@@ -15,6 +15,8 @@ interface BotonConsultarProps {
 
 const BotonConsultar = ({ tipografia = "Arial" ,paquete}: BotonConsultarProps) => {
   const tarjeta = useTarjetas();
+  const footer = useFooter();
+  
 
   const colorPrimario = tarjeta?.color?.primario || "#1976d2";
   const colorSecundario = tarjeta?.color?.secundario || "#FBC02D"; // ✅ agregado color secundario
@@ -31,26 +33,31 @@ const BotonConsultar = ({ tipografia = "Arial" ,paquete}: BotonConsultarProps) =
     setOpcionSeleccionada(opcion);
     setAnchorEl(null);
   };
-  const handleClickBoton = () => {
-    const opcion = opcionSeleccionada.toLowerCase();
-    
-    if (opcion === "whatsapp") {
-      const nombrePaquete = paquete?.titulo;  // Reemplaza con el nombre real del paquete
-      const idPaquete = paquete?.id;          // Reemplaza con el ID real del paquete
-      const operador = paquete?.usuario;      // Reemplaza con el operador real
   
-      const mensaje = `Me gustaría conocer más acerca del paquete “${nombrePaquete}” (ID: ${idPaquete}) ofrecido a través de ${operador}.`;
-      const encodedMessage = encodeURIComponent(mensaje);
-      
-      window.open(`https://wa.me/5493518521370?text=${encodedMessage}`, "_blank");
+const handleClickBoton = () => {
+  const opcion = opcionSeleccionada.toLowerCase();
 
-      
-    } else if (opcion === "consultar") {
-      setOpenModalConsultar(true);
-    } else if (opcion === "reservar") {
-      setOpenModalReservar(true);
+  if (opcion === "whatsapp") {
+    const nombrePaquete = paquete?.titulo;  // Reemplaza con el nombre real del paquete
+    const idPaquete = paquete?.id;          // Reemplaza con el ID real del paquete
+    const operador = paquete?.usuario;      // Reemplaza con el operador real
+
+    const mensaje = `Me gustaría conocer más acerca del paquete “${nombrePaquete}” (ID: ${idPaquete}) ofrecido a través de ${operador}.`;
+    const encodedMessage = encodeURIComponent(mensaje);
+
+    const numeroWhatsapp = footer?.redes?.whatsapp?.replace(/[^0-9]/g, '');
+
+    if (numeroWhatsapp) {
+      window.open(`https://wa.me/${numeroWhatsapp}?text=${encodedMessage}`, "_blank");
+    } else {
+      console.warn("Número de WhatsApp no disponible en footer.redes.whatsapp");
     }
-  };
+  } else if (opcion === "consultar") {
+    setOpenModalConsultar(true);
+  } else if (opcion === "reservar") {
+    setOpenModalReservar(true);
+  }
+};
   
 
   const tipo = opcionSeleccionada.toLowerCase();

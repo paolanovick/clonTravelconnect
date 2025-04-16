@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 // Tipos
 type Orden = "asc" | "desc" | null;
 
-interface Filtros {
+export interface Filtros {
   ciudades: string[];
   hoteles: string[];
   regimenes: string[];
@@ -11,10 +11,15 @@ interface Filtros {
   precio: [number, number];
   duracion: [number, number];
   habitaciones: string[];
-  servicios: string[];
+  serviciosIncluidos: string[];
+  aerolineas: string[];
+  ciudadesOrigenVuelo: string[];
+  ciudadesDestinoVuelo: string[];
+  tipoMoneda: string[];
+  ventaOnline: boolean;
 }
 
-interface Ordenamientos {
+export interface Ordenamientos {
   salida: Orden;
   precio: Orden;
   nombre: Orden;
@@ -40,7 +45,12 @@ const filtrosIniciales: Filtros = {
   precio: [0, 10000],
   duracion: [1, 30],
   habitaciones: [],
-  servicios: [],
+  serviciosIncluidos: [],
+  aerolineas: [],
+  ciudadesOrigenVuelo: [],
+  ciudadesDestinoVuelo: [],
+  tipoMoneda: [],
+  ventaOnline: false,
 };
 
 const ordenamientosIniciales: Ordenamientos = {
@@ -59,15 +69,12 @@ export const FiltrosYOrdenamientoProvider: React.FC<{ children: React.ReactNode 
   const [ordenamientos, setOrdenamientosState] = useState<Ordenamientos>(ordenamientosIniciales);
   const [prioridadOrdenamientos, setPrioridadOrdenamientos] = useState<(keyof Ordenamientos)[]>([]);
 
-  // Métodos
   const setFiltros = (nuevosFiltros: Partial<Filtros>) => {
     setFiltrosState((prev) => ({ ...prev, ...nuevosFiltros }));
   };
 
   const setOrdenamientos = (campo: keyof Ordenamientos, orden: Orden) => {
     setOrdenamientosState((prev) => ({ ...prev, [campo]: orden }));
-
-    // Si el campo no está en prioridad, lo agregamos al final
     setPrioridadOrdenamientos((prev) => {
       const sinCampo = prev.filter((p) => p !== campo);
       return [...sinCampo, campo];
@@ -83,7 +90,6 @@ export const FiltrosYOrdenamientoProvider: React.FC<{ children: React.ReactNode 
     localStorage.removeItem("prioridadOrdenamientos");
   };
 
-  // Persistencia en localStorage
   useEffect(() => {
     const filtrosLS = localStorage.getItem("filtros");
     const ordenamientosLS = localStorage.getItem("ordenamientos");

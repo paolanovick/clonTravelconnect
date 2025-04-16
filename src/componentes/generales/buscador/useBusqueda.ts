@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useFormulario } from "../../../contextos/FormularioContext"; // 🔥 Importamos el contexto
+import { useFormulario } from "../../../contextos/FormularioContext";
+import { transformarPaqueteDesdeBackend } from "./transformarPaquete";
 
 export const useBusqueda = () => {
   const [loading, setLoading] = useState(false);
@@ -49,28 +50,31 @@ export const useBusqueda = () => {
         }),
       });
 
-      let data;
+      let paquetesTransformados = [];
+
       if (!response.ok) {
         if (response.status === 404) {
           console.warn("⚠️ No se encontraron paquetes para la búsqueda.");
-          data = [{ id: "error", ciudad: "No se encontraron paquetes" }];
+          paquetesTransformados = [{ id: -1, ciudad: "No se encontraron paquetes" }];
         } else {
           throw new Error(`Error en la búsqueda. Código de estado: ${response.status}`);
         }
       } else {
-        data = await response.json();
+        const data = await response.json();
+        paquetesTransformados = data.map(transformarPaqueteDesdeBackend);
+        console.log("📦 Paquetes transformados antes de guardar:", paquetesTransformados);
       }
 
-      // ✅ Guardar resultados
-      localStorage.setItem("resultadosBusqueda", JSON.stringify(data));
+      // ✅ Guardar resultados transformados
+      localStorage.setItem("resultadosBusqueda", JSON.stringify(paquetesTransformados));
 
-      // ✅ Guardar los valores actuales en localStorage para persistencia
+      // ✅ Guardar los valores actuales en localStorage
       guardarValoresPrevios();
 
-      // ✅ Limpiar contexto (pero no los inputs visuales gracias al localStorage)
+      // ✅ Limpiar el contexto de formulario
       resetFormulario();
 
-      // ✅ Redirigir a resultados
+      // ✅ Disparar evento para actualizar el listado y redirigir
       window.dispatchEvent(new Event("actualizarPaquetes"));
       navigate("/paquetes-busqueda");
     } catch (error) {
