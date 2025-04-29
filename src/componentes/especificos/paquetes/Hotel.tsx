@@ -7,7 +7,7 @@ import { useTarjetas, useDatosGenerales } from "../../../contextos/DatosAgenciaC
 interface HotelProps {
   hotel: {
     nombre: string;
-    id_hotel: string;
+    id_hotel: number;
     categoria_hotel: string; // puntuación del 1 al 5
   };
 }

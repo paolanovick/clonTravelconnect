@@ -6,7 +6,7 @@ import Hotel from "./Hotel";
 
 interface HotelData {
   nombre: string;
-  id_hotel: string;
+  id_hotel: number; // ✅ Ahora es number
   categoria_hotel: string;
 }
 
@@ -23,10 +23,9 @@ const HotelesContent: React.FC<HotelesContentProps> = ({ hoteles }) => {
       : [
           {
             nombre: "No hay hoteles disponibles",
-            id_hotel: "0",
+            id_hotel: 0, // ✅ Ahora es número 0, no "0"
             categoria_hotel: "1",
           },
-       
         ];
 
   return (
