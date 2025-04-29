@@ -5,7 +5,7 @@ import MensajeSinPaquetes from "./MensajeSinPaquetes";
 import { useTarjetas } from "../../../contextos/DatosAgenciaContext";
 import { useFiltrosYOrdenamiento } from "../../../contextos/FiltrosYOrdenamientoContext";
 import { filtrarPaquetes } from "../../../contextos/filtrarPaquetes";
-import { ordenarPaquetes } from "../../../contextos/ordenarPaquetes";
+import { usePaquetesOrdenados } from "../../../componentes/especificos/filtro/useOrdenarPaquetes";
 import type { PaqueteData } from "../../../interfaces/tarjetasInterfaces";
 
 const ListadoPaquetes = () => {
@@ -14,14 +14,7 @@ const ListadoPaquetes = () => {
   const [cantidadVisible, setCantidadVisible] = useState(10);
 
   const tarjeta = useTarjetas();
-  const {
-    filtros,
-    setFiltros,
-    ordenamientos,
-    setOrdenamientos,
-    prioridadOrdenamientos,
-    setPrioridadOrdenamientos,
-  } = useFiltrosYOrdenamiento();
+  const { filtros } = useFiltrosYOrdenamiento();
 
   const cargarPaquetes = () => {
     const data = localStorage.getItem("resultadosBusqueda");
@@ -40,15 +33,6 @@ const ListadoPaquetes = () => {
   useEffect(() => {
     cargarPaquetes();
 
-    // ✅ Simulación de filtro por precio entre 4000 y 4500
-    setFiltros({
-      precio: [0, 100000000],
-    });
-
-    // ✅ Simulación de ordenamiento por precio ascendente
-    setOrdenamientos("precio", "asc");
-    setPrioridadOrdenamientos(["precio"]);
-
     const actualizarPaquetes = () => cargarPaquetes();
     window.addEventListener("actualizarPaquetes", actualizarPaquetes);
 
@@ -60,11 +44,7 @@ const ListadoPaquetes = () => {
   const cargarMas = () => setCantidadVisible((prev) => prev + 10);
 
   const paquetesFiltrados = filtrarPaquetes(paquetes, filtros);
-  const paquetesOrdenados = ordenarPaquetes(
-    paquetesFiltrados,
-    ordenamientos,
-    prioridadOrdenamientos
-  );
+  const paquetesOrdenados = usePaquetesOrdenados(paquetesFiltrados);
 
   return (
     <Box
@@ -73,7 +53,7 @@ const ListadoPaquetes = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        mt: 4,
+        // 🔥 Se eliminó el mt: 4 que agregaba margen superior
       }}
     >
       {cargando ? (
@@ -84,15 +64,19 @@ const ListadoPaquetes = () => {
         <MensajeSinPaquetes />
       ) : (
         <>
-          <Grid container spacing={3} justifyContent="center">
-            {paquetesOrdenados.slice(0, cantidadVisible).map((paquete) => (
+          <Grid container justifyContent="center">
+            {paquetesOrdenados.slice(0, cantidadVisible).map((paquete, index) => (
               <Grid
                 item
                 xs={12}
                 sm={12}
                 md={12}
                 key={paquete.id}
-                sx={{ display: "flex", justifyContent: "center" }}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  mb: index !== paquetesOrdenados.slice(0, cantidadVisible).length - 1 ? 3 : 0,
+                }}
               >
                 <TarjetaPaquete paquete={paquete} cargando={false} />
               </Grid>

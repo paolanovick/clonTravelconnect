@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { Box, Modal, Typography, TextField, Button, Grid, MenuItem, useMediaQuery, useTheme } from "@mui/material";
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle"; 
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import dayjs from "dayjs"; // 📦 Importamos dayjs para manejar fechas
 
 interface ModalReservarProps {
   open: boolean;
@@ -55,15 +57,15 @@ const ModalReservar = ({ open, onClose, colorPrimario, tipografia }: ModalReserv
         }}
       >
         {/* 🔹 Banner Superior */}
-        <Box sx={{ 
-          backgroundColor: colorPrimario, 
-          color: "white", 
-          padding: isMobile ? "12px" : "15px", 
-          textAlign: "center", 
-          fontFamily: tipografia, 
-          fontSize: isMobile ? "1.1rem" : (isTablet ? "1.3rem" : "1.4rem"), 
-          fontWeight: "bold", 
-          borderBottom: "4px solid white" 
+        <Box sx={{
+          backgroundColor: colorPrimario,
+          color: "white",
+          padding: isMobile ? "12px" : "15px",
+          textAlign: "center",
+          fontFamily: tipografia,
+          fontSize: isMobile ? "1.1rem" : (isTablet ? "1.3rem" : "1.4rem"),
+          fontWeight: "bold",
+          borderBottom: "4px solid white"
         }}>
           Información de los pasajeros
         </Box>
@@ -90,8 +92,8 @@ const ModalReservar = ({ open, onClose, colorPrimario, tipografia }: ModalReserv
                 return nuevaLista.slice(0, nuevaCantidad);
               });
             }}
-            sx={{ 
-              fontWeight: "bold", 
+            sx={{
+              fontWeight: "bold",
               border: "2px solid black",
               mt: isMobile ? 0.5 : 1
             }}
@@ -102,15 +104,15 @@ const ModalReservar = ({ open, onClose, colorPrimario, tipografia }: ModalReserv
           </TextField>
 
           {/* 🔹 Formulario del Pasajero */}
-          <Box sx={{ 
-            mt: isMobile ? 2 : 3, 
-            p: isMobile ? 1.5 : 2, 
-            border: "2px solid black", 
-            borderRadius: 3 
+          <Box sx={{
+            mt: isMobile ? 2 : 3,
+            p: isMobile ? 1.5 : 2,
+            border: "2px solid black",
+            borderRadius: 3
           }}>
-            <Typography variant="h6" fontWeight="bold" sx={{ 
-              textAlign: "center", 
-              fontSize: isMobile ? "1rem" : "1.2rem" 
+            <Typography variant="h6" fontWeight="bold" sx={{
+              textAlign: "center",
+              fontSize: isMobile ? "1rem" : "1.2rem"
             }}>
               Pasajero {indicePasajero + 1} de {cantidadPasajeros}
             </Typography>
@@ -120,44 +122,73 @@ const ModalReservar = ({ open, onClose, colorPrimario, tipografia }: ModalReserv
                   <Typography variant="body1" fontWeight="bold" sx={{ fontSize: isMobile ? "0.9rem" : "1rem" }}>
                     {campo.charAt(0).toUpperCase() + campo.slice(1)}
                   </Typography>
-                  <TextField
-                    fullWidth
-                    variant="outlined"
-                    size={isMobile ? "small" : "medium"}
-                    type={campo === "fechaNacimiento" ? "date" : "text"}
-                    value={pasajeros[indicePasajero]?.[campo as keyof typeof pasajeros[0]] || ""}
-                    onChange={(e) => handleChange(campo, e.target.value)}
-                    sx={{
-                      '& .MuiInputBase-input': {
-                        fontSize: isMobile ? '0.875rem' : '1rem'
+                  {campo === "fechaNacimiento" ? (
+                    <DatePicker
+                      label="Fecha de nacimiento"
+                      value={
+                        pasajeros[indicePasajero]?.fechaNacimiento
+                          ? (isNaN(Date.parse(pasajeros[indicePasajero].fechaNacimiento))
+                            ? null
+                            : dayjs(pasajeros[indicePasajero].fechaNacimiento))
+                          : null
                       }
-                    }}
-                  />
+                      onChange={(newValue) =>
+                        handleChange(campo, newValue ? newValue.toISOString().split('T')[0] : "")
+                      }
+                      views={['year', 'month', 'day']}
+                      slotProps={{
+                        textField: {
+                          fullWidth: true,
+                          size: isMobile ? 'small' : 'medium',
+                          variant: 'outlined',
+                          sx: {
+                            '& .MuiInputBase-input': {
+                              fontSize: isMobile ? '0.875rem' : '1rem'
+                            }
+                          }
+                        }
+                      }}
+                    />
+                  ) : (
+                    <TextField
+                      fullWidth
+                      variant="outlined"
+                      size={isMobile ? "small" : "medium"}
+                      type="text"
+                      value={pasajeros[indicePasajero]?.[campo as keyof typeof pasajeros[0]] || ""}
+                      onChange={(e) => handleChange(campo, e.target.value)}
+                      sx={{
+                        '& .MuiInputBase-input': {
+                          fontSize: isMobile ? '0.875rem' : '1rem'
+                        }
+                      }}
+                    />
+                  )}
                 </Grid>
               ))}
             </Grid>
           </Box>
 
           {/* 🔹 Botones de Navegación */}
-          <Box sx={{ 
-            display: "flex", 
-            justifyContent: "space-between", 
+          <Box sx={{
+            display: "flex",
+            justifyContent: "space-between",
             mt: isMobile ? 1.5 : 2,
             flexDirection: isMobile ? 'column' : 'row',
             gap: isMobile ? 1 : 0
           }}>
             <Button
               variant="contained"
-              sx={{ 
-                backgroundColor: colorPrimario, 
-                color: "white", 
-                fontWeight: "bold", 
-                fontFamily: tipografia, 
-                minWidth: isMobile ? '100%' : 160, 
-                py: isMobile ? 1 : 1.2, 
-                borderRadius: "8px", 
-                "&:hover": { backgroundColor: "#0056b3" }, 
-                fontSize: isMobile ? "0.9rem" : "1rem" 
+              sx={{
+                backgroundColor: colorPrimario,
+                color: "white",
+                fontWeight: "bold",
+                fontFamily: tipografia,
+                minWidth: isMobile ? '100%' : 160,
+                py: isMobile ? 1 : 1.2,
+                borderRadius: "8px",
+                "&:hover": { backgroundColor: "#0056b3" },
+                fontSize: isMobile ? "0.9rem" : "1rem"
               }}
               disabled={indicePasajero === 0}
               onClick={() => setIndicePasajero((prev) => prev - 1)}
@@ -168,16 +199,16 @@ const ModalReservar = ({ open, onClose, colorPrimario, tipografia }: ModalReserv
 
             <Button
               variant="contained"
-              sx={{ 
-                backgroundColor: colorPrimario, 
-                color: "white", 
-                fontWeight: "bold", 
-                fontFamily: tipografia, 
-                minWidth: isMobile ? '100%' : 160, 
-                py: isMobile ? 1 : 1.2, 
-                borderRadius: "8px", 
-                "&:hover": { backgroundColor: "#0056b3" }, 
-                fontSize: isMobile ? "0.9rem" : "1rem" 
+              sx={{
+                backgroundColor: colorPrimario,
+                color: "white",
+                fontWeight: "bold",
+                fontFamily: tipografia,
+                minWidth: isMobile ? '100%' : 160,
+                py: isMobile ? 1 : 1.2,
+                borderRadius: "8px",
+                "&:hover": { backgroundColor: "#0056b3" },
+                fontSize: isMobile ? "0.9rem" : "1rem"
               }}
               disabled={indicePasajero === cantidadPasajeros - 1}
               onClick={() => setIndicePasajero((prev) => prev + 1)}
@@ -191,16 +222,16 @@ const ModalReservar = ({ open, onClose, colorPrimario, tipografia }: ModalReserv
           <Box sx={{ display: "flex", justifyContent: "center", mt: isMobile ? 2 : 3 }}>
             <Button
               variant="contained"
-              sx={{ 
-                backgroundColor: colorPrimario, 
-                color: "white", 
-                fontWeight: "bold", 
-                fontFamily: tipografia, 
-                minWidth: isMobile ? '100%' : 220, 
-                py: isMobile ? 1 : 1.2, 
-                borderRadius: "8px", 
-                fontSize: isMobile ? "1rem" : "1.2rem", 
-                "&:hover": { backgroundColor: "#0056b3" } 
+              sx={{
+                backgroundColor: colorPrimario,
+                color: "white",
+                fontWeight: "bold",
+                fontFamily: tipografia,
+                minWidth: isMobile ? '100%' : 220,
+                py: isMobile ? 1 : 1.2,
+                borderRadius: "8px",
+                fontSize: isMobile ? "1rem" : "1.2rem",
+                "&:hover": { backgroundColor: "#0056b3" }
               }}
               onClick={() => {
                 console.log("Pasajeros:", pasajeros);

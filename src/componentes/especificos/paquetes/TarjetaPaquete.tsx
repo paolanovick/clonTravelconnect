@@ -129,6 +129,7 @@ const TarjetaPaquete: React.FC<TarjetaPaqueteProps> = ({ paquete, cargando = fal
           >
             <TarifaPaquete
               tarifa={paquete.tarifa ?? null}
+              divisa ={paquete.tipo_moneda ?? null}
               impuestos={paquete.impuestos ?? null}
               total={paquete.total ?? null}
               wp={paquete ?? null}

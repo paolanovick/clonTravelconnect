@@ -4,10 +4,12 @@ import { useTarjetas } from "../../../contextos/DatosAgenciaContext";
 import { useDatosGenerales } from "../../../contextos/DatosAgenciaContext";
 import { useTheme } from "@mui/material/styles";
 import { useState } from "react";
+import { useFiltrosYOrdenamiento } from "../../../contextos/FiltrosYOrdenamientoContext";
 
 const FiltroBusqueda = () => {
   const tarjetas = useTarjetas();
   const datosGenerales = useDatosGenerales();
+  const { filtros, setFiltros } = useFiltrosYOrdenamiento();
 
   const theme = useTheme();
   const esMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -21,13 +23,15 @@ const FiltroBusqueda = () => {
     <Box
       sx={{
         backgroundColor: colorFondo,
-        p: esMobile ? 1.5 : 3,
+        padding: esMobile ? 1.5 : 2.5,
         borderRadius: 4,
         boxShadow: "0px 4px 8px rgba(0,0,0,0.3)",
-        textAlign: "center",
         width: "100%",
-        maxWidth: esMobile ? "280px" : "100%",
-        mx: "auto",
+        maxWidth: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 1.5,
       }}
     >
       {/* 🔹 Encabezado interactivo */}
@@ -43,12 +47,10 @@ const FiltroBusqueda = () => {
           fontFamily: "Verdana, sans-serif",
           fontSize: esMobile ? "0.8rem" : "0.9rem",
           cursor: esMobile ? "pointer" : "default",
-          borderRadius: esMobile ? "999px" : 0,
+          borderRadius: "999px",
           backgroundColor: esMobile ? `${colorFondo}dd` : "transparent",
-          px: esMobile ? 2 : 0,
-          py: esMobile ? 0.8 : 0,
-          mx: "auto",
-          width: "fit-content",
+          px: 2,
+          py: 1,
           transition: "all 0.3s ease",
           "&:hover": {
             backgroundColor: esMobile ? `${colorFondo}f2` : "inherit",
@@ -60,49 +62,46 @@ const FiltroBusqueda = () => {
       </Box>
 
       {/* 🔹 Input visible solo en desktop o al desplegar en mobile */}
-      <Collapse in={!esMobile || mostrarInput}>
+      <Collapse
+        in={!esMobile || mostrarInput}
+        sx={{ width: "100%", display: "flex", justifyContent: "center" }}
+      >
         <Box
           sx={{
-            mt: 2,
-            width: "100%",
             display: "flex",
-            justifyContent: "center", // ✅ centra el input
+            alignItems: "center",
+            backgroundColor: colorInputFondo,
+            borderRadius: "25px",
+            px: 2,
+            py: 1,
+            width: "90%",
+            maxWidth: 400,
+            height: 42,
+            boxShadow: "inset 0px 2px 5px rgba(0,0,0,0.2)",
           }}
         >
-          <Box
+          <InputBase
+            placeholder="Buscar por nombre"
+            value={filtros.busquedaNombre}
+            onChange={(e) => setFiltros({ busquedaNombre: e.target.value })}
             sx={{
-              display: "flex",
-              alignItems: "center",
-              backgroundColor: colorInputFondo,
-              borderRadius: "20px",
-              px: 2,
-              py: 1,
-              width: "100%",
-              maxWidth: 240, // ✅ controla el tamaño visual
-              boxShadow: "inset 0px 2px 5px rgba(0,0,0,0.2)",
+              flexGrow: 1,
+              px: 1,
+              color: tarjetas?.tipografiaColorContenido || "#333",
+              fontWeight: "bold",
+              fontSize: esMobile ? "0.8rem" : "0.9rem",
+              "&::placeholder": {
+                color: `${colorTexto}99`,
+              },
             }}
-          >
-            <InputBase
-              placeholder="Seleccionar"
-              sx={{
-                flexGrow: 1,
-                px: 1, // ✅ padding interno del input
-                color: tarjetas?.tipografiaColorContenido || "#333",
-                fontWeight: "bold",
-                fontSize: esMobile ? "0.8rem" : "0.9rem",
-                "&::placeholder": {
-                  color: `${colorTexto}99`,
-                },
-              }}
-            />
-            <SearchIcon
-              sx={{
-                color: colorTexto,
-                fontSize: esMobile ? 18 : 22,
-                ml: 1,
-              }}
-            />
-          </Box>
+          />
+          <SearchIcon
+            sx={{
+              color: colorTexto,
+              fontSize: esMobile ? 18 : 22,
+              ml: 1,
+            }}
+          />
         </Box>
       </Collapse>
     </Box>

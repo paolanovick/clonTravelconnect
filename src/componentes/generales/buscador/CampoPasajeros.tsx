@@ -1,8 +1,13 @@
-import React, { useEffect } from "react";
-import { Box, TextField, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import {
+  Box,
+  Typography,
+  TextField,
+} from "@mui/material";
 import PeopleIcon from "@mui/icons-material/People";
 import { useBuscador, useDatosGenerales } from "../../../contextos/DatosAgenciaContext";
 import { useFormulario } from "../../../contextos/FormularioContext";
+import ModalViajeros from "./ModalViajeros";
 
 interface CampoPasajerosProps {
   label: string;
@@ -12,20 +17,7 @@ const CampoPasajeros: React.FC<CampoPasajerosProps> = ({ label }) => {
   const buscador = useBuscador();
   const datosGenerales = useDatosGenerales();
   const { viajeros, setViajeros } = useFormulario();
-
-  useEffect(() => {
-    if (!viajeros || viajeros === 0) {
-      const valoresGuardados = localStorage.getItem("valoresPrevios");
-      if (valoresGuardados) {
-        const { viajeros: viajerosGuardados } = JSON.parse(valoresGuardados);
-        if (viajerosGuardados !== undefined && viajerosGuardados !== null) {
-          setViajeros(viajerosGuardados);
-        }
-      }
-    }
-  }, []);
-
-  if (!datosGenerales) return null;
+  const [modalAbierto, setModalAbierto] = useState(false);
 
   const fondoColor = buscador?.color?.secundario || datosGenerales?.color?.secundario || "#F5F5F5";
   const tipografiaColor = buscador?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#000000";
@@ -35,13 +27,26 @@ const CampoPasajeros: React.FC<CampoPasajerosProps> = ({ label }) => {
     datosGenerales?.colorTipografiaAgencia ||
     "#000000";
 
-  const handleChangeCantidadViajeros = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (value === "") {
-      setViajeros(0);
-    } else if (/^\d*$/.test(value)) {
-      setViajeros(Number(value));
+  useEffect(() => {
+    const valoresGuardados = localStorage.getItem("valoresPrevios");
+    if (valoresGuardados && (!viajeros || (viajeros.adultos === 0 && viajeros.menores === 0))) {
+      const { viajeros: viajerosGuardados } = JSON.parse(valoresGuardados);
+      if (viajerosGuardados) {
+        setViajeros(viajerosGuardados);
+      }
     }
+  }, []);
+
+  const resumen =
+    viajeros?.adultos || viajeros?.menores
+      ? `${viajeros.adultos || 0} adulto${viajeros.adultos === 1 ? "" : "s"}${
+          viajeros.menores ? ` y ${viajeros.menores} menor${viajeros.menores === 1 ? "" : "es"}` : ""
+        }`
+      : "";
+
+  const handleAplicar = (adultos: number, menores: number) => {
+    setViajeros({ adultos, menores });
+    setModalAbierto(false);
   };
 
   return (
@@ -52,18 +57,22 @@ const CampoPasajeros: React.FC<CampoPasajerosProps> = ({ label }) => {
           {label}
         </Typography>
       </Box>
+
       <TextField
-        name="viajeros"
-        value={viajeros === 0 ? "" : viajeros}
-        onChange={handleChangeCantidadViajeros}
-        fullWidth
+        value={resumen}
         placeholder="Seleccionar"
+        onClick={() => setModalAbierto(true)}
+        fullWidth
         variant="outlined"
         size="small"
+        InputProps={{
+          readOnly: true,
+        }}
         sx={{
           backgroundColor: fondoColor,
           borderRadius: "25px",
           fontFamily: "Poppins, sans-serif",
+          cursor: "pointer",
           "& .MuiOutlinedInput-root": {
             color: tipografiaColor,
             "& fieldset": {
@@ -78,6 +87,13 @@ const CampoPasajeros: React.FC<CampoPasajerosProps> = ({ label }) => {
             opacity: 0.7,
           },
         }}
+      />
+
+      {/* 🔲 Modal con onAplicar corregido */}
+      <ModalViajeros
+        open={modalAbierto}
+        onClose={() => setModalAbierto(false)}
+        onAplicar={handleAplicar}
       />
     </Box>
   );

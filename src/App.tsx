@@ -3,6 +3,8 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Box, CircularProgress, GlobalStyles } from "@mui/material";
 import { useDatosAgencia, useDatosGenerales } from "./contextos/DatosAgenciaContext";
 import AppRoutes from "./routers";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"; // Agregado
 
 const App: React.FC = () => {
   const { cargando } = useDatosAgencia();
@@ -32,34 +34,36 @@ const App: React.FC = () => {
   const fondoColor = datosGenerales.colorFondoApp || "#F5F5F5";
 
   return (
-    <Router>
-      <GlobalStyles
-        styles={{
-          "html, body, #root": {
-            margin: 0,
-            padding: 0,
-            width: "100%",
-            minHeight: "100vh",
-            overflowX: "hidden",
-          },
-        }}
-      />
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <Router>
+        <GlobalStyles
+          styles={{
+            "html, body, #root": {
+              margin: 0,
+              padding: 0,
+              width: "100%",
+              minHeight: "100vh",
+              overflowX: "hidden",
+            },
+          }}
+        />
 
-      <Box
-        sx={{
-          backgroundColor: fondoColor,
-          minHeight: "100vh",
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "flex-start",
-          boxSizing: "border-box",
-        }}
-      >
-        <AppRoutes />
-      </Box>
-    </Router>
+        <Box
+          sx={{
+            backgroundColor: fondoColor,
+            minHeight: "100vh",
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            boxSizing: "border-box",
+          }}
+        >
+          <AppRoutes />
+        </Box>
+      </Router>
+    </LocalizationProvider>
   );
 };
 
