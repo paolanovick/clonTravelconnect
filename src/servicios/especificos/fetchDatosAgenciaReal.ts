@@ -1,7 +1,7 @@
 import { AgenciaBackData } from "./transformarAgenciaBackData";
 
 export const fetchDatosAgenciaReal = async (): Promise<AgenciaBackData> => {
-  const url = `${process.env.REACT_APP_API_URL}/agencia`;
+  const url = `https://vagu.travelconnect.com.ar/agencia`;
 
   const response = await fetch(url, {
     headers: { Accept: "application/json" },
@@ -11,5 +11,7 @@ export const fetchDatosAgenciaReal = async (): Promise<AgenciaBackData> => {
     throw new Error("No se pudo obtener la información de la agencia");
   }
 
-  return await response.json();
+  const data = await response.json();
+  console.log("✅ Dato recibido de la API /agencia:", data);
+  return data;
 };
