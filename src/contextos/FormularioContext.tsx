@@ -22,10 +22,11 @@ interface FormularioContextProps {
 const FormularioContext = createContext<FormularioContextProps | undefined>(undefined);
 
 export const FormularioProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+
   const [ciudadOrigen, setCiudadOrigen] = useState<string>("");
   const [destino, setDestino] = useState<string>("");
   const [fechaSalida, setFechaSalida] = useState<Date | null>(null);
-  const [viajeros, setViajeros] = useState<Viajeros>({ adultos: 1, menores: 0 });
+  const [viajeros, setViajeros] = useState<Viajeros>({ adultos: 2, menores: 0 });
 
   const enviarFormulario = () => {
     console.log("Formulario enviado:", { ciudadOrigen, destino, fechaSalida, viajeros });
@@ -35,7 +36,7 @@ export const FormularioProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     setCiudadOrigen("");
     setDestino("");
     setFechaSalida(null);
-    setViajeros({ adultos: 1, menores: 0 });
+    setViajeros({ adultos: 2, menores: 0 });
   };
 
   return (
