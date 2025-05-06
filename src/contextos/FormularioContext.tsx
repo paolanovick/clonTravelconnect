@@ -1,36 +1,42 @@
 import React, { createContext, useContext, useState } from "react";
 
+// 🔹 Tipo personalizado para viajeros
+interface Viajeros {
+  adultos: number;
+  menores: number;
+}
+
 interface FormularioContextProps {
   ciudadOrigen: string;
   destino: string;
   fechaSalida: Date | null;
-  viajeros: number;
+  viajeros: Viajeros;
   setCiudadOrigen: (ciudad: string) => void;
   setDestino: (destino: string) => void;
   setFechaSalida: (fecha: Date | null) => void;
-  setViajeros: (viajeros: number) => void;
-  enviarFormulario: () => void; // 🔥 Solo guarda los datos
-  resetFormulario: () => void;  // 🔥 Nueva función para resetear los campos
+  setViajeros: (viajeros: Viajeros) => void;
+  enviarFormulario: () => void;
+  resetFormulario: () => void;
 }
 
 const FormularioContext = createContext<FormularioContextProps | undefined>(undefined);
 
 export const FormularioProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+
   const [ciudadOrigen, setCiudadOrigen] = useState<string>("");
   const [destino, setDestino] = useState<string>("");
   const [fechaSalida, setFechaSalida] = useState<Date | null>(null);
-  const [viajeros, setViajeros] = useState<number>(1);
+  const [viajeros, setViajeros] = useState<Viajeros>({ adultos: 2, menores: 0 });
 
   const enviarFormulario = () => {
     console.log("Formulario enviado:", { ciudadOrigen, destino, fechaSalida, viajeros });
-    // 🚀 Ahora ya no resetea automáticamente
   };
 
   const resetFormulario = () => {
     setCiudadOrigen("");
     setDestino("");
     setFechaSalida(null);
-    setViajeros(1);
+    setViajeros({ adultos: 2, menores: 0 });
   };
 
   return (
@@ -44,8 +50,8 @@ export const FormularioProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         setDestino,
         setFechaSalida,
         setViajeros,
-        enviarFormulario, // 🔥 Ahora solo guarda datos
-        resetFormulario,  // 🔥 Nueva función para limpiar el formulario
+        enviarFormulario,
+        resetFormulario,
       }}
     >
       {children}

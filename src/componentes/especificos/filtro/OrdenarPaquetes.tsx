@@ -1,110 +1,115 @@
-import { Box, InputBase, useMediaQuery, Collapse } from "@mui/material";
+import { useState } from "react";
+import {
+  Box,
+  Button,
+  IconButton,
+  Tooltip,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import SortIcon from "@mui/icons-material/Sort";
+import ModalOrdenamiento from "./ModalOrdenamiento";
+import { useFiltrosYOrdenamiento } from "../../../contextos/FiltrosYOrdenamientoContext";
 import { useTarjetas } from "../../../contextos/DatosAgenciaContext";
 import { useDatosGenerales } from "../../../contextos/DatosAgenciaContext";
-import { useTheme } from "@mui/material/styles";
-import { useState } from "react";
 
 const OrdenarPaquetes = () => {
+  const [open, setOpen] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const {
+    ordenamientos,
+    prioridadOrdenamientos,
+    setOrdenamientos,
+    setPrioridadOrdenamientos,
+  } = useFiltrosYOrdenamiento();
+
   const tarjetas = useTarjetas();
   const datosGenerales = useDatosGenerales();
 
-  const theme = useTheme();
-  const esMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const [mostrarInput, setMostrarInput] = useState(false);
+  const colorPrimario =
+    tarjetas?.color?.primario || datosGenerales?.color?.primario || "#1976d2";
+  const colorTexto =
+    tarjetas?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#fff";
+  const tipografia =
+    tarjetas?.tipografia || datosGenerales?.tipografiaAgencia || "Verdana, sans-serif";
 
-  const colorFondo = tarjetas?.color.primario || datosGenerales?.color.primario || "#1976d2";
-  const colorTexto = tarjetas?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#fff";
-  const colorInputFondo = tarjetas?.color.secundario || datosGenerales?.color.secundario || "#f0f0f0";
+  const handleOrdenar = (criterio: string, orden: "asc" | "desc") => {
+    setOrdenamientos("salida", null);
+    setOrdenamientos("precio", null);
+    setOrdenamientos("nombre", null);
+    setOrdenamientos("duracion", null);
+    setOrdenamientos(criterio as any, orden);
+    setPrioridadOrdenamientos([criterio as any]);
+  };
+
+  const criterioActivo = prioridadOrdenamientos[0];
+  const ordenActivo = ordenamientos[criterioActivo];
+
+  const labelCriterio = criterioActivo
+    ? criterioActivo.charAt(0).toUpperCase() + criterioActivo.slice(1)
+    : null;
+
+  const flecha = ordenActivo === "asc" ? "↑" : ordenActivo === "desc" ? "↓" : "";
 
   return (
-    <Box
-      sx={{
-        backgroundColor: colorFondo,
-        p: esMobile ? 1.5 : 3,
-        borderRadius: 4,
-        boxShadow: "0px 4px 8px rgba(0,0,0,0.3)",
-        textAlign: "center",
-        width: "100%",
-        maxWidth: esMobile ? "280px" : "100%",
-        mx: "auto",
-      }}
-    >
-      {/* 🔹 Encabezado tipo botón en mobile */}
-      <Box
-        onClick={() => esMobile && setMostrarInput(!mostrarInput)}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 0.5,
-          color: colorTexto,
-          fontWeight: "bold",
-          fontFamily: "Verdana, sans-serif",
-          fontSize: esMobile ? "0.8rem" : "0.9rem",
-          cursor: esMobile ? "pointer" : "default",
-          borderRadius: esMobile ? "999px" : 0,
-          backgroundColor: esMobile ? `${colorFondo}dd` : "transparent",
-          px: esMobile ? 2 : 0,
-          py: esMobile ? 0.8 : 0,
-          mx: "auto",
-          width: "fit-content",
-          transition: "all 0.3s ease",
-          "&:hover": {
-            backgroundColor: esMobile ? `${colorFondo}f2` : "inherit",
-          },
-        }}
-      >
-        <SortIcon sx={{ fontSize: esMobile ? 18 : 22 }} />
-        Ordenar
-      </Box>
-
-      {/* 🔹 Input visible solo en desktop o cuando se despliega en mobile */}
-      <Collapse in={!esMobile || mostrarInput}>
-        <Box
-          sx={{
-            mt: 2,
-            width: "100%",
-            display: "flex",
-            justifyContent: "center", // ✅ centra el contenedor interno
-          }}
-        >
-          <Box
+    <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+      {isMobile ? (
+        <Tooltip title={`Ordenar ${labelCriterio || ""} ${flecha}`}>
+          <IconButton
+            onClick={() => setOpen(true)}
             sx={{
-              display: "flex",
-              alignItems: "center",
-              backgroundColor: colorInputFondo,
-              borderRadius: "20px",
-              px: 2,
-              py: 1,
-              width: "100%",
-              maxWidth: 240, // ✅ ahora el input tiene un tamaño controlado
-              boxShadow: "inset 0px 2px 5px rgba(0,0,0,0.2)",
+              backgroundColor: colorPrimario,
+              color: colorTexto,
+              "&:hover": {
+                backgroundColor: `${colorPrimario}cc`,
+              },
+              borderRadius: "50%",
+              p: 1.2,
+              transition: "all 0.2s ease-in-out",
             }}
           >
-            <InputBase
-              placeholder="Seleccionar"
-              sx={{
-                flexGrow: 1,
-                px: 1, // ✅ padding horizontal interno
-                color: tarjetas?.tipografiaColorContenido || "#333",
-                fontWeight: "bold",
-                fontSize: esMobile ? "0.8rem" : "0.9rem",
-                "&::placeholder": {
-                  color: `${colorTexto}99`,
-                },
-              }}
-            />
-            <SortIcon
-              sx={{
-                color: colorTexto,
-                fontSize: esMobile ? 18 : 22,
-                ml: 1,
-              }}
-            />
-          </Box>
-        </Box>
-      </Collapse>
+            <SortIcon />
+          </IconButton>
+        </Tooltip>
+      ) : (
+        <Button
+          onClick={() => setOpen(true)}
+          variant="contained"
+          startIcon={<SortIcon />}
+          sx={{
+            backgroundColor: colorPrimario,
+            color: colorTexto,
+            fontWeight: "bold",
+            fontFamily: tipografia,
+            borderRadius: "50px",
+            px: 3,
+            py: 1,
+            fontSize: "0.9rem",
+            transition: "all 0.2s ease-in-out",
+            "&:hover": {
+              backgroundColor: `${colorPrimario}cc`,
+              transform: "scale(1.02)",
+            },
+          }}
+        >
+          {labelCriterio && ordenActivo
+            ? `Orden: ${labelCriterio} (${flecha})`
+            : "Ordenar"}
+        </Button>
+      )}
+
+      <ModalOrdenamiento
+        open={open}
+        onClose={() => setOpen(false)}
+        onAplicar={(criterio, orden) => {
+          handleOrdenar(criterio, orden);
+          setOpen(false);
+        }}
+        colorPrimario={colorPrimario}
+        tipografia={tipografia}
+      />
     </Box>
   );
 };

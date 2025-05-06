@@ -10,7 +10,7 @@ export const useBusqueda = () => {
     ciudadOrigen,
     destino,
     fechaSalida,
-    viajeros,
+    viajeros, // ✅ ahora es { adultos, menores }
     resetFormulario,
   } = useFormulario();
 
@@ -33,7 +33,7 @@ export const useBusqueda = () => {
       ciudadOrigen,
       destino,
       fechaSalida: fechaSalida ? fechaSalida.toISOString() : null,
-      viajeros,
+      viajeros, // 👈 { adultos, menores }
     });
 
     try {
@@ -46,7 +46,7 @@ export const useBusqueda = () => {
           ciudadOrigen,
           destino,
           fechaSalida: fechaSalida ? fechaSalida.toISOString() : null,
-          viajeros,
+          viajeros, // ✅ Se envía como objeto
         }),
       });
 
@@ -65,16 +65,9 @@ export const useBusqueda = () => {
         console.log("📦 Paquetes transformados antes de guardar:", paquetesTransformados);
       }
 
-      // ✅ Guardar resultados transformados
       localStorage.setItem("resultadosBusqueda", JSON.stringify(paquetesTransformados));
-
-      // ✅ Guardar los valores actuales en localStorage
       guardarValoresPrevios();
-
-      // ✅ Limpiar el contexto de formulario
       resetFormulario();
-
-      // ✅ Disparar evento para actualizar el listado y redirigir
       window.dispatchEvent(new Event("actualizarPaquetes"));
       navigate("/paquetes-busqueda");
     } catch (error) {

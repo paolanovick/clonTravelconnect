@@ -17,7 +17,9 @@ export interface Filtros {
   ciudadesDestinoVuelo: string[];
   tipoMoneda: string[];
   ventaOnline: boolean;
+  busquedaNombre: string; // ✅ Nuevo campo agregado
 }
+
 
 export interface Ordenamientos {
   salida: Orden;
@@ -42,7 +44,7 @@ const filtrosIniciales: Filtros = {
   hoteles: [],
   regimenes: [],
   estrellas: [1, 5],
-  precio: [0, 10000],
+  precio: [0, 1000000],
   duracion: [1, 30],
   habitaciones: [],
   serviciosIncluidos: [],
@@ -51,8 +53,8 @@ const filtrosIniciales: Filtros = {
   ciudadesDestinoVuelo: [],
   tipoMoneda: [],
   ventaOnline: false,
+  busquedaNombre: "", // ✅ ← Esto es lo que faltaba
 };
-
 const ordenamientosIniciales: Ordenamientos = {
   salida: null,
   precio: null,

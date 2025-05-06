@@ -23,6 +23,7 @@ const CartaMes: React.FC<CartaMesProps> = ({ paquete, estilos }) => {
   const datosGenerales = useDatosGenerales();
   const [cargando, setCargando] = React.useState(true);
   const { buscarPorId } = useBusquedaPorCarta();
+  
 
   React.useEffect(() => {
     const timer = setTimeout(() => setCargando(false), 1500);

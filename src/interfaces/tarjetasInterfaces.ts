@@ -120,7 +120,6 @@ export interface PaqueteData {
   vuelta_origen_hora?: string | null;
   vuelta_vuelo?: string;
 }
-
 export interface TarjetaPaqueteProps {
   paquete: PaqueteData;
   cargando?: boolean;

@@ -12,9 +12,14 @@ export const filtrarPaquetes = (
   paquetes: PaqueteData[],
   filtros: Filtros
 ): PaqueteData[] => {
-  return paquetes.filter((paquete) =>
-    cumpleFiltrosDeRango(paquete, filtros) &&
-    cumpleFiltrosDeSeleccionMultiple(paquete, filtros) &&
-    cumpleFiltrosBooleanos(paquete, filtros)
-  );
+  return paquetes.filter((paquete) => {
+    const pasaRango = cumpleFiltrosDeRango(paquete, filtros);
+    const pasaMultiple = cumpleFiltrosDeSeleccionMultiple(paquete, filtros);
+    const pasaBooleano = cumpleFiltrosBooleanos(paquete, filtros);
+    const pasaBusquedaNombre = filtros.busquedaNombre.trim() === "" ||
+      paquete.titulo?.toLowerCase().includes(filtros.busquedaNombre.toLowerCase());
+
+    return pasaRango && pasaMultiple && pasaBooleano && pasaBusquedaNombre;
+  });
 };
+
