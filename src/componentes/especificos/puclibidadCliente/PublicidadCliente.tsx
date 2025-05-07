@@ -19,12 +19,12 @@ const PublicidadCliente: React.FC = () => {
   const titulo = publicidadCliente.titulo || "Promociones Especiales";
   const tipografia = "Verdana, Arial, sans-serif";
   const colorTexto =
-    publicidadCliente?.tipografiaColor ||
-    datosGenerales?.colorTipografiaAgencia ||
+    publicidadCliente.tipografiaColor ||
+    datosGenerales.colorTipografiaAgencia ||
     "#000000";
   const colorFlechas =
-    publicidadCliente?.color?.primario ||
-    datosGenerales?.color?.primario ||
+    publicidadCliente.color?.primario ||
+    datosGenerales.color.primario ||
     "#007BFF";
 
   const imagenes = publicidadCliente.imagenes.map(
@@ -37,6 +37,7 @@ const PublicidadCliente: React.FC = () => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    adaptiveHeight: true,
     autoplay: true,
     autoplaySpeed: 3000,
     arrows: !isMobile,
@@ -62,7 +63,7 @@ const PublicidadCliente: React.FC = () => {
         mb: 0,
         borderRadius: "20px",
         position: "relative",
-        '&::before': {
+        "&::before": {
           content: '""',
           position: "absolute",
           top: 0,
@@ -70,8 +71,8 @@ const PublicidadCliente: React.FC = () => {
           right: 0,
           height: 0,
           zIndex: -1,
-          pointerEvents: "none"
-        }
+          pointerEvents: "none",
+        },
       }}
     >
       {/* 🔥 TÍTULO */}
@@ -95,14 +96,14 @@ const PublicidadCliente: React.FC = () => {
         <Slider {...settings} aria-label="Carrusel de imágenes publicitarias">
           {imagenes.map((imagen, index) => (
             <Box key={index} sx={{ display: "flex", justifyContent: "center" }}>
+              
               <img
                 src={imagen}
                 alt={`Publicidad ${index + 1}`}
                 style={{
                   width: "100%",
                   height: "auto",
-                  maxHeight: isMobile ? "300px" : "500px",
-                  objectFit: "cover",
+                  objectFit: "contain",
                   borderRadius: "15px",
                 }}
               />
@@ -116,8 +117,8 @@ const PublicidadCliente: React.FC = () => {
         {`
           .slick-prev, .slick-next {
             z-index: 10;
-            width: ${isMobile ? '40px' : '60px'};
-            height: ${isMobile ? '40px' : '60px'};
+            width: ${isMobile ? "40px" : "60px"};
+            height: ${isMobile ? "40px" : "60px"};
             opacity: 0.7;
             transition: opacity 0.3s ease-in-out;
           }
@@ -125,17 +126,17 @@ const PublicidadCliente: React.FC = () => {
             opacity: 1;
           }
           .slick-prev::before, .slick-next::before {
-            font-size: ${isMobile ? '30px' : '40px'};
+            font-size: ${isMobile ? "30px" : "40px"};
             color: ${colorFlechas};
           }
           .slick-prev {
-            left: ${isMobile ? '5px' : '25px'};
+            left: ${isMobile ? "5px" : "25px"};
           }
           .slick-next {
-            right: ${isMobile ? '5px' : '25px'};
+            right: ${isMobile ? "5px" : "25px"};
           }
           .slick-dots {
-            bottom: ${isMobile ? '-25px' : '-30px'};
+            bottom: ${isMobile ? "-25px" : "-30px"};
           }
           .slick-dots li button:before {
             font-size: 12px;
