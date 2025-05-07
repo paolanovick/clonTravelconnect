@@ -4,7 +4,8 @@ import { Box, CircularProgress, GlobalStyles } from "@mui/material";
 import { useDatosAgencia, useDatosGenerales } from "./contextos/DatosAgenciaContext";
 import AppRoutes from "./routers";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"; // Agregado
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import FaviconSetter from "./componentes/FaviconSetter"; // ajusta la ruta si es distinto
 
 const App: React.FC = () => {
   const { cargando } = useDatosAgencia();
@@ -28,7 +29,11 @@ const App: React.FC = () => {
   }
 
   if (!datosGenerales) {
-    return <Box sx={{ textAlign: "center", mt: 4 }}>No se pudieron cargar los datos de la agencia.</Box>;
+    return (
+      <Box sx={{ textAlign: "center", mt: 4 }}>
+        No se pudieron cargar los datos de la agencia.
+      </Box>
+    );
   }
 
   const fondoColor = datosGenerales.colorFondoApp || "#F5F5F5";
@@ -36,6 +41,7 @@ const App: React.FC = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Router>
+        <FaviconSetter />
         <GlobalStyles
           styles={{
             "html, body, #root": {
@@ -47,7 +53,6 @@ const App: React.FC = () => {
             },
           }}
         />
-
         <Box
           sx={{
             backgroundColor: fondoColor,
