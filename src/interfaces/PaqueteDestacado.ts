@@ -2,8 +2,9 @@ export interface PaqueteDestacado {
   id: number;
   nombre: string;
   descripcion: string;
-  duracion: number; // 🔥 Se asegura que esté presente en todos los usos
+  duracion: number;
   imagen: string;
   precio: number;
   fecha: string;
+  moneda: string; // ✅ Agregado para mostrar tipo de divisa en el componente
 }

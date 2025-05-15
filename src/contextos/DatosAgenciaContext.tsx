@@ -61,10 +61,10 @@ export const useDatosGenerales = () => {
         colorTipografiaAgencia: datosAgencia.colorTipografiaAgencia,
         color: datosAgencia.color,
         colorFondoApp: datosAgencia.colorFondoApp,
+        terminosYCondiciones: datosAgencia.terminosYCondiciones, // ✅ agregado
       }
     : null;
 };
-
 export const useHeader = () => useDatosAgencia().datosAgencia?.header ?? null;
 export const useBuscador = () => useDatosAgencia().datosAgencia?.buscador ?? null;
 export const usePublicidadCliente = () => useDatosAgencia().datosAgencia?.publicidadCliente ?? null;

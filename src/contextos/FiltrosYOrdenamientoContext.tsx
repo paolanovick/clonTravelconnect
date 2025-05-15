@@ -44,7 +44,7 @@ const filtrosIniciales: Filtros = {
   hoteles: [],
   regimenes: [],
   estrellas: [1, 5],
-  precio: [0, 1000000],
+  precio: [0, 100000000],
   duracion: [1, 30],
   habitaciones: [],
   serviciosIncluidos: [],

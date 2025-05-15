@@ -6,13 +6,8 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import InstagramIcon from "@mui/icons-material/Instagram";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import { useFooter, useDatosGenerales } from "../../contextos/DatosAgenciaContext";
-
-const redes = [
-  { icon: <FacebookOutlinedIcon />, link: "#", label: "Facebook" },
-  { icon: <TwitterIcon />, link: "#", label: "Twitter" },
-  { icon: <InstagramIcon />, link: "#", label: "Instagram" },
-];
 
 const DerechaArriba: FunctionComponent = () => {
   const footer = useFooter();
@@ -22,6 +17,38 @@ const DerechaArriba: FunctionComponent = () => {
     footer?.tipografia || datosGenerales?.tipografiaAgencia || "inherit";
   const textoColor =
     footer?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#FFFFFF";
+
+  // Construcción segura del link de WhatsApp
+  const whatsappLink = footer?.redes?.whatsapp;
+  const linkWhatsApp =
+    whatsappLink && whatsappLink.trim().length >= 5
+      ? whatsappLink.startsWith("http")
+        ? whatsappLink.trim()
+        : `https://wa.me/${whatsappLink.replace(/\D/g, "")}`
+      : null;
+
+  const redes = [
+    {
+      icon: <FacebookOutlinedIcon />,
+      link: footer?.redes?.facebook?.trim() || null,
+      label: "Facebook",
+    },
+    {
+      icon: <TwitterIcon />,
+      link: footer?.redes?.twitter?.trim() || null,
+      label: "Twitter",
+    },
+    {
+      icon: <InstagramIcon />,
+      link: footer?.redes?.instagram?.trim() || null,
+      label: "Instagram",
+    },
+    {
+      icon: <WhatsAppIcon />,
+      link: linkWhatsApp,
+      label: "WhatsApp",
+    },
+  ];
 
   return (
     <Box
@@ -117,25 +144,30 @@ const DerechaArriba: FunctionComponent = () => {
           alignItems="center"
           flexWrap="wrap"
         >
-          {redes.map(({ icon, link, label }, index) => (
-            <IconButton
-              key={index}
-              href={link}
-              aria-label={label}
-              sx={{
-                color: textoColor,
-                backgroundColor: "transparent",
-                border: `1px solid ${textoColor}`,
-                "&:hover": {
-                  backgroundColor: "rgba(255, 255, 255, 0.1)",
-                },
-                width: 40,
-                height: 40,
-              }}
-            >
-              {icon}
-            </IconButton>
-          ))}
+          {redes
+            .filter((r) => r.link && r.link.trim().length >= 5)
+            .map(({ icon, link, label }, index) => (
+              <IconButton
+                key={index}
+                component="a"
+                href={link!}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={label}
+                sx={{
+                  color: textoColor,
+                  backgroundColor: "transparent",
+                  border: `1px solid ${textoColor}`,
+                  "&:hover": {
+                    backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  },
+                  width: 40,
+                  height: 40,
+                }}
+              >
+                {icon}
+              </IconButton>
+            ))}
         </Stack>
       </Stack>
     </Box>

@@ -11,6 +11,7 @@ export interface DatosAgencia {
     secundario: string | null;
     terciario: string | null;
   };
+  terminosYCondiciones: string | null;
 
   /** 🔥 Header */
   header: {

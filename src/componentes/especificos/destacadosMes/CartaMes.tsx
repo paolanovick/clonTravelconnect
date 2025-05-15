@@ -23,7 +23,6 @@ const CartaMes: React.FC<CartaMesProps> = ({ paquete, estilos }) => {
   const datosGenerales = useDatosGenerales();
   const [cargando, setCargando] = React.useState(true);
   const { buscarPorId } = useBusquedaPorCarta();
-  
 
   React.useEffect(() => {
     const timer = setTimeout(() => setCargando(false), 1500);
@@ -77,6 +76,7 @@ const CartaMes: React.FC<CartaMesProps> = ({ paquete, estilos }) => {
 
       <CartaMesPrecio
         precio={paquete.precio}
+        moneda={paquete.moneda} // 👈 Campo agregado
         estilos={{
           tarjetaTipografia: estilos.tarjetaTipografia,
           tarjetaTipografiaColor: estilos.tarjetaTipografiaColor,

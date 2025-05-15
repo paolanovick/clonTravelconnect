@@ -5,7 +5,7 @@ import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import PopperOpciones from "./PopperOpciones";
 import ModalConsultar from "./ModalConsultar";
 import ModalReservar from "./ModalReservar";
-import { useTarjetas, useFooter} from "../../../contextos/DatosAgenciaContext"; // Ajustá el path si es necesario
+import { useTarjetas, useFooter, useDatosGenerales } from "../../../contextos/DatosAgenciaContext";
 import { PaqueteData } from "../../../interfaces/tarjetasInterfaces";
 
 interface BotonConsultarProps {
@@ -13,13 +13,13 @@ interface BotonConsultarProps {
   paquete?: PaqueteData;
 }
 
-const BotonConsultar = ({ tipografia = "Arial" ,paquete}: BotonConsultarProps) => {
+const BotonConsultar = ({ tipografia = "Arial", paquete }: BotonConsultarProps) => {
   const tarjeta = useTarjetas();
   const footer = useFooter();
-  
+  const datosGenerales = useDatosGenerales();
 
   const colorPrimario = tarjeta?.color?.primario || "#1976d2";
-  const colorSecundario = tarjeta?.color?.secundario || "#FBC02D"; // ✅ agregado color secundario
+  const colorSecundario = tarjeta?.color?.secundario || "#FBC02D";
   const colorFlechaHover = colorSecundario;
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -33,32 +33,31 @@ const BotonConsultar = ({ tipografia = "Arial" ,paquete}: BotonConsultarProps) =
     setOpcionSeleccionada(opcion);
     setAnchorEl(null);
   };
-  
-const handleClickBoton = () => {
-  const opcion = opcionSeleccionada.toLowerCase();
 
-  if (opcion === "whatsapp") {
-    const nombrePaquete = paquete?.titulo;  // Reemplaza con el nombre real del paquete
-    const idPaquete = paquete?.id;          // Reemplaza con el ID real del paquete
-    const operador = paquete?.usuario;      // Reemplaza con el operador real
+  const handleClickBoton = () => {
+    const opcion = opcionSeleccionada.toLowerCase();
 
-    const mensaje = `Me gustaría conocer más acerca del paquete “${nombrePaquete}” (ID: ${idPaquete}) ofrecido a través de ${operador}.`;
-    const encodedMessage = encodeURIComponent(mensaje);
+    if (opcion === "whatsapp") {
+      const nombrePaquete = paquete?.titulo;
+      const idPaquete = paquete?.id;
+      const operador = paquete?.usuario;
 
-    const numeroWhatsapp = footer?.redes?.whatsapp?.replace(/[^0-9]/g, '');
+      const mensaje = `Me gustaría conocer más acerca del paquete “${nombrePaquete}” (ID: ${idPaquete}) ofrecido a través de ${operador}.`;
+      const encodedMessage = encodeURIComponent(mensaje);
 
-    if (numeroWhatsapp) {
-      window.open(`https://wa.me/${numeroWhatsapp}?text=${encodedMessage}`, "_blank");
-    } else {
-      console.warn("Número de WhatsApp no disponible en footer.redes.whatsapp");
+      const numeroWhatsapp = footer?.redes?.whatsapp?.replace(/[^0-9]/g, '');
+
+      if (numeroWhatsapp) {
+        window.open(`https://wa.me/${numeroWhatsapp}?text=${encodedMessage}`, "_blank");
+      } else {
+        console.warn("Número de WhatsApp no disponible en footer.redes.whatsapp");
+      }
+    } else if (opcion === "consultar") {
+      setOpenModalConsultar(true);
+    } else if (opcion === "reservar") {
+      setOpenModalReservar(true);
     }
-  } else if (opcion === "consultar") {
-    setOpenModalConsultar(true);
-  } else if (opcion === "reservar") {
-    setOpenModalReservar(true);
-  }
-};
-  
+  };
 
   const tipo = opcionSeleccionada.toLowerCase();
   const esWhatsApp = tipo === "whatsapp";
@@ -66,6 +65,9 @@ const handleClickBoton = () => {
 
   const botonColor = esWhatsApp ? "#25D366" : "#fff";
   const textoColor = esWhatsApp ? "#fff" : colorPrimario;
+
+  const idAgencia = datosGenerales?.idAgencia ?? 0;
+  const idPaquete = paquete?.id ?? 0;
 
   return (
     <Box sx={{ position: "relative", width: "100%" }}>
@@ -88,7 +90,7 @@ const handleClickBoton = () => {
               ? "#fff"
               : esConsultarOReservar
               ? colorSecundario
-              : "#FBC02D", // fallback
+              : "#FBC02D",
             color: esWhatsApp
               ? "#25D366"
               : esConsultarOReservar
@@ -149,6 +151,8 @@ const handleClickBoton = () => {
         onClose={() => setOpenModalConsultar(false)}
         colorPrimario={colorPrimario}
         tipografia={tipografia}
+        idAgencia={idAgencia}
+        idPaquete={idPaquete}
       />
 
       <ModalReservar

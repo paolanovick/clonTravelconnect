@@ -2,12 +2,6 @@ import { FunctionComponent } from "react";
 import { Stack, Button, Box } from "@mui/material";
 import { useFooter, useDatosGenerales } from "../../contextos/DatosAgenciaContext";
 
-const menuItems = [
-  { label: "Condiciones Generales", href: "#" },
-  { label: "Botón de Arrepentimiento", href: "#" },
- 
-];
-
 const DerechaAbajo: FunctionComponent = () => {
   const footer = useFooter();
   const datosGenerales = useDatosGenerales();
@@ -18,6 +12,17 @@ const DerechaAbajo: FunctionComponent = () => {
     footer?.tipografiaColor || datosGenerales?.colorTipografiaAgencia || "#FFFFFF";
   const colorHover =
     footer?.color?.secundario || datosGenerales?.color?.secundario;
+
+  const menuItems = [
+    {
+      label: "Condiciones Generales",
+      href: datosGenerales?.terminosYCondiciones || "#", // ✅ URL dinámica
+    },
+    {
+      label: "Botón de Arrepentimiento",
+      href: "#", // Reemplazar por URL real si aplica
+    },
+  ];
 
   return (
     <Box
@@ -40,6 +45,8 @@ const DerechaAbajo: FunctionComponent = () => {
           <Button
             key={index}
             href={item.href}
+            target={item.href !== "#" ? "_blank" : undefined} // ✅ abre en nueva pestaña si tiene URL
+            rel={item.href !== "#" ? "noopener noreferrer" : undefined}
             variant="text"
             sx={{
               color: textoColor,

@@ -7,6 +7,7 @@ export interface AgenciaBackData {
   tipografia_agencia: string | null;
   color_tipografia_agencia: string;
   color_fondo_app: string;
+  terminosycondiciones: string| null;
 
   color: {
     primario: string | null;
@@ -113,6 +114,7 @@ export function transformarAgenciaBackData(data: AgenciaBackData): DatosAgencia 
     tipografiaAgencia: data.tipografia_agencia,
     colorTipografiaAgencia: data.color_tipografia_agencia,
     colorFondoApp: data.color_fondo_app,
+    terminosYCondiciones: data.terminosycondiciones || null, // ✅ agregado
 
     color: {
       primario: data.color?.primario || null,

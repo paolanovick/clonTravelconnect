@@ -11,6 +11,7 @@ interface PaqueteEndpoint {
     doble_precio: string | null;
     fecha_desde: string | null;
   }[];
+  tipo_moneda: string; // 👈 Agregado para capturar la moneda
 }
 
 // Interfaz para el formato esperado por el componente
@@ -21,30 +22,33 @@ export interface PaqueteDestacado {
   precio: number;
   descripcion: string;
   fecha: string;
-  duracion: number; // ✅ Se corrige a `number` en lugar de `string`
+  duracion: number;
+  moneda: string; // 👈 Agregado para mostrar la moneda
 }
 
 // Función para obtener los paquetes destacados
 export const obtenerPaquetesDestacados = async (): Promise<PaqueteDestacado[]> => {
   try {
-    // 🔥 Definir el tipo esperado en la petición
     const response = await axios.get<PaqueteEndpoint[]>("https://triptest.com.ar/get_paquetes");
 
-    // Transformar los datos
+    console.log("Paquetes crudos recibidos:", response.data);
+
     const paquetesTransformados: PaqueteDestacado[] = response.data
-      .slice(0, 20) // Tomar solo los primeros 20 paquetes
+      .slice(0, 20)
       .map((paquete: PaqueteEndpoint) => {
-        // Obtener la primera salida disponible
+        console.log("Paquete individual:", paquete);
+
         const primeraSalida = paquete.salidas?.length > 0 ? paquete.salidas[0] : null;
 
         return {
           id: paquete.id,
           nombre: `${paquete.ciudad}, ${paquete.pais}`,
-          imagen: paquete.imagen_principal || "/placeholder.jpg", // 🔥 Imagen por defecto si es null
-          precio: primeraSalida?.doble_precio ? parseFloat(primeraSalida.doble_precio) : 0, // 🔥 Validación de precio
+          imagen: paquete.imagen_principal || "/placeholder.jpg",
+          precio: primeraSalida?.doble_precio ? parseFloat(primeraSalida.doble_precio) : 0,
           descripcion: `${paquete.cant_noches || 1} noches en ${paquete.ciudad}`,
           fecha: primeraSalida?.fecha_desde || "Fecha no disponible",
-          duracion: paquete.cant_noches || 1, // ✅ Ahora es `number`, no `string`
+          duracion: paquete.cant_noches || 1,
+          moneda: paquete.tipo_moneda || "Desconocida", // 👈 Nuevo campo
         };
       });
 

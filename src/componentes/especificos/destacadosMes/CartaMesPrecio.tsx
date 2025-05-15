@@ -4,6 +4,7 @@ import { useDatosGenerales, useTarjetas } from "../../../contextos/DatosAgenciaC
 
 interface CartaMesPrecioProps {
   precio: number;
+  moneda: string; // 👈 NUEVO
   estilos: {
     tarjetaTipografia: string | null;
     tarjetaTipografiaColor: string | null;
@@ -11,11 +12,10 @@ interface CartaMesPrecioProps {
   };
 }
 
-const CartaMesPrecio: React.FC<CartaMesPrecioProps> = ({ precio, estilos }) => {
+const CartaMesPrecio: React.FC<CartaMesPrecioProps> = ({ precio, moneda, estilos }) => {
   const datosGenerales = useDatosGenerales();
   const tarjetas = useTarjetas();
 
-  // Aplicar fallback en caso de valores null
   const tipografia =
     estilos.tarjetaTipografia || tarjetas?.tipografia || datosGenerales?.tipografiaAgencia || "Arial";
 
@@ -24,6 +24,10 @@ const CartaMesPrecio: React.FC<CartaMesPrecioProps> = ({ precio, estilos }) => {
 
   const colorPrimario =
     estilos.tarjetaColorPrimario || tarjetas?.color?.primario || datosGenerales?.color?.primario || "#FFFFFF";
+
+ // 👇 Normalización robusta
+const monedaNormalizada = moneda.trim().toLowerCase();
+const codigoMoneda = monedaNormalizada.includes("dolar") ? "USD" : "ARS";
 
   return (
     <Box
@@ -53,7 +57,7 @@ const CartaMesPrecio: React.FC<CartaMesPrecioProps> = ({ precio, estilos }) => {
           gap: "4px",
         }}
       >
-        <span style={{ fontFamily: tipografia, color: tipografiaColor }}>ARS</span>
+        <span style={{ fontFamily: tipografia, color: tipografiaColor }}>{codigoMoneda}</span>
         {precio.toLocaleString("es-AR")}
       </Typography>
     </Box>
