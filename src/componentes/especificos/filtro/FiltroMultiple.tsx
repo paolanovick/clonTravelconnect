@@ -1,4 +1,4 @@
-import React from "react"; // ✅ Necesario para JSX.Element / ReactNode
+import React from "react";
 import {
   Box,
   Typography,
@@ -8,7 +8,6 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import { useFiltrosYOrdenamiento } from "../../../contextos/FiltrosYOrdenamientoContext";
 import { useTarjetas } from "../../../contextos/DatosAgenciaContext";
 import PublicIcon from "@mui/icons-material/Public";
 import HotelIcon from "@mui/icons-material/Hotel";
@@ -17,6 +16,7 @@ import KingBedIcon from "@mui/icons-material/KingBed";
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 import FlightIcon from "@mui/icons-material/Flight";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+import { Filtros } from "../../../contextos/FiltrosYOrdenamientoContext";
 
 interface FiltroMultipleProps {
   label: string;
@@ -31,6 +31,8 @@ interface FiltroMultipleProps {
     | "ciudadesDestinoVuelo"
     | "tipoMoneda";
   opciones: string[];
+  filtros: Filtros;
+  setFiltros: (f: Filtros) => void;
 }
 
 const iconos: Record<string, React.ReactNode> = {
@@ -45,8 +47,7 @@ const iconos: Record<string, React.ReactNode> = {
   tipoMoneda: <MonetizationOnIcon fontSize="small" />,
 };
 
-const FiltroMultiple = ({ label, campo, opciones }: FiltroMultipleProps) => {
-  const { filtros, setFiltros } = useFiltrosYOrdenamiento();
+const FiltroMultiple = ({ label, campo, opciones, filtros, setFiltros }: FiltroMultipleProps) => {
   const tarjetas = useTarjetas();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -58,7 +59,7 @@ const FiltroMultiple = ({ label, campo, opciones }: FiltroMultipleProps) => {
       ? seleccionadas.filter((item) => item !== opcion)
       : [...seleccionadas, opcion];
 
-    setFiltros({ [campo]: nuevaLista });
+    setFiltros({ ...filtros, [campo]: nuevaLista });
   };
 
   return (
@@ -72,7 +73,6 @@ const FiltroMultiple = ({ label, campo, opciones }: FiltroMultipleProps) => {
         mb: isMobile ? 3 : 4,
       }}
     >
-      {/* 🔹 Título con ícono */}
       <Typography
         variant="subtitle2"
         sx={{
@@ -88,7 +88,6 @@ const FiltroMultiple = ({ label, campo, opciones }: FiltroMultipleProps) => {
         {iconos[campo]} {label}
       </Typography>
 
-      {/* 🔹 Lista de checkboxes */}
       <FormGroup>
         {opciones.map((opcion) => (
           <FormControlLabel

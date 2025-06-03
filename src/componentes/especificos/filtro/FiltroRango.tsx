@@ -5,17 +5,19 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import { useFiltrosYOrdenamiento } from "../../../contextos/FiltrosYOrdenamientoContext";
 import { useTarjetas } from "../../../contextos/DatosAgenciaContext";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import { Filtros } from "../../../contextos/FiltrosYOrdenamientoContext";
 
 interface FiltroRangoProps {
   label: string;
   campo: "precio" | "duracion" | "estrellas";
   min: number;
   max: number;
+  filtros: Filtros;
+  setFiltros: (f: Filtros) => void;
 }
 
 const iconos = {
@@ -24,8 +26,7 @@ const iconos = {
   estrellas: <StarRateIcon fontSize="small" />,
 };
 
-const FiltroRango = ({ label, campo, min, max }: FiltroRangoProps) => {
-  const { filtros, setFiltros } = useFiltrosYOrdenamiento();
+const FiltroRango = ({ label, campo, min, max, filtros, setFiltros }: FiltroRangoProps) => {
   const tarjetas = useTarjetas();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -33,8 +34,8 @@ const FiltroRango = ({ label, campo, min, max }: FiltroRangoProps) => {
   const valor = filtros[campo];
 
   const handleChange = (_: Event, newValue: number | number[]) => {
-    console.log(`🎛️ Filtro cambiado [${campo}]`, newValue); // ✅ Agregado console log
-    setFiltros({ [campo]: newValue });
+    const nuevosFiltros = { ...filtros, [campo]: newValue };
+    setFiltros(nuevosFiltros);
   };
 
   return (
@@ -49,7 +50,6 @@ const FiltroRango = ({ label, campo, min, max }: FiltroRangoProps) => {
         textAlign: "center",
       }}
     >
-      {/* Ícono + Etiqueta */}
       <Typography
         variant="subtitle2"
         sx={{
@@ -66,7 +66,6 @@ const FiltroRango = ({ label, campo, min, max }: FiltroRangoProps) => {
         {iconos[campo]} {label}
       </Typography>
 
-      {/* Slider */}
       <Slider
         value={valor}
         onChange={handleChange}

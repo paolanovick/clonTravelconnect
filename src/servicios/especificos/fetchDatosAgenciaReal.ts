@@ -6,7 +6,7 @@ export const fetchDatosAgenciaReal = async (): Promise<AgenciaBackData> => {
   const esLocalhost = hostname === "localhost" || hostname === "127.0.0.1";
 
   const url = esLocalhost
-    ? "https://vagu.travelconnect.com.ar/agencia"
+    ? "https:/tuviaje.travelconnect.com.ar/agencia"
     : `${window.location.origin}/agencia`;
 
   const response = await fetch(url, {

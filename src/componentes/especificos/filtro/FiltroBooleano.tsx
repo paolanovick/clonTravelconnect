@@ -6,16 +6,17 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import { useFiltrosYOrdenamiento } from "../../../contextos/FiltrosYOrdenamientoContext";
 import { useTarjetas } from "../../../contextos/DatosAgenciaContext";
+import { Filtros } from "../../../contextos/FiltrosYOrdenamientoContext";
 
 interface FiltroBooleanoProps {
   label: string;
-  campo: "ventaOnline"; // Por ahora es el único campo booleano
+  campo: "ventaOnline";
+  filtros: Filtros;
+  setFiltros: (f: Filtros) => void;
 }
 
-const FiltroBooleano = ({ label, campo }: FiltroBooleanoProps) => {
-  const { filtros, setFiltros } = useFiltrosYOrdenamiento();
+const FiltroBooleano = ({ label, campo, filtros, setFiltros }: FiltroBooleanoProps) => {
   const tarjetas = useTarjetas();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -23,7 +24,7 @@ const FiltroBooleano = ({ label, campo }: FiltroBooleanoProps) => {
   const valor = filtros[campo] as boolean;
 
   const handleToggle = () => {
-    setFiltros({ [campo]: !valor });
+    setFiltros({ ...filtros, [campo]: !valor });
   };
 
   return (

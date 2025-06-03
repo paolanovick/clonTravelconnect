@@ -17,9 +17,8 @@ export interface Filtros {
   ciudadesDestinoVuelo: string[];
   tipoMoneda: string[];
   ventaOnline: boolean;
-  busquedaNombre: string; // ✅ Nuevo campo agregado
+  busquedaNombre: string;
 }
-
 
 export interface Ordenamientos {
   salida: Orden;
@@ -38,8 +37,8 @@ interface FiltrosYOrdenamientoContextType {
   resetFiltrosYOrdenamientos: () => void;
 }
 
-// Estado por defecto
-const filtrosIniciales: Filtros = {
+// ✅ Exportado
+export const filtrosIniciales: Filtros = {
   ciudades: [],
   hoteles: [],
   regimenes: [],
@@ -53,8 +52,9 @@ const filtrosIniciales: Filtros = {
   ciudadesDestinoVuelo: [],
   tipoMoneda: [],
   ventaOnline: false,
-  busquedaNombre: "", // ✅ ← Esto es lo que faltaba
+  busquedaNombre: "",
 };
+
 const ordenamientosIniciales: Ordenamientos = {
   salida: null,
   precio: null,
@@ -63,13 +63,19 @@ const ordenamientosIniciales: Ordenamientos = {
 };
 
 // Contexto
-const FiltrosYOrdenamientoContext = createContext<FiltrosYOrdenamientoContextType | undefined>(undefined);
+const FiltrosYOrdenamientoContext = createContext<FiltrosYOrdenamientoContextType | undefined>(
+  undefined
+);
 
 // Provider
-export const FiltrosYOrdenamientoProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const FiltrosYOrdenamientoProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [filtros, setFiltrosState] = useState<Filtros>(filtrosIniciales);
   const [ordenamientos, setOrdenamientosState] = useState<Ordenamientos>(ordenamientosIniciales);
-  const [prioridadOrdenamientos, setPrioridadOrdenamientos] = useState<(keyof Ordenamientos)[]>([]);
+  const [prioridadOrdenamientos, setPrioridadOrdenamientos] = useState<
+    (keyof Ordenamientos)[]
+  >([]);
 
   const setFiltros = (nuevosFiltros: Partial<Filtros>) => {
     setFiltrosState((prev) => ({ ...prev, ...nuevosFiltros }));
@@ -128,6 +134,7 @@ export const FiltrosYOrdenamientoProvider: React.FC<{ children: React.ReactNode 
 // Hook personalizado
 export const useFiltrosYOrdenamiento = () => {
   const context = useContext(FiltrosYOrdenamientoContext);
-  if (!context) throw new Error("useFiltrosYOrdenamiento debe usarse dentro de FiltrosYOrdenamientoProvider");
+  if (!context)
+    throw new Error("useFiltrosYOrdenamiento debe usarse dentro de FiltrosYOrdenamientoProvider");
   return context;
 };
