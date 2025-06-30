@@ -37,7 +37,7 @@ export const useBusqueda = () => {
     });
 
     try {
-      const response = await fetch("https://triptest.com.ar/paquetes/filtrar", {
+      const response = await fetch("https://travelconnect.com.ar/paquetes/filtrar", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -52,18 +52,14 @@ export const useBusqueda = () => {
 
       let paquetesTransformados = [];
 
-      if (!response.ok) {
         if (response.status === 404) {
           console.warn("⚠️ No se encontraron paquetes para la búsqueda.");
           paquetesTransformados = [{ id: -1, ciudad: "No se encontraron paquetes" }];
-        } else {
-          throw new Error(`Error en la búsqueda. Código de estado: ${response.status}`);
         }
-      } else {
+  
         const data = await response.json();
         paquetesTransformados = data.map(transformarPaqueteDesdeBackend);
         console.log("📦 Paquetes transformados antes de guardar:", paquetesTransformados);
-      }
 
       localStorage.setItem("resultadosBusqueda", JSON.stringify(paquetesTransformados));
       guardarValoresPrevios();

@@ -8,27 +8,27 @@ const SelectorPestanas: React.FC = () => {
   const isExtraSmall = useMediaQuery('(max-width:400px)');
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
   const isMedium = useMediaQuery(theme.breakpoints.down('md'));
-  
+
   const buscador = useBuscador();
   const datosGenerales = useDatosGenerales();
-  
-  // Cambié la opción por defecto a "paquetes"
+
   const [pestanaActiva, setPestanaActiva] = useState("paquetes");
   const [isWrapped, setIsWrapped] = useState(false);
   const [itemsPerRow, setItemsPerRow] = useState(5);
 
-  // Tamaños responsivos mejorados para legibilidad
+  const esVaguViajes = typeof window !== "undefined" && window.location.hostname.includes("vaguviajes.tur.ar");
+
   const getTabSize = () => {
-    if (isExtraSmall) return 90;    // Móviles muy pequeños
-    if (isSmall) return 110;       // Móviles
-    if (isMedium) return 130;      // Tablets
-    return 150;                    // Desktop
+    if (isExtraSmall) return 90;
+    if (isSmall) return 110;
+    if (isMedium) return 130;
+    return 150;
   };
 
   const getFontSize = () => {
-    if (isExtraSmall) return "0.75rem";  // ~12px
-    if (isSmall) return "0.8125rem";     // ~13px
-    return "0.875rem";                  // ~14px
+    if (isExtraSmall) return "0.75rem";
+    if (isSmall) return "0.8125rem";
+    return "0.875rem";
   };
 
   const getIconSize = () => {
@@ -52,11 +52,11 @@ const SelectorPestanas: React.FC = () => {
         const children = Array.from(container.children);
         if (children.length > 0) {
           const firstChildTop = children[0].getBoundingClientRect().top;
-          const isAnyChildWrapped = children.some(child => 
+          const isAnyChildWrapped = children.some(child =>
             child.getBoundingClientRect().top > firstChildTop
           );
           setIsWrapped(isAnyChildWrapped);
-          
+
           const containerWidth = container.clientWidth;
           const calculatedItemsPerRow = Math.max(1, Math.floor(containerWidth / (getTabSize() + 8)));
           setItemsPerRow(calculatedItemsPerRow);
@@ -66,10 +66,7 @@ const SelectorPestanas: React.FC = () => {
 
     checkIfWrapped();
     window.addEventListener('resize', checkIfWrapped);
-    
-    return () => {
-      window.removeEventListener('resize', checkIfWrapped);
-    };
+    return () => window.removeEventListener('resize', checkIfWrapped);
   }, [datosGenerales, isExtraSmall, isSmall, isMedium]);
 
   if (!datosGenerales) return null;
@@ -88,10 +85,10 @@ const SelectorPestanas: React.FC = () => {
 
   const getBorderRadius = (index: number) => {
     if (!isWrapped) return "35px";
-    
+
     const rowStartIndex = Math.floor(index / itemsPerRow) * itemsPerRow;
     const rowEndIndex = Math.min(rowStartIndex + itemsPerRow - 1, opciones.length - 1);
-    
+
     if (index === rowStartIndex && index === rowEndIndex) return "35px";
     if (index === rowStartIndex) return "35px 0 0 35px";
     if (index === rowEndIndex) return "0 35px 35px 0";
@@ -129,63 +126,87 @@ const SelectorPestanas: React.FC = () => {
         }}
         id="tabs-container"
       >
-        {opciones.map((opcion, index) => (
-          <ToggleButton
-            key={opcion.valor}
-            value={opcion.valor}
-            sx={{
-              flex: isWrapped ? `0 0 ${getTabSize()}px` : 1,
-              minWidth: `${getTabSize()}px`,
-              height: "44px",
-              borderRadius: getBorderRadius(index),
-              textTransform: "none",
-              fontSize: getFontSize(),
-              fontWeight: "600",
-              fontFamily: "Poppins, sans-serif",
-              color: pestanaActiva === opcion.valor ? tipografiaColorSeleccionado : "black",
-              backgroundColor: pestanaActiva === opcion.valor ? fondoSeleccionado : "white",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 1,
-              transition: "all 0.3s ease",
-              padding: getPadding(),
-              "&:hover": {
-                backgroundColor: pestanaActiva === opcion.valor ? hoverColor : "#f5f5f5",
-                color: tipografiaColorSeleccionado,
-              },
-              "&.Mui-selected": {
-                backgroundColor: fondoSeleccionado,
-                color: tipografiaColorSeleccionado,
-              },
-              "&.Mui-selected:hover": {
-                backgroundColor: hoverColor,
-                color: tipografiaColorSeleccionado,
-              },
-              marginRight: isWrapped ? "0" : "4px",
-              marginBottom: isWrapped ? "4px" : "0",
-              "&:last-child": {
-                marginRight: "0",
-              },
-            }}
-          >
-            {pestanaActiva === opcion.valor && (
-              <CheckIcon sx={{ fontSize: `${getIconSize()}px` }} />
-            )}
-            <Typography 
-              fontWeight="bold"
-              sx={{
-                fontSize: "inherit",
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                lineHeight: "1.2"
-              }}
+        {opciones.map((opcion, index) => {
+          const isSelected = pestanaActiva === opcion.valor;
+          const commonStyles = {
+            flex: isWrapped ? `0 0 ${getTabSize()}px` : 1,
+            minWidth: `${getTabSize()}px`,
+            height: "44px",
+            borderRadius: getBorderRadius(index),
+            textTransform: "none",
+            fontSize: getFontSize(),
+            fontWeight: "600",
+            fontFamily: "Poppins, sans-serif",
+            color: isSelected ? tipografiaColorSeleccionado : "black",
+            backgroundColor: isSelected ? fondoSeleccionado : "white",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 1,
+            transition: "all 0.3s ease",
+            padding: getPadding(),
+            "&:hover": {
+              backgroundColor: isSelected ? hoverColor : "#f5f5f5",
+              color: tipografiaColorSeleccionado,
+            },
+            marginRight: isWrapped ? "0" : "4px",
+            marginBottom: isWrapped ? "4px" : "0",
+            "&:last-child": {
+              marginRight: "0",
+            },
+          };
+
+          if (opcion.valor === "circuitos" && esVaguViajes) {
+            return (
+              <Box
+                key={opcion.valor}
+                component="a"
+                href="https://incomtour.com.ar/whitelabel/?token=5872a6367a276526266e477bd2a9844f"
+                sx={{
+                  ...commonStyles,
+                  textDecoration: "none",
+                }}
+              >
+                <Typography
+                  fontWeight="bold"
+                  sx={{
+                    fontSize: "inherit",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    lineHeight: "1.2"
+                  }}
+                >
+                  {opcion.label}
+                </Typography>
+              </Box>
+            );
+          }
+
+          return (
+            <ToggleButton
+              key={opcion.valor}
+              value={opcion.valor}
+              sx={commonStyles}
             >
-              {opcion.label}
-            </Typography>
-          </ToggleButton>
-        ))}
+              {isSelected && (
+                <CheckIcon sx={{ fontSize: `${getIconSize()}px` }} />
+              )}
+              <Typography
+                fontWeight="bold"
+                sx={{
+                  fontSize: "inherit",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  lineHeight: "1.2"
+                }}
+              >
+                {opcion.label}
+              </Typography>
+            </ToggleButton>
+          );
+        })}
       </ToggleButtonGroup>
     </Box>
   );

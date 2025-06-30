@@ -29,7 +29,7 @@ export interface PaqueteDestacado {
 // Función para obtener los paquetes destacados
 export const obtenerPaquetesDestacados = async (): Promise<PaqueteDestacado[]> => {
   try {
-    const response = await axios.get<PaqueteEndpoint[]>("https://triptest.com.ar/get_paquetes");
+    const response = await axios.get<PaqueteEndpoint[]>("https://travelconnect.com.ar/get_paquetes");
 
     console.log("Paquetes crudos recibidos:", response.data);
 

@@ -26,8 +26,8 @@ const CartaMesPrecio: React.FC<CartaMesPrecioProps> = ({ precio, moneda, estilos
     estilos.tarjetaColorPrimario || tarjetas?.color?.primario || datosGenerales?.color?.primario || "#FFFFFF";
 
  // 👇 Normalización robusta
-const monedaNormalizada = moneda.trim().toLowerCase();
-const codigoMoneda = monedaNormalizada.includes("dolar") ? "USD" : "ARS";
+const monedaNormalizada = moneda.trim().toUpperCase();
+const codigoMoneda = monedaNormalizada;
 
   return (
     <Box

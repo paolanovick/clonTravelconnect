@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "@mui/material";
+import { Card, Backdrop, CircularProgress } from "@mui/material";
 import { PaqueteDestacado } from "../../../interfaces/PaqueteDestacado";
 import { useTarjetas, useDatosGenerales } from "../../../contextos/DatosAgenciaContext";
 import CartaMesImagen from "./CartaMesImagen";
@@ -21,13 +21,8 @@ interface CartaMesProps {
 const CartaMes: React.FC<CartaMesProps> = ({ paquete, estilos }) => {
   const tarjetas = useTarjetas();
   const datosGenerales = useDatosGenerales();
-  const [cargando, setCargando] = React.useState(true);
+  const [cargando, setCargando] = React.useState(false); // <- inicia en false
   const { buscarPorId } = useBusquedaPorCarta();
-
-  React.useEffect(() => {
-    const timer = setTimeout(() => setCargando(false), 1500);
-    return () => clearTimeout(timer);
-  }, []);
 
   const tipografia =
     estilos.tarjetaTipografia || tarjetas?.tipografia || datosGenerales?.tipografiaAgencia || "Arial";
@@ -35,9 +30,20 @@ const CartaMes: React.FC<CartaMesProps> = ({ paquete, estilos }) => {
   const colorFondo =
     estilos.tarjetaColorSecundario || tarjetas?.color?.secundario || datosGenerales?.color?.secundario || "#f5f5f5";
 
+  const handleClick = async () => {
+    setCargando(true);
+    try {
+      await buscarPorId(paquete.id); // si no es async, quitar await
+      window.scrollTo(0, 0); // <- fuerza scroll al top
+    } catch (error) {
+      console.error("Error al buscar por ID:", error);
+    }
+    setCargando(false); // opcional: puede omitirse si redirige a otra vista
+  };
+
   return (
     <Card
-      onClick={() => buscarPorId(paquete.id)}
+      onClick={handleClick}
       sx={{
         width: "100%",
         minHeight: "100%",
@@ -56,12 +62,13 @@ const CartaMes: React.FC<CartaMesProps> = ({ paquete, estilos }) => {
         flexDirection: "column",
         border: "none",
         outline: "none",
+        position: "relative", // necesario para el Backdrop
       }}
     >
       <CartaMesImagen
         imagen={paquete.imagen || "/imagenes/default-image.jpg"}
         alt={paquete.nombre}
-        cargando={cargando}
+        cargando={false} // ahora el loading real está en la tarjeta
         colorSecundario={colorFondo}
       />
 
@@ -71,18 +78,31 @@ const CartaMes: React.FC<CartaMesProps> = ({ paquete, estilos }) => {
         estilos={{
           tarjetaTipografiaColor: estilos.tarjetaTipografiaColor,
         }}
-        cargando={cargando}
+        cargando={false}
       />
 
       <CartaMesPrecio
         precio={paquete.precio}
-        moneda={paquete.moneda} // 👈 Campo agregado
+        moneda={paquete.moneda}
         estilos={{
           tarjetaTipografia: estilos.tarjetaTipografia,
           tarjetaTipografiaColor: estilos.tarjetaTipografiaColor,
           tarjetaColorPrimario: estilos.tarjetaColorPrimario,
         }}
       />
+
+      <Backdrop
+        open={cargando}
+        sx={{
+          position: "absolute",
+          zIndex: 10,
+          color: "#fff",
+          backgroundColor: "rgba(0, 0, 0, 0.3)",
+          borderRadius: "16px",
+        }}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Card>
   );
 };

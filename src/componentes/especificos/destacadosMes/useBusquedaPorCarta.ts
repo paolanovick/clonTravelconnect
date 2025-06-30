@@ -10,7 +10,7 @@ export const useBusquedaPorCarta = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`https://triptest.com.ar/get_paquete/${idPaquete}`, {
+      const response = await fetch(`https://travelconnect.com.ar/get_paquete/${idPaquete}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

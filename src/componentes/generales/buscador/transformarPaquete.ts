@@ -4,10 +4,12 @@ export const transformarPaqueteDesdeBackend = (paquete: any): PaqueteData => {
   const salidas: SalidaData[] = paquete.salidas || [];
   const mejorSalida: SalidaData  = salidas[0];
 
-  // ✅ Calculamos los valores necesarios para filtros y visualización
-  const tarifa = Math.round(mejorSalida?.single_precio || 0);
-const impuestos = Math.round(mejorSalida?.single_impuesto || 0);
-const total = tarifa + impuestos;
+  // ✅ Calculamos los valores necesarios para filtros y visualizació
+
+const tarifa = Math.round(paquete.tarifa|| 0);
+const impuestos = Math.round(paquete.impuestos || 0);
+const total = tarifa + impuestos;
+ 
 
   return {
     id: paquete.id, // ya es number

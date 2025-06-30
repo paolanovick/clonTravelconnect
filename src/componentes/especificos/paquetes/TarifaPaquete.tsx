@@ -28,7 +28,7 @@ const TarifaPaquete = ({ tarifa, impuestos, total, wp, divisa, cargando = false 
     if (!divisaRaw) return "USD";
     const valor = divisaRaw.toLowerCase();
     if (valor.includes("peso")) return "ARS";
-    if (valor.includes("dólar") || valor.includes("dolar")) return "USD";
+    if (valor.includes("dólar") || valor.includes("USD")) return "USD";
     return divisaRaw.toUpperCase(); // fallback
   };
 

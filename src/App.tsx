@@ -5,7 +5,8 @@ import { useDatosAgencia, useDatosGenerales } from "./contextos/DatosAgenciaCont
 import AppRoutes from "./routers";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import FaviconSetter from "./componentes/FaviconSetter"; // ajusta la ruta si es distinto
+import FaviconSetter from "./componentes/FaviconSetter";
+import ScrollToTop from "./componentes/generales/ScrollToTop"; // 🆕 import
 
 const App: React.FC = () => {
   const { cargando } = useDatosAgencia();
@@ -42,6 +43,7 @@ const App: React.FC = () => {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Router>
         <FaviconSetter />
+        <ScrollToTop /> {/* 🆕 Scroll automático al cambiar ruta */}
         <GlobalStyles
           styles={{
             "html, body, #root": {
