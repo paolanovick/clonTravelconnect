@@ -1,10 +1,18 @@
+import { SalidaData } from "./PaqueteData";
+
 export interface PaqueteDestacado {
   id: number;
   nombre: string;
-  descripcion: string;
-  duracion: number;
-  imagen: string;
+  descripcion?: string;
   precio: number;
-  fecha: string;
-  moneda: string; // ✅ Agregado para mostrar tipo de divisa en el componente
+
+  /** 🔁 Derivados o transformados */
+  duracion?: number;          // Ej: cantidad de noches
+  imagen?: string;            // Imagen principal (si se usa)
+  fecha?: string;             // fecha_salida de la primera salida
+  moneda?: string;            // Ej: "ARS", "USD"
+
+  /** 🔗 Datos opcionales */
+  usuario_id?: number;
+  salidas?: SalidaData[];     // Ya definido en tu modelo
 }

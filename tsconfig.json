@@ -11,8 +11,21 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "strict": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "module": "ESNext", // ✅ Recomendado para Vite
+    "baseUrl": ".",     // ✅ Alias base
+    "paths": {
+      "@components/*": ["components/*"],
+      "@context/*": ["context/*"],
+      "@hooks/*": ["hooks/*"],
+      "@interfaces/*": ["interfaces/*"],
+      "@services/*": ["services/*"],
+      "@pages/*": ["pages/*"],
+      "@data/*": ["data/*"],
+      "@utils/*": ["utils/*"],
+      "@assets/*": ["assets/*"]
+    }
   },
-  "include": ["src"],
+  "include": ["."], // ✅ Incluye todo
   "exclude": ["node_modules"]
 }

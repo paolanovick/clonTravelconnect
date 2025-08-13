@@ -1,10 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import { DatosAgenciaProvider } from "./contextos/DatosAgenciaContext"; // ✅ Contexto principal
-import { PaquetesProvider } from "./contextos/PaquetesContext"; // ✅ Contexto de paquetes
-import { FormularioProvider } from "./contextos/FormularioContext"; // ✅ Nuevo contexto de formulario
-import { FiltrosYOrdenamientoProvider } from "./contextos/FiltrosYOrdenamientoContext";
+
+// ✅ Contextos correctamente corregidos según estructura
+import { DatosAgenciaProvider } from "./contextos/agencia/DatosAgenciaContext";
+import { PaquetesProvider } from "./contextos/paquetes/PaquetesContext";
+import { FormularioProvider } from "./contextos/formulario/FormularioContext";
+import { FiltrosYOrdenamientoProvider } from "./contextos/filtro/FiltrosYOrdenamientoContext";
+
 // Obtener el elemento root
 const rootElement = document.getElementById("root");
 

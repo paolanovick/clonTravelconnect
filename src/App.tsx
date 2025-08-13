@@ -1,12 +1,12 @@
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Box, CircularProgress, GlobalStyles } from "@mui/material";
-import { useDatosAgencia, useDatosGenerales } from "./contextos/DatosAgenciaContext";
+import { useDatosAgencia, useDatosGenerales } from "./contextos/agencia/DatosAgenciaContext";
 import AppRoutes from "./routers";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import FaviconSetter from "./componentes/FaviconSetter";
-import ScrollToTop from "./componentes/generales/ScrollToTop"; // 🆕 import
+import FaviconSetter from "./components/FaviconSetter";
+import ScrollToTop from "./components/ScrollToTop"; // 🆕 import
 
 const App: React.FC = () => {
   const { cargando } = useDatosAgencia();
