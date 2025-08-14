@@ -154,7 +154,10 @@ const BotonConsultar = ({ tipografia = "Arial", paquete }: BotonConsultarProps) 
         onClose={() => setOpenModalReservar(false)}
         colorPrimario={colorPrimario}
         tipografia={tipografia}
-      />
+        idAgencia={idAgencia}
+        idPaquete={idPaquete}
+/>
+
     </Box>
   );
 };

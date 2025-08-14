@@ -15,22 +15,7 @@ interface TarifaPaqueteProps {
 }
 
 const TarifaPaquete = ({ tarifa, impuestos, total, wp, divisa, cargando = false }: TarifaPaqueteProps) => {
-  if (import.meta.env.DEV) {
-    // eslint-disable-next-line no-console
-    console.log("TARIFA@props:", {
-      tarifa,
-      impuestos,
-      total,
-      divisa,
-      tipos: {
-        tarifa: typeof tarifa,
-        impuestos: typeof impuestos,
-        total: typeof total,
-        divisa: typeof divisa,
-      },
-      paqueteId: wp?.id,
-    });
-  }
+
 
   const tarjetas = useTarjetas();
   const datosGenerales = useDatosGenerales();

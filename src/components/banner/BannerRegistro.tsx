@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import {
   Box,
   Typography,
@@ -13,6 +13,7 @@ import {
   useBannerRegistro,
   useDatosGenerales,
 } from "../../contextos/agencia/DatosAgenciaContext";
+import { registerEmail } from "../../services/agencia/registroEmailService";
 
 const BannerRegistro: React.FC = () => {
   const bannerRegistro = useBannerRegistro();
@@ -28,6 +29,50 @@ const BannerRegistro: React.FC = () => {
     datosGenerales?.colorTipografiaAgencia ||
     "#FFFFFF";
   const colorSecundario = bannerRegistro?.color?.secundario || "#C70039";
+
+  // 🆔 Obtener agenciaId desde el contexto (admite idAgencia string o agencia_id number)
+  const agenciaId = useMemo(() => {
+    const raw =
+      (datosGenerales as any)?.agencia_id ?? (datosGenerales as any)?.idAgencia;
+    const n = Number(raw);
+    return Number.isFinite(n) ? n : undefined;
+  }, [datosGenerales]);
+
+  // 📧 Estados locales (sin modificar estética)
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [fieldError, setFieldError] = useState<string | null>(null);
+
+  const validarEmail = (v: string) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim().toLowerCase());
+
+  const handleSubmit = async () => {
+    setFieldError(null);
+
+    if (!agenciaId) {
+      setFieldError("Agencia no disponible.");
+      return;
+    }
+    if (!validarEmail(email)) {
+      setFieldError("Ingresá un email válido.");
+      return;
+    }
+
+    setLoading(true);
+    const res = await registerEmail(agenciaId, email.trim().toLowerCase());
+    setLoading(false);
+
+    if (res.type === "success") {
+      setEmail("");
+      setFieldError(null);
+    } else if (res.type === "duplicate") {
+      setFieldError("El email ya está registrado para esta agencia.");
+    } else if (res.type === "validation") {
+      setFieldError(res.fieldErrors?.[0] || "Email inválido.");
+    } else {
+      setFieldError(res.message || "No se pudo registrar el email.");
+    }
+  };
 
   return (
     <Box
@@ -78,13 +123,12 @@ const BannerRegistro: React.FC = () => {
                   maxWidth: "600px",
                 }}
               >
-                {bannerRegistro?.titulo ||
-                  "Registrate por Ofertas Exclusivas"}
+                {bannerRegistro?.titulo || "Registrate por Ofertas Exclusivas"}
               </Typography>
             </Box>
           </Grid>
 
-          {/* 🔥 Input + Botón */}
+          {/* 🔥 Input + Botón (misma estética) */}
           <Grid item xs={12} md={6}>
             <Box
               sx={{
@@ -107,6 +151,13 @@ const BannerRegistro: React.FC = () => {
                   placeholder="Ingrese su email aquí"
                   variant="outlined"
                   size="small"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !loading) handleSubmit();
+                  }}
+                  error={Boolean(fieldError)}
+                  helperText={fieldError || " "}
                   sx={{
                     backgroundColor: "white",
                     borderRadius: "25px",
@@ -136,6 +187,8 @@ const BannerRegistro: React.FC = () => {
 
               <Button
                 variant="outlined"
+                onClick={handleSubmit}
+                disabled={loading || !email.trim() || !agenciaId}
                 sx={{
                   width: { xs: "100%", sm: "auto" },
                   whiteSpace: "nowrap",
@@ -156,7 +209,7 @@ const BannerRegistro: React.FC = () => {
                   },
                 }}
               >
-                Registrarme!
+                {loading ? "Enviando..." : "Registrarme!"}
               </Button>
             </Box>
           </Grid>
