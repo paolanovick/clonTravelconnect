@@ -8,7 +8,7 @@ import {
   useFooter,
 } from "../../contextos/agencia/DatosAgenciaContext";
 
-// Importación de estilos para el carrusel
+// Estilos del carrusel
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -25,7 +25,7 @@ const PublicidadCliente: React.FC = () => {
 
   const titulo = publicidadCliente.titulo || "Promociones Especiales";
 
-  /** 🔹 Tipografía y color del título desde tarjeta > agencia > fallback */
+  // Tipografía y color del título desde tarjeta > agencia > fallback
   const tipografia =
     tarjetas?.tipografia ||
     datosGenerales?.tipografiaAgencia ||
@@ -38,23 +38,30 @@ const PublicidadCliente: React.FC = () => {
 
   const colorFlechas =
     publicidadCliente.color?.primario ||
-    datosGenerales.color.primario ||
+    datosGenerales?.color?.primario ||
     "#007BFF";
 
-  const imagenes = publicidadCliente.imagenes.map(
-    (img) => img || "/public/default-placeholder.jpg"
-  );
+  // ✅ Tomar solo imágenes válidas (string no vacío). No completamos con placeholders.
+  const imagenes: string[] = (publicidadCliente.imagenes ?? [])
+    .filter((src): src is string => typeof src === "string")
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0);
 
+  // Si no hay imágenes válidas, no renderizar el bloque
+  if (imagenes.length === 0) return null;
+
+  // Ajustes del slider según la cantidad real de imágenes
+  const multiples = imagenes.length > 1;
   const settings = {
-    dots: true,
-    infinite: true,
+    dots: multiples,
+    infinite: multiples,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     adaptiveHeight: true,
-    autoplay: true,
+    autoplay: multiples,
     autoplaySpeed: 3000,
-    arrows: !isMobile,
+    arrows: !isMobile && multiples,
     responsive: [
       {
         breakpoint: 600,
@@ -71,7 +78,11 @@ const PublicidadCliente: React.FC = () => {
     const encodedMessage = encodeURIComponent(mensaje);
 
     if (numeroWhatsapp) {
-      window.open(`https://wa.me/${numeroWhatsapp}?text=${encodedMessage}`, "_blank");
+      window.open(
+        `https://wa.me/${numeroWhatsapp}?text=${encodedMessage}`,
+        "_blank",
+        "noopener,noreferrer"
+      );
     } else {
       console.warn("Número de WhatsApp no disponible en footer.redes.whatsapp");
     }
@@ -91,7 +102,7 @@ const PublicidadCliente: React.FC = () => {
         position: "relative",
       }}
     >
-      {/* 🔥 TÍTULO */}
+      {/* Título */}
       <Typography
         variant="h4"
         sx={{
@@ -99,7 +110,7 @@ const PublicidadCliente: React.FC = () => {
           fontSize: isMobile ? "2.5rem" : "5rem",
           fontWeight: "bold",
           color: colorTexto,
-          marginBottom: "20px",
+          mb: "20px",
           textTransform: "uppercase",
           letterSpacing: "2px",
         }}
@@ -107,18 +118,19 @@ const PublicidadCliente: React.FC = () => {
         {titulo}
       </Typography>
 
-      {/* 🔥 CARRUSEL */}
+      {/* Carrusel */}
       <Box sx={{ position: "relative", zIndex: 1 }}>
         <Slider {...settings} aria-label="Carrusel de imágenes publicitarias">
-          {imagenes.map((imagen, index) => (
+          {imagenes.map((src, index) => (
             <Box
-              key={index}
+              key={`${src}-${index}`}
               sx={{ display: "flex", justifyContent: "center", cursor: "pointer" }}
               onClick={handleClickImagen}
             >
               <img
-                src={imagen}
+                src={src}
                 alt={`Publicidad ${index + 1}`}
+                loading="lazy"
                 style={{
                   width: "100%",
                   height: "auto",
@@ -131,7 +143,7 @@ const PublicidadCliente: React.FC = () => {
         </Slider>
       </Box>
 
-      {/* 🔥 ESTILOS SLICK PERSONALIZADOS */}
+      {/* Estilos slick personalizados */}
       <style>
         {`
           .slick-prev, .slick-next {
