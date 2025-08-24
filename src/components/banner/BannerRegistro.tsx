@@ -15,6 +15,8 @@ import {
 } from "../../contextos/agencia/DatosAgenciaContext";
 import { registerEmail } from "../../services/agencia/registroEmailService";
 
+const HEIGHT = 44; // altura uniforme para input y botón
+
 const BannerRegistro: React.FC = () => {
   const bannerRegistro = useBannerRegistro();
   const datosGenerales = useDatosGenerales();
@@ -23,7 +25,7 @@ const BannerRegistro: React.FC = () => {
     bannerRegistro?.color?.primario ||
     datosGenerales?.color?.primario ||
     "#FF5733";
-  const tipografia = datosGenerales?.tipografiaAgencia || "Arial";
+  const tipografia = datosGenerales?.tipografiaAgencia || "Arial, sans-serif";
   const tipografiaColor =
     bannerRegistro?.tipografiaColor ||
     datosGenerales?.colorTipografiaAgencia ||
@@ -38,7 +40,7 @@ const BannerRegistro: React.FC = () => {
     return Number.isFinite(n) ? n : undefined;
   }, [datosGenerales]);
 
-  // 📧 Estados locales (sin modificar estética)
+  // 📧 Estados locales
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [fieldError, setFieldError] = useState<string | null>(null);
@@ -80,18 +82,13 @@ const BannerRegistro: React.FC = () => {
         width: "100vw",
         backgroundColor: fondoColor,
         py: { xs: 5, sm: 6, md: 8 },
-        px: 0, // ✅ quitamos el padding externo para permitir centrado real
+        px: 0,
         display: "flex",
         justifyContent: "center",
+        overflowX: "hidden", // evita scroll lateral por 100vw
       }}
     >
-      <Container
-        maxWidth="lg"
-        disableGutters
-        sx={{
-          px: { xs: 2, sm: 4 }, // ✅ aplicamos padding interno dentro del container
-        }}
-      >
+      <Container maxWidth="lg" disableGutters sx={{ px: { xs: 2, sm: 4 } }}>
         <Grid
           container
           spacing={{ xs: 4, sm: 5 }}
@@ -128,24 +125,21 @@ const BannerRegistro: React.FC = () => {
             </Box>
           </Grid>
 
-          {/* 🔥 Input + Botón (misma estética) */}
+          {/* 🔥 Input + Botón */}
           <Grid item xs={12} md={6}>
             <Box
               sx={{
                 display: "flex",
                 flexDirection: { xs: "column", sm: "row" },
                 alignItems: "center",
-                justifyContent: {
-                  xs: "center",
-                  md: "center",
-                  lg: "flex-end",
-                },
+                justifyContent: { xs: "center", md: "center", lg: "flex-end" },
                 gap: { xs: 2, sm: 2.5 },
                 width: "100%",
                 maxWidth: "100%",
               }}
             >
-              <Box sx={{ width: { xs: "100%", sm: "auto" } }}>
+              {/* Campo de email */}
+              <Box sx={{ width: { xs: "100%", sm: "auto" }, minWidth: { sm: 320 } }}>
                 <TextField
                   fullWidth
                   placeholder="Ingrese su email aquí"
@@ -156,62 +150,95 @@ const BannerRegistro: React.FC = () => {
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && !loading) handleSubmit();
                   }}
+                  // no usamos helperText para no desalinear
                   error={Boolean(fieldError)}
-                  helperText={fieldError || " "}
+                  inputProps={{ "aria-label": "Email" }}
                   sx={{
-                    backgroundColor: "white",
-                    borderRadius: "25px",
                     "& .MuiOutlinedInput-root": {
-                      borderRadius: "25px",
+                      backgroundColor: "#fff",
+                      borderRadius: "999px",
                       color: "#333",
+                      height: HEIGHT, // altura fija
+                      "& .MuiOutlinedInput-notchedOutline": { borderColor: "transparent" },
+                      "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "#ccc" },
+                      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                        borderColor: colorSecundario,
+                      },
                     },
-                    "& .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "transparent",
+                    "& .MuiOutlinedInput-input": {
+                      padding: 0, // centrado vertical usando la altura fija
+                      height: "100%",
                     },
-                    "&:hover .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "#ccc",
-                    },
-                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                      borderColor: colorSecundario,
+                    "& .MuiInputAdornment-root": {
+                      background: "transparent",
+                      padding: 0,
+                      margin: 0,
+                      marginLeft: 1,
+                      "& .MuiSvgIcon-root": {
+                        color: "#666",
+                        fontSize: 20,
+                      },
                     },
                   }}
                   InputProps={{
                     startAdornment: (
-                      <InputAdornment position="start">
-                        <EmailIcon sx={{ color: "#666" }} />
+                      <InputAdornment position="start" disablePointerEvents>
+                        <EmailIcon />
                       </InputAdornment>
                     ),
+                    autoComplete: "email",
+                    inputMode: "email",
                   }}
                 />
               </Box>
 
+              {/* Botón */}
               <Button
                 variant="outlined"
                 onClick={handleSubmit}
                 disabled={loading || !email.trim() || !agenciaId}
                 sx={{
+                  height: HEIGHT, // misma altura que el input
+                  lineHeight: `${HEIGHT}px`,
                   width: { xs: "100%", sm: "auto" },
                   whiteSpace: "nowrap",
-                  borderRadius: "50px",
-                  padding: "12px 28px",
+                  borderRadius: "999px",
+                  px: 3.5,
                   fontSize: "16px",
                   fontWeight: "bold",
                   textTransform: "none",
                   border: `3px solid ${tipografiaColor}`,
                   color: tipografiaColor,
                   backgroundColor: "transparent",
-                  transition:
-                    "background-color 0.3s ease-in-out, transform 0.2s ease-in-out",
+                  transition: "background-color 0.25s ease, transform 0.15s ease",
                   "&:hover": {
                     backgroundColor: tipografiaColor,
                     color: fondoColor,
-                    transform: "scale(1.05)",
+                    transform: "translateY(-1px)",
                   },
+                  "&:active": { transform: "translateY(0)" },
                 }}
               >
                 {loading ? "Enviando..." : "Registrarme!"}
               </Button>
             </Box>
+
+            {/* Mensaje de error (no afecta altura de la fila) */}
+            {fieldError && (
+              <Typography
+                variant="caption"
+                role="alert"
+                sx={{
+                  display: "block",
+                  mt: 1,
+                  color: "#fff",
+                  opacity: 0.9,
+                  textAlign: { xs: "center", md: "center", lg: "right" },
+                }}
+              >
+                {fieldError}
+              </Typography>
+            )}
           </Grid>
         </Grid>
       </Container>

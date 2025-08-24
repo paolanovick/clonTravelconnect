@@ -17,8 +17,8 @@ export const fetchDatosAgenciaReal = async (): Promise<AgenciaBackData> => {
   const esLocalhost = hostname === "localhost" || hostname === "127.0.0.1";
 
   const url = esLocalhost
-    ? `${window.location.origin}/agencia2` 
-    : 'https://tuviaje.travelconnect.com.ar/agencia2';
+    ? 'https://ezezeze.travelconnect.com.ar/agencia2' 
+    : `${window.location.origin}/agencia2`;
 
   const response = await fetch(url, { headers: { Accept: "application/json" } });
   if (!response.ok) throw new Error("No se pudo obtener la información de la agencia");

@@ -36,9 +36,39 @@ const SalidasContent: React.FC<SalidasContentProps> = ({
   const mostrarCampo = (valor?: number): boolean =>
     typeof valor === "number" && Number.isFinite(valor) && valor !== 0;
 
+  // --- Normalización de moneda ---
+  const normalizeCurrencyCode = (c?: string): string => {
+    if (!c) return "ARS";
+    const raw = c.trim();
+    const upper = raw.toUpperCase();
+
+    // Variantes comunes de "peso" → ARS
+    const pesoHints = ["PESO", "PESOS"];
+    const pesoSymbols = ["ARS$", "$", "AR$", "ARG$", "$ARS", "ARS $"];
+
+    if (pesoHints.some((h) => upper.includes(h))) return "ARS";
+    if (pesoSymbols.includes(upper)) return "ARS";
+
+    // Si viene ya como código, lo dejamos en mayúsculas
+    return upper;
+  };
+
+  const safeCurrency = normalizeCurrencyCode(currency);
+
   const formatearMoneda = (valor?: number): string => {
     const n = typeof valor === "number" && Number.isFinite(valor) ? valor : 0;
-    return new Intl.NumberFormat("es-AR", { style: "currency", currency }).format(n);
+    try {
+      // Si safeCurrency no es ISO válido, esto tiraría; capturamos y hacemos fallback
+      return new Intl.NumberFormat("es-AR", { style: "currency", currency: safeCurrency }).format(n);
+    } catch {
+      // Fallback duro a ARS si igualmente fue inválido
+      try {
+        return new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS" }).format(n);
+      } catch {
+        // Último recurso: número plano
+        return new Intl.NumberFormat("es-AR").format(n);
+      }
+    }
   };
 
   const labels: Record<TipoHabitacion, string> = {
@@ -95,7 +125,7 @@ const SalidasContent: React.FC<SalidasContentProps> = ({
           labels={labels}
           campoLabels={campoLabels}
           mostrarCampo={mostrarCampo}
-          formatearUSD={formatearMoneda}
+          formatearUSD={formatearMoneda} // mantiene la firma esperada por TarjetaSalida
           colorPrimario={colorPrimario}
           colorTexto={colorTexto}
           tipografia={tipografia}
