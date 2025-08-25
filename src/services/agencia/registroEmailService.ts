@@ -31,7 +31,7 @@ export async function registerEmail(
 ): Promise<RegistroEmailResponse> {
   try {
     const res = await fetch(
-      "https://travelconnect.com.ar/agencias/registrar-email",
+      "https://travelconnect.com.ar/registrar-email",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
