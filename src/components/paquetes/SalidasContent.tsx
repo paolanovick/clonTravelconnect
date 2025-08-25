@@ -10,6 +10,7 @@ type CampoPrecio = "precio" | "impuesto" | "otro" | "otro2";
 
 interface SalidasContentProps {
   salidas?: Salida[];
+  /** ⚠️ Se mantiene por compatibilidad, pero no se renderiza */
   fechaSalida?: string;
   currency?: string;
   /** Fallback desde el paquete (ej: "Aéreo", "Bus") */
@@ -18,7 +19,8 @@ interface SalidasContentProps {
 
 const SalidasContent: React.FC<SalidasContentProps> = ({
   salidas,
-  fechaSalida,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  fechaSalida: _fechaSalida, // mantenido pero NO usado
   currency = "USD",
   transportePaquete,
 }) => {
@@ -58,14 +60,11 @@ const SalidasContent: React.FC<SalidasContentProps> = ({
   const formatearMoneda = (valor?: number): string => {
     const n = typeof valor === "number" && Number.isFinite(valor) ? valor : 0;
     try {
-      // Si safeCurrency no es ISO válido, esto tiraría; capturamos y hacemos fallback
       return new Intl.NumberFormat("es-AR", { style: "currency", currency: safeCurrency }).format(n);
     } catch {
-      // Fallback duro a ARS si igualmente fue inválido
       try {
         return new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS" }).format(n);
       } catch {
-        // Último recurso: número plano
         return new Intl.NumberFormat("es-AR").format(n);
       }
     }
@@ -89,31 +88,9 @@ const SalidasContent: React.FC<SalidasContentProps> = ({
     otro2: "Otro 2",
   };
 
-  // 🔒 Solo mostrar la leyenda cuando hay una fecha real (evita "Fecha no disponible")
-  const mostrarFecha =
-    !!fechaSalida &&
-    fechaSalida.trim().length > 0 &&
-    fechaSalida.toLowerCase() !== "fecha no disponible";
-
   return (
     <Box sx={{ mt: 2, px: 2 }}>
-      {mostrarFecha && (
-        <Typography
-          variant="h6"
-          sx={{
-            fontWeight: "bold",
-            color: colorPrimario,
-            fontFamily: tipografia,
-            mb: 2,
-            fontSize: "1.4rem",
-          }}
-        >
-          Fecha del viaje:{" "}
-          <Box component="span" sx={{ color: colorTexto, fontWeight: 600 }}>
-            {fechaSalida}
-          </Box>
-        </Typography>
-      )}
+      {/* ❌ Se elimina por completo la renderización de "Fecha del viaje" */}
 
       <Divider sx={{ mb: 2 }} />
 
