@@ -1,6 +1,6 @@
 import { DatosAgencia } from "../../interfaces/datosAgencia";
 import { transformarAgenciaBackData } from "../../utils/transformers/transformarAgenciaBackData";
-import { fetchDatosAgenciaReal } from "./fetchDatosAgenciaReal";
+import { fetchDatosAgenciaReal } from "./fetchDatosAgenciaRealAux";
 import type { AgenciaBackData } from "../../interfaces/AgenciaBackData";
 
 export const fetchDatosAgencia = async (): Promise<DatosAgencia> => {
