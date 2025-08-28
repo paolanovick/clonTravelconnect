@@ -34,9 +34,12 @@ const DestacadosDelMes: React.FC = () => {
           mt: 8,
           mb: 5,
           width: "100%",
-          px: 2,
-          maxWidth: "1600px",
+          px: 0,
+          maxWidth: "1200px",
           mx: "auto",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
         <motion.div

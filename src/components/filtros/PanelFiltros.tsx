@@ -32,9 +32,10 @@ const PanelFiltros = () => {
         justifyContent: "center",
         width: "100%",
         maxWidth: "900px",
-        p: { xs: 3, md: 4 },
-        m: "0 auto",
-        gap: 3,
+        p: { xs: 0.5, sm: 1, md: 2 },
+        mx: "auto",
+        my: 0,
+        gap: { xs: 1.5, sm: 2, md: 3 },
       }}
     >
       <FiltroBusqueda />

@@ -88,22 +88,26 @@ const ContenedorCartasMes: React.FC = () => {
         alignItems: "center",
         gap: 3,
         width: "100%",
-        maxWidth: { xs: "95%", sm: "90%", md: "85%", lg: "1600px" },
+        maxWidth: { xs: "100%", sm: "95%", md: "90%", lg: "1200px" },
         margin: "0 auto",
         overflow: "hidden",
         backgroundColor: "transparent",
+        px: 0,
       }}
     >
       {paquetes.length > 0 ? (
         <>
           <Grid
             container
-            spacing={3}
+            spacing={{ xs: 0, sm: 3 }}
             justifyContent="center"
             sx={{
               width: "100%",
-              maxWidth: { xs: "100%", sm: "95%", md: "90%", lg: "1600px" },
+              maxWidth: { xs: "100%", sm: "95%", md: "90%", lg: "1200px" },
               alignItems: "stretch",
+              margin: "0 auto",
+              px: 0,
+              mx: 0,
             }}
           >
             {paquetes.map((paquete, index) => (
@@ -126,6 +130,7 @@ const ContenedorCartasMes: React.FC = () => {
                     "0%": { opacity: 0, transform: "translateY(20px)" },
                     "100%": { opacity: 1, transform: "translateY(0)" },
                   },
+                  px: { xs: 2, sm: 0 },
                 }}
               >
                 <CartaMes paquete={paquete} />

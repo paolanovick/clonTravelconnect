@@ -43,7 +43,7 @@ const FiltroBusqueda = () => {
     <Box
       sx={{
         backgroundColor: colorFondo,
-        padding: esMobile ? 1.5 : 2.5,
+        padding: { xs: 1, sm: 1.5, md: 2 },
         borderRadius: 4,
         boxShadow: "0px 4px 8px rgba(0,0,0,0.3)",
         width: "100%",
@@ -51,7 +51,7 @@ const FiltroBusqueda = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: 1.5,
+        gap: { xs: 1, sm: 1.5 },
       }}
     >
       {/* Encabezado interactivo */}
@@ -67,19 +67,19 @@ const FiltroBusqueda = () => {
           color: colorTexto,
           fontWeight: "bold",
           fontFamily: "Verdana, sans-serif",
-          fontSize: esMobile ? "0.8rem" : "0.9rem",
+          fontSize: { xs: "0.7rem", sm: "0.8rem", md: "0.9rem" },
           cursor: esMobile ? "pointer" : "default",
           borderRadius: "999px",
           backgroundColor: esMobile ? `${colorFondo}dd` : "transparent",
-          px: 2,
-          py: 1,
+          px: { xs: 1, sm: 1.5 },
+          py: { xs: 0.5, sm: 0.8 },
           transition: "all 0.3s ease",
           "&:hover": {
             backgroundColor: esMobile ? `${colorFondo}f2` : "inherit",
           },
         }}
       >
-        <SearchIcon sx={{ fontSize: esMobile ? 18 : 22 }} />
+        <SearchIcon sx={{ fontSize: { xs: 16, sm: 18, md: 22 } }} />
         Filtrar por Nombres
       </Box>
 

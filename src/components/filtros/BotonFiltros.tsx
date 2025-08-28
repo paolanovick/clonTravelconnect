@@ -19,7 +19,7 @@ import { useTarjetas, useDatosGenerales } from "../../contextos/agencia/DatosAge
 const BotonFiltros = () => {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const { filtros } = useFiltrosYOrdenamiento();
 
@@ -63,7 +63,8 @@ const BotonFiltros = () => {
                 color: colorTexto,
                 "&:hover": { backgroundColor: `${colorPrimario}cc` },
                 borderRadius: "50%",
-                p: 1.2,
+                p: { xs: 1.5, sm: 1.2 },
+                transition: "all 0.2s ease-in-out",
               }}
             >
               <FilterListIcon />
@@ -83,10 +84,14 @@ const BotonFiltros = () => {
               fontWeight: "bold",
               fontFamily: tipografia,
               borderRadius: "50px",
-              px: 3,
-              py: 1,
-              fontSize: "0.9rem",
-              "&:hover": { backgroundColor: `${colorPrimario}cc` },
+              px: { xs: 2, sm: 3 },
+              py: { xs: 0.8, sm: 1 },
+              fontSize: { xs: "0.8rem", sm: "0.9rem" },
+              transition: "all 0.2s ease-in-out",
+              "&:hover": { 
+                backgroundColor: `${colorPrimario}cc`,
+                transform: "scale(1.02)"
+              },
             }}
           >
             {filtrosActivos > 0 ? `Filtros (${filtrosActivos})` : "Filtros"}

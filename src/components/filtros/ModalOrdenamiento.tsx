@@ -86,11 +86,11 @@ const ModalOrdenamiento = ({
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: isMobile ? "95%" : isTablet ? "90%" : 600,
+          width: { xs: "95%", sm: "90%", md: 600 },
           maxWidth: "100%",
           bgcolor: "white",
           boxShadow: 24,
-          borderRadius: isMobile ? "20px" : "35px",
+          borderRadius: { xs: "20px", sm: "35px" },
           overflow: "hidden",
         }}
       >
@@ -100,10 +100,10 @@ const ModalOrdenamiento = ({
           sx={{
             backgroundColor: colorPrimario,
             color: "white",
-            padding: isMobile ? "12px" : "15px",
+            padding: { xs: "12px", sm: "15px" },
             textAlign: "center",
             fontFamily: tipografia,
-            fontSize: isMobile ? "1rem" : "1.2rem",
+            fontSize: { xs: "1rem", sm: "1.2rem" },
             fontWeight: "bold",
           }}
         >
@@ -111,8 +111,8 @@ const ModalOrdenamiento = ({
         </Box>
 
         {/* Contenido */}
-        <Box sx={{ padding: isMobile ? "15px" : "20px" }}>
-          <Grid container spacing={isMobile ? 1 : 2}>
+        <Box sx={{ padding: { xs: "15px", sm: "20px" } }}>
+          <Grid container spacing={{ xs: 1, sm: 2 }}>
             {/* Criterio de orden */}
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth size={isMobile ? "small" : "medium"}>
@@ -150,7 +150,7 @@ const ModalOrdenamiento = ({
           </Grid>
 
           {/* Botón aplicar */}
-          <Box sx={{ display: "flex", justifyContent: "center", mt: isMobile ? 2 : 3 }}>
+          <Box sx={{ display: "flex", justifyContent: "center", mt: { xs: 2, sm: 3 } }}>
             <Button
               variant="contained"
               sx={{
@@ -158,15 +158,15 @@ const ModalOrdenamiento = ({
                 color: "white",
                 fontWeight: "bold",
                 fontFamily: tipografia,
-                minWidth: isMobile ? 150 : 200,
+                minWidth: { xs: 150, sm: 200 },
                 py: 1,
-                fontSize: isMobile ? "0.8rem" : "0.9rem",
+                fontSize: { xs: "0.8rem", sm: "0.9rem" },
                 borderRadius: "8px",
                 "&:hover": { backgroundColor: `${colorPrimario}cc` },
               }}
               onClick={aplicar}
             >
-              APLICAR <SortIcon sx={{ ml: 1, fontSize: isMobile ? "1rem" : "1.2rem" }} />
+              APLICAR <SortIcon sx={{ ml: 1, fontSize: { xs: "1rem", sm: "1.2rem" } }} />
             </Button>
           </Box>
         </Box>

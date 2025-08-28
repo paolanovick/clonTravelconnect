@@ -50,7 +50,8 @@ const CartaMes: React.FC<CartaMesProps> = ({ paquete }) => {
         onClick={handleClick}
         sx={{
           width: "100%",
-          minHeight: "100%",
+          height: "100%",
+          minHeight: "400px",
           borderRadius: "16px",
           boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
           transition: "transform 0.3s ease-in-out",
@@ -66,6 +67,7 @@ const CartaMes: React.FC<CartaMesProps> = ({ paquete }) => {
           border: "none",
           outline: "none",
           position: "relative",
+          overflow: "hidden",
         }}
       >
         <CartaMesImagen

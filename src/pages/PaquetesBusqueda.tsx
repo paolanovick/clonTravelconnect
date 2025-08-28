@@ -93,7 +93,7 @@ const PaquetesBusqueda = () => {
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
-        width: "100vw",
+        width: "100%",
         overflowX: "hidden",
       }}
     >
@@ -104,7 +104,11 @@ const PaquetesBusqueda = () => {
       <Container maxWidth="xl" sx={{ flexGrow: 1, mt: 3 }}>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={12} md={4} lg={3}>
-            <Box sx={{ paddingRight: { md: 3, lg: 4 }, height: "100%" }}>
+            <Box sx={{ 
+              paddingRight: { md: 3, lg: 4 }, 
+              height: "100%",
+              px: { xs: 0, sm: 1, md: 0 }
+            }}>
               <PanelFiltros />
             </Box>
           </Grid>

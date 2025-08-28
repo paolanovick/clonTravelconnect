@@ -39,7 +39,7 @@ const BotonEliminarFiltros = () => {
           color: colorTexto,
           "&:hover": { backgroundColor: `${colorPrimario}cc` },
           borderRadius: "50%",
-          p: 1.2,
+          p: { xs: 1, sm: 1.2 },
           transition: "all 0.2s ease-in-out",
         }}
       >
@@ -58,9 +58,9 @@ const BotonEliminarFiltros = () => {
         fontWeight: "bold",
         fontFamily: tipografia,
         borderRadius: "50px",
-        px: 3,
-        py: 1,
-        fontSize: "0.9rem",
+        px: { xs: 2, sm: 3 },
+        py: { xs: 0.8, sm: 1 },
+        fontSize: { xs: "0.8rem", sm: "0.9rem" },
         "&:hover": {
           borderColor: `${colorPrimario}cc`,
           backgroundColor: `${colorPrimario}14`,

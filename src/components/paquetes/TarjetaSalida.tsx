@@ -51,17 +51,17 @@ function getValor(
 }
 
 const labelTransporte = (t: Salida["tipo_transporte"]) =>
-  t === "avion" ? "Aéreo" : t === "bus" ? "Bus" : "Sin transporte";
+  t === "avion" ? "Aéreo" : t === "bus" ? "Bus" : null;
 
 function derivarTipoTransporte(
   tipo?: Salida["tipo_transporte"],
   transportePaquete?: string | null
-): "avion" | "bus" | "sin_transporte" {
-  if (tipo === "avion" || tipo === "bus" || tipo === "sin_transporte") return tipo;
+): "avion" | "bus" | null {
+  if (tipo === "avion" || tipo === "bus") return tipo;
   const base = (transportePaquete || "").toLowerCase();
   if (base.includes("aéreo") || base.includes("aereo")) return "avion";
   if (base.includes("bus")) return "bus";
-  return "sin_transporte";
+  return null;
 }
 
 const TarjetaSalida: React.FC<Props> = ({
@@ -84,6 +84,7 @@ const TarjetaSalida: React.FC<Props> = ({
   if (tiposConDatos.length === 0) return null;
 
   const tipoTransporteFinal = derivarTipoTransporte(salida.tipo_transporte, transportePaquete);
+  const labelTransporteFinal = tipoTransporteFinal ? labelTransporte(tipoTransporteFinal) : null;
 
   return (
     <Box key={salida.id} sx={{ mb: 5 }}>
@@ -106,18 +107,20 @@ const TarjetaSalida: React.FC<Props> = ({
           </Typography>
         )}
 
-        {/* Badge transporte */}
-        <Chip
-          size="small"
-          label={labelTransporte(tipoTransporteFinal)}
-          sx={{
-            bgcolor: "#fff",
-            border: `1px solid ${colorPrimario}`,
-            color: colorPrimario,
-            fontFamily: tipografia,
-            fontWeight: 600,
-          }}
-        />
+        {/* Badge transporte - solo si hay datos válidos */}
+        {labelTransporteFinal && (
+          <Chip
+            size="small"
+            label={labelTransporteFinal}
+            sx={{
+              bgcolor: "#fff",
+              border: `1px solid ${colorPrimario}`,
+              color: colorPrimario,
+              fontFamily: tipografia,
+              fontWeight: 600,
+            }}
+          />
+        )}
       </Box>
 
       {/* Cards por tipo */}

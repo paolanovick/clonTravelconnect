@@ -63,7 +63,7 @@ const OrdenarPaquetes = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+    <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 1, sm: 2 } }}>
       {isMobile ? (
         <Tooltip title={labelCriterio && ordenActivo ? `Orden: ${labelCriterio} (${flecha})` : "Ordenar"}>
           <IconButton
@@ -76,7 +76,7 @@ const OrdenarPaquetes = () => {
                 backgroundColor: `${colorPrimario}cc`,
               },
               borderRadius: "50%",
-              p: 1.2,
+              p: { xs: 1, sm: 1.2 },
               transition: "all 0.2s ease-in-out",
             }}
           >
@@ -95,9 +95,9 @@ const OrdenarPaquetes = () => {
             fontWeight: "bold",
             fontFamily: tipografia,
             borderRadius: "50px",
-            px: 3,
-            py: 1,
-            fontSize: "0.9rem",
+            px: { xs: 2, sm: 3 },
+            py: { xs: 0.8, sm: 1 },
+            fontSize: { xs: "0.8rem", sm: "0.9rem" },
             transition: "all 0.2s ease-in-out",
             "&:hover": {
               backgroundColor: `${colorPrimario}cc`,

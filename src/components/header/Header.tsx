@@ -22,10 +22,8 @@ const Header: React.FC = () => {
     : header?.imagenBackgroundOpacidad ?? 1;
   const opacidadNormalizada = clamp01(opacidadBase);
 
-  const fondoBase =
-    datosGenerales?.colorFondoApp ??
-    datosGenerales?.color?.primario ??
-    "#000";
+  const fondoBase = datosGenerales?.colorFondoApp ?? datosGenerales?.color?.primario ?? "#000";
+  const debeMostrarVideo = Boolean(videoSrc) && !videoError;
 
   // Logs básicos para validar rutas y contexto
   useEffect(() => {
@@ -53,16 +51,15 @@ const Header: React.FC = () => {
       });
   }, [videoSrc]);
 
-  const debeMostrarVideo = Boolean(videoSrc) && !videoError;
-
   return (
     <AppBar
       position="absolute"
       sx={{
         backgroundColor: debeMostrarVideo || posterSrc ? "transparent" : fondoBase,
         boxShadow: "none",
-        height: { xs: "100vh", sm: "75vh", md: "65vh" },
-        width: "100vw",
+        height: window.innerWidth < 600 ? "100vh" : window.innerWidth < 900 ? "75vh" : "65vh",
+        width: "100%",
+        maxWidth: "100vw",
         top: 0,
         left: 0,
         m: 0,
@@ -133,50 +130,46 @@ const Header: React.FC = () => {
         }}
       />
 
-      {/* Logo */}
       <Toolbar
         disableGutters
         sx={{
           display: "flex",
           alignItems: "flex-start",
-          justifyContent: "flex-start",
+          justifyContent: { xs: "center", sm: "flex-start" },
           width: "100%",
           height: "100%",
-          px: { xs: 2, sm: 4, md: 6 },
-          pt: { xs: 0, sm: 1, md: 1 },
+          px: { xs: 0, sm: 4, md: 6 },
+          pt: { xs: 2, sm: 3, md: 4 },
           position: "relative",
           zIndex: 2,
         }}
       >
-        <Box sx={{ display: "flex", justifyContent: { xs: "center", sm: "flex-start" }, width: "100%" }}>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.85 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            whileHover={{ scale: 1.08 }}
-          >
-            {datosGenerales?.logoAgencia && (
-              <img
-                src={datosGenerales.logoAgencia}
-                alt="Logo Agencia"
-                onClick={() => navigate("/")}
-                onError={(e) => {
-                  console.error("[Header Logo] onError");
-                  (e.currentTarget as HTMLImageElement).style.display = "none";
-                }}
-                style={{
-                  height: window.innerWidth < 600 ? 160 : window.innerWidth < 900 ? 200 : 240,
-                  width: "auto",
-                  maxWidth: "90vw",
-                  cursor: "pointer",
-                  userSelect: "none",
-                  marginTop: window.innerWidth < 600 ? 8 : window.innerWidth < 900 ? 16 : 24,
-                  transition: "transform 0.25s ease-in-out",
-                }}
-              />
-            )}
-          </motion.div>
-        </Box>
+        {/* Logo */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.85 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8 }}
+          whileHover={{ scale: 1.05 }}
+        >
+          {datosGenerales?.logoAgencia && (
+            <img
+              src={datosGenerales.logoAgencia}
+              alt="Logo Agencia"
+              onClick={() => navigate("/")}
+              onError={(e) => {
+                console.error("[Header Logo] onError");
+                (e.currentTarget as HTMLImageElement).style.display = "none";
+              }}
+              style={{
+                height: window.innerWidth < 600 ? "120px" : window.innerWidth < 900 ? "160px" : "200px",
+                width: "auto",
+                maxWidth: "90vw",
+                cursor: "pointer",
+                transition: "transform 0.3s ease-in-out",
+              }}
+            />
+          )}
+        </motion.div>
       </Toolbar>
     </AppBar>
   );

@@ -24,8 +24,6 @@ const iconoPorTipoCanonico = (tipo?: Salida["tipo_transporte"] | null) => {
       return <FlightIcon sx={{ fontSize: 40 }} />;
     case "bus":
       return <DirectionsBusIcon sx={{ fontSize: 40 }} />;
-    case "sin_transporte":
-      return <DirectionsCarIcon sx={{ fontSize: 40 }} />;
     default:
       return null;
   }
@@ -37,8 +35,6 @@ const iconoChip = (tipo: Salida["tipo_transporte"]): React.ReactNode => {
       return <FlightIcon sx={{ fontSize: 20 }} />;
     case "bus":
       return <DirectionsBusIcon sx={{ fontSize: 20 }} />;
-    case "sin_transporte":
-      return <DirectionsCarIcon sx={{ fontSize: 20 }} />;
     default:
       return null;
   }
@@ -62,8 +58,6 @@ const labelPorTipo = (tipo?: Salida["tipo_transporte"] | null): string | null =>
       return "Aéreo";
     case "bus":
       return "Bus";
-    case "sin_transporte":
-      return "Sin transporte incluido";
     default:
       return null;
   }
@@ -74,7 +68,7 @@ const derivarTipoDesdeTextoLibre = (texto?: string | null): Salida["tipo_transpo
   if (!t) return null;
   if (t.includes("avion") || t.includes("avión") || t.includes("aereo") || t.includes("aéreo") || t.includes("vuelo")) return "avion";
   if (t.includes("bus") || t.includes("micro") || t.includes("ómnibus") || t.includes("omnibus")) return "bus";
-  return "sin_transporte";
+  return null;
 };
 
 const TransporteContent: React.FC<TransporteContentProps> = ({ transporte, tipoTransporte, tiposTransporte }) => {
@@ -95,22 +89,26 @@ const TransporteContent: React.FC<TransporteContentProps> = ({ transporte, tipoT
   // 2) Si hay un solo tipo → usar ese como canónico
   // 3) Sino, usar tipoTransporte directo
   // 4) Sino, derivar desde texto libre
-  // 5) Fallback sin_transporte
-  const tipoCanonicoPreferido: Salida["tipo_transporte"] =
+  const tipoCanonicoPreferido: Salida["tipo_transporte"] | null =
     (tiposUnicos.length === 1 && tiposUnicos[0]) ||
     (tipoTransporte as Salida["tipo_transporte"]) ||
-    (derivarTipoDesdeTextoLibre(transporteTrim) ?? "sin_transporte");
+    derivarTipoDesdeTextoLibre(transporteTrim);
 
-  // Icono preferente: por tipo canónico; si no, por texto; si no, auto
+  // Si no hay ningún tipo válido, no mostrar nada
+  if (!tipoCanonicoPreferido && tiposUnicos.length === 0 && !transporteTrim) {
+    return null;
+  }
+
+  // Icono preferente: por tipo canónico; si no, por texto; si no hay datos válidos, no mostrar icono
   const iconCanon = iconoPorTipoCanonico(tipoCanonicoPreferido);
   const iconLibre = transporteTrim ? iconoPorTextoLibre(transporteTrim) : null;
-  const icono = iconCanon ?? iconLibre ?? <DirectionsCarIcon sx={{ fontSize: 40 }} />;
+  const icono = iconCanon ?? iconLibre;
 
   // Texto a mostrar cuando NO hay múltiples tipos
   const mostrarTexto =
     transporteTrim ||
     labelPorTipo(tipoCanonicoPreferido) ||
-    "No hay información de transporte disponible para este paquete.";
+    "Información de transporte disponible";
 
   return (
     <Box sx={{ mt: 2, px: 2 }}>
@@ -128,7 +126,7 @@ const TransporteContent: React.FC<TransporteContentProps> = ({ transporte, tipoT
           width: "100%",
         }}
       >
-        <Box sx={{ color: colorPrimario }}>{icono}</Box>
+        {icono && <Box sx={{ color: colorPrimario }}>{icono}</Box>}
 
         <Box sx={{ flex: 1 }}>
           <Typography

@@ -48,8 +48,6 @@ const PopperUbicaciones: React.FC<PopperUbicacionesProps> = ({
           width: ancho,
           maxWidth: "90vw",
           fontFamily: tipografia,
-          backdropFilter: "saturate(1.1)",
-          border: "none", // sin borde
         }}
         role="listbox"
         aria-label={`Opciones para ${label}`}
@@ -57,40 +55,37 @@ const PopperUbicaciones: React.FC<PopperUbicacionesProps> = ({
         {/* Header */}
         <Box
           sx={{
-            backgroundColor: colorPrimario,
-            color: "#fff",
-            px: 1.5,
-            py: 1,
-            display: "flex",
-            alignItems: "center",
+            bgcolor: colorPrimario,
+            color: "white",
+            p: 1.5,
             fontWeight: 600,
-            fontFamily: tipografia,
-            gap: 1,
+            fontSize: "0.9rem",
           }}
         >
-          <LocationOnIcon fontSize="small" />
-          {`${label}: ${opcionesFiltradas.length} encontrados`}
+          {label}
         </Box>
-
-        {/* Lista */}
-        <List dense disablePadding sx={{ maxHeight: 240, overflowY: "auto" }}>
+        <List disablePadding>
           {opcionesFiltradas.map((ubicacion) => (
             <MenuItem
-              key={ubicacion.codigo}
+              key={`${ubicacion.codigo}-${ubicacion.nombre}`}
               onClick={() => handleSelect(ubicacion)}
-              role="option"
-              aria-label={`${ubicacion.nombre}`}
               sx={{
-                py: 1,
-                px: 1.5,
-                fontSize: 14,
-                fontFamily: tipografia,
-                "&:hover": {
-                  backgroundColor: hoverBg,
-                },
+                px: 2,
+                py: 1.5,
+                borderBottom: "1px solid rgba(0,0,0,0.05)",
+                "&:hover": { bgcolor: hoverBg },
+                display: "flex",
+                alignItems: "center",
+                gap: 1.5,
               }}
             >
-              {ubicacion.nombre}
+              <LocationOnIcon sx={{ color: "text.secondary" }} />
+              <Box>
+                <Box sx={{ fontWeight: 500 }}>{ubicacion.nombre}</Box>
+                <Box sx={{ fontSize: "0.8rem", color: "text.secondary" }}>
+                  {ubicacion.codigo}
+                </Box>
+              </Box>
             </MenuItem>
           ))}
         </List>

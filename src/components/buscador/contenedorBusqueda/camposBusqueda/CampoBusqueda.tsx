@@ -54,6 +54,43 @@ const CampoBusqueda: React.FC<CampoBusquedaProps> = ({ label }) => {
 
   if (!datosGenerales) return null;
 
+  const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+    setAnchorEl(event.currentTarget);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setInputValue(value);
+    filtrarOpciones(value);
+  };
+
+  const handleSelect = (ubicacion: UbicacionIATA) => {
+    const valor = `${ubicacion.nombre} (${ubicacion.codigo})`;
+    setInputValue(valor);
+    
+    if (label === "Ciudad de Salida") {
+      setCiudadOrigen(valor);
+    } else {
+      setDestino(valor);
+    }
+    
+    setOpen(false);
+  };
+
+  const filtrarOpciones = async (query: string) => {
+    try {
+      const opciones = await obtenerUbicaciones(query);
+      setOpcionesFiltradas(opciones);
+    } catch (error) {
+      console.error("Error al filtrar opciones:", error);
+    }
+  };
+
   // 🎯 Colores y tipografía
   const fondoColor =
     buscador?.inputFondoColor ||
@@ -76,75 +113,52 @@ const CampoBusqueda: React.FC<CampoBusquedaProps> = ({ label }) => {
   const tipografia =
     buscador?.tipografia || datosGenerales?.tipografiaAgencia || "Poppins, sans-serif";
 
-  const handleToggleMenu = (event: React.MouseEvent<HTMLInputElement>) => {
-    setAnchorEl(event.currentTarget as unknown as HTMLElement);
-    setOpen(true);
-  };
-
-  const handleClose = () => setOpen(false);
-
-  const handleSelect = (ubicacion: UbicacionIATA) => {
-    setInputValue(ubicacion.nombre);
-    handleClose();
-    if (label === "Ciudad de Salida") {
-      setCiudadOrigen(ubicacion.nombre);
-    } else if (label === "Ciudad de Destino") {
-      setDestino(ubicacion.nombre);
-    }
-  };
-
-  const handleBlur = () => {
-    if (label === "Ciudad de Salida") {
-      setCiudadOrigen(inputValue || "");
-    } else if (label === "Ciudad de Destino") {
-      setDestino(inputValue || "");
-    }
-  };
-
   return (
     <ClickAwayListener onClickAway={handleClose}>
       <Box display="flex" flexDirection="column" gap={2} position="relative">
-        <Box display="flex" alignItems="center" gap={1}>
+        <Box display="flex" alignItems="center" gap={2}>
           <LocationOnIcon sx={{ color: labelColor, fontSize: 24 }} />
           <Typography sx={{ color: labelColor, fontWeight: 500, fontFamily: tipografia }}>
             {label}
           </Typography>
         </Box>
 
-        <TextField
-          value={inputValue}
-          fullWidth
-          placeholder={`Escriba una ${label.toLowerCase()}...`}
-          variant="outlined"
-          size="small"
-          onChange={(e) => setInputValue(e.target.value || "")}
-          onBlur={handleBlur}
-          onClick={handleToggleMenu}
-          sx={{
-            backgroundColor: fondoColor,
-            borderRadius: "25px",
-            fontFamily: tipografia,
-            "& .MuiOutlinedInput-root": {
-              color: tipografiaColorTexto,
-              "& fieldset": { borderColor: "transparent" },
-              "&:hover fieldset": { borderColor: "transparent" },
-              "&.Mui-focused fieldset": { borderColor: "transparent" },
-            },
-            "& .MuiInputBase-input::placeholder": {
-              color: tipografiaColorTexto,
-              opacity: 0.7,
-            },
-          }}
-        />
-
+        <Box display="flex">
+          <TextField
+            fullWidth
+            variant="outlined"
+            placeholder="Seleccionar"
+            value={inputValue}
+            sx={{
+              backgroundColor: fondoColor,
+              borderRadius: "25px",
+              fontFamily: tipografia,
+              "& .MuiOutlinedInput-root": {
+                color: tipografiaColorTexto,
+                "& fieldset": { borderColor: "transparent" },
+                "&:hover fieldset": { borderColor: "transparent" },
+                "&.Mui-focused fieldset": { borderColor: "transparent" },
+              },
+              "& .MuiInputBase-input::placeholder": {
+                color: tipografiaColorTexto,
+                opacity: 0.7,
+              },
+            }}
+            onChange={handleChange}
+            onFocus={handleFocus}
+            size="small"
+          />
+        </Box>
+        
         <PopperUbicaciones
           open={open}
           anchorEl={anchorEl}
           opcionesFiltradas={opcionesFiltradas}
           handleSelect={handleSelect}
           label={label}
-          colorPrimario={fondoColor}
+          colorPrimario={buscador?.color?.primario || datosGenerales?.color?.primario || "#1976d2"}
           tipografia={tipografia}
+          colorTerciario={buscador?.color?.terciario || datosGenerales?.color?.terciario || undefined}
         />
       </Box>
     </ClickAwayListener>

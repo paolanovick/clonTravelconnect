@@ -17,7 +17,7 @@ const Home: React.FC = () => {
         display: "flex",
         flexDirection: "column",
         minHeight: "100vh",
-        width: "100vw",
+        width: "100%",
         overflowX: "hidden",
         margin: 0,
         padding: 0,
