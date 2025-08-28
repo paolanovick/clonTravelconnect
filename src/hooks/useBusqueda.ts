@@ -41,7 +41,7 @@ export const useBusqueda = () => {
     console.log("📤 Enviando solicitud con los siguientes datos:", payload);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/paquetes2/filtrar2`, {
+      const response = await fetch(`${API_BASE_URL}/importar`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
