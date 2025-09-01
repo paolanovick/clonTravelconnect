@@ -1,4 +1,14 @@
 
+
+
+
+
+
+
+
+
+
+
 import { AgenciaBackData } from "../../interfaces/AgenciaBackData";
 import { agenciaMock } from "../../mocks/agenciaMock";
 
@@ -18,7 +28,7 @@ export const fetchDatosAgenciaReal = async (): Promise<AgenciaBackData> => {
   const esLocalhost = hostname === "localhost" || hostname === "127.0.0.1";
 
   const url = esLocalhost
-    ? 'https://ezezeze.travelconnect.com.ar/agencia2' 
+    ? 'https://vaguviajes.tur.ar/agencia2' 
     : `${window.location.origin}/agencia2`;
 
   const response = await fetch(url, { headers: { Accept: "application/json" } });

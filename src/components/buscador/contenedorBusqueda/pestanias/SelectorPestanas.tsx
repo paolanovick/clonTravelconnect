@@ -14,7 +14,10 @@ const SelectorPestanas: React.FC = () => {
 
   const [pestanaActiva, setPestanaActiva] = useState("paquetes");
 
-  const esVaguViajes = typeof window !== "undefined" && window.location.hostname.includes("vaguviajes.tur.ar");
+  // Variable de configuración para activar/desactivar detección de VaguViajes
+  const activarDeteccionVagu = false; // Cambiar a true para forzar comportamiento VaguViajes
+  
+  const esVaguViajes = activarDeteccionVagu || (typeof window !== "undefined" && window.location.hostname.includes("vaguviajes.tur.ar"));
 
   if (!datosGenerales) return null;
 
@@ -52,45 +55,18 @@ const SelectorPestanas: React.FC = () => {
         {opciones.map((opcion) => {
           const isSelected = pestanaActiva === opcion.valor;
 
-          if (opcion.valor === "circuitos" && esVaguViajes) {
-            return (
-              <Box
-                key={opcion.valor}
-                component="a"
-                href="https://incomtour.com.ar/whitelabel/?token=5872a6367a276526266e477bd2a9844f"
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  minWidth: { xs: "100px", sm: "120px" },
-                  height: "44px",
-                  borderRadius: "35px",
-                  backgroundColor: isSelected ? fondoSeleccionado : fondoBase,
-                  color: colorTexto,
-                  fontFamily: tipografia,
-                  fontWeight: 600,
-                  fontSize: "0.8125rem",
-                  textDecoration: "none",
-                  textTransform: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease-in-out",
-                  "&:hover": {
-                    backgroundColor: hoverColorPrimario,
-                    textDecoration: "none",
-                  },
-                }}
-              >
-                {opcion.label}
-              </Box>
-            );
-          }
+          const handleClick = () => {
+            if (opcion.valor === "circuitos" && esVaguViajes) {
+              window.open("https://incomtour.com.ar/whitelabel/?token=5872a6367a276526266e477bd2a9844f", "_blank");
+            }
+          };
 
           return (
             <ToggleButton
               key={opcion.valor}
               value={opcion.valor}
               selected={isSelected}
+              onClick={opcion.valor === "circuitos" && esVaguViajes ? handleClick : undefined}
               sx={{
                 display: "flex",
                 alignItems: "center",
