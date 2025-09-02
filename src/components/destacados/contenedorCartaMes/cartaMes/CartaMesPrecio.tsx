@@ -43,7 +43,7 @@ const CartaMesPrecio: React.FC<CartaMesPrecioProps> = ({ precio, moneda }) => {
       sx={{
         backgroundColor: colorPrimario,
         color: textoContraste,
-        padding: "16px",
+        padding: { xs: "12px", sm: "16px", md: "16px" },
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -56,7 +56,7 @@ const CartaMesPrecio: React.FC<CartaMesPrecioProps> = ({ precio, moneda }) => {
       <Typography
         variant="subtitle2"
         fontWeight="bold"
-        sx={{ fontSize: "1.2rem", color: textoContraste }}
+        sx={{ fontSize: { xs: "1rem", sm: "1.1rem", md: "1.2rem" }, color: textoContraste }}
       >
         Desde
       </Typography>
@@ -64,7 +64,7 @@ const CartaMesPrecio: React.FC<CartaMesPrecioProps> = ({ precio, moneda }) => {
         variant="h4"
         fontWeight="bold"
         sx={{
-          fontSize: "2.4rem",
+          fontSize: { xs: "2rem", sm: "2.2rem", md: "2.4rem" },
           display: "flex",
           alignItems: "center",
           gap: "4px",

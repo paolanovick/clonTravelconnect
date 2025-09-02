@@ -12,17 +12,38 @@ interface CampoPasajerosProps {
 const CampoPasajeros: React.FC<CampoPasajerosProps> = ({ label }) => {
   const buscador = useBuscador();
   const datosGenerales = useDatosGenerales();
-  const { viajeros, setViajeros } = useFormulario();
+  const { viajeros, setViajeros, uiValues, setUIValues, errors } = useFormulario();
   const [modalAbierto, setModalAbierto] = useState(false);
+  
+  const fieldError = errors.viajeros;
 
   useEffect(() => {
     const valoresGuardados = localStorage.getItem("valoresPrevios");
     if (valoresGuardados && (!viajeros || (viajeros.adultos === 0 && viajeros.menores === 0))) {
       const { viajeros: viajerosGuardados } = JSON.parse(valoresGuardados);
-      if (viajerosGuardados) setViajeros(viajerosGuardados);
+      if (viajerosGuardados) {
+        setViajeros(viajerosGuardados);
+        // Actualizar display value
+        const resumenGuardado = `${viajerosGuardados.adultos || 0} adulto${viajerosGuardados.adultos === 1 ? "" : "s"}${viajerosGuardados.menores ? ` y ${viajerosGuardados.menores} menor${viajerosGuardados.menores === 1 ? "" : "es"}` : ""}`;
+        setUIValues({ viajerosDisplay: resumenGuardado });
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  
+  // Sincronizar display value cuando cambian los viajeros - solo si display está vacío
+  useEffect(() => {
+    const currentDisplay = uiValues.viajerosDisplay;
+    const resumen = viajeros?.adultos || viajeros?.menores
+      ? `${viajeros.adultos || 0} adulto${viajeros.adultos === 1 ? "" : "s"}${viajeros.menores ? ` y ${viajeros.menores} menor${viajeros.menores === 1 ? "" : "es"}` : ""}`
+      : "";
+    
+    // Solo actualizar display si está vacío o si hay cambios reales en viajeros
+    if (!currentDisplay || (viajeros?.adultos > 0 || viajeros?.menores > 0)) {
+      setUIValues({ viajerosDisplay: resumen });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [viajeros]);
 
   if (!datosGenerales) return null;
 
@@ -50,12 +71,7 @@ const CampoPasajeros: React.FC<CampoPasajerosProps> = ({ label }) => {
     datosGenerales?.tipografiaAgencia ||
     "Poppins, sans-serif";
 
-  const resumen =
-    viajeros?.adultos || viajeros?.menores
-      ? `${viajeros.adultos || 0} adulto${viajeros.adultos === 1 ? "" : "s"}${
-          viajeros.menores ? ` y ${viajeros.menores} menor${viajeros.menores === 1 ? "" : "es"}` : ""
-        }`
-      : "";
+  const resumen = uiValues.viajerosDisplay || "";
 
   const handleAplicar = (adultos: number, menores: number) => {
     setViajeros({ adultos, menores });
@@ -78,6 +94,8 @@ const CampoPasajeros: React.FC<CampoPasajerosProps> = ({ label }) => {
         fullWidth
         variant="outlined"
         size="small"
+        error={Boolean(fieldError)}
+        helperText={fieldError}
         InputProps={{ readOnly: true }}
         sx={{
           backgroundColor: fondoInput,
@@ -86,14 +104,26 @@ const CampoPasajeros: React.FC<CampoPasajerosProps> = ({ label }) => {
           cursor: "pointer",
           "& .MuiOutlinedInput-root": {
             color: colorTextoInput,
-            "& fieldset": { borderColor: "transparent" }, // ❌ sin borde
-            "&:hover fieldset": { borderColor: "transparent" }, // ❌ sin borde hover
-            "&.Mui-focused fieldset": { borderColor: "transparent" }, // ❌ sin borde focus
+            "& fieldset": { 
+              borderColor: fieldError ? "#f44336" : "transparent" 
+            },
+            "&:hover fieldset": { 
+              borderColor: fieldError ? "#f44336" : "transparent" 
+            },
+            "&.Mui-focused fieldset": { 
+              borderColor: fieldError ? "#f44336" : "transparent" 
+            },
           },
           "& .MuiInputBase-input::placeholder": {
             color: colorTextoInput,
             opacity: 0.7,
           },
+          "& .MuiFormHelperText-root": {
+            color: "#f44336",
+            fontSize: "0.75rem",
+            marginLeft: 1,
+            marginTop: 0.5
+          }
         }}
       />
 

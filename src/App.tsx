@@ -62,7 +62,7 @@ const App: React.FC = () => {
             width: "100%",
             display: "flex",
             flexDirection: "column",
-            alignItems: "center",
+            alignItems: { xs: "stretch", sm: "center" },
             justifyContent: "flex-start",
             boxSizing: "border-box",
           }}

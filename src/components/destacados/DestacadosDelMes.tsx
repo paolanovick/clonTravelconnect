@@ -34,8 +34,8 @@ const DestacadosDelMes: React.FC = () => {
           mt: 8,
           mb: 5,
           width: "100%",
-          px: 0,
-          maxWidth: "1200px",
+          px: { xs: 0, sm: 0, md: 0 },
+          maxWidth: { xs: "100%", sm: "95%", md: "95%", lg: "1400px", xl: "1600px" },
           mx: "auto",
           display: "flex",
           flexDirection: "column",
@@ -60,9 +60,9 @@ const DestacadosDelMes: React.FC = () => {
               display: "inline-block",
               fontSize: {
                 xs: "1.8rem",
-                sm: "2.4rem",
-                md: "3.2rem",
-                lg: "4rem",
+                sm: "2.2rem",
+                md: "2.8rem",
+                lg: "3.5rem",
               },
             }}
           >

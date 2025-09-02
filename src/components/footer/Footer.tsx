@@ -21,8 +21,8 @@ const Footer: FunctionComponent = () => {
       sx={{
         backgroundColor: fondoColor,
         width: "100%",
-        py: { xs: 4, md: 6 },
-        px: { xs: 2, md: 6 }, // Padding más consistente: 16px en mobile, 48px en desktop
+        py: { xs: 4, sm: 5, md: 6 },
+        px: { xs: 2, sm: 4, md: 6 }, // Consistente con Header: 16px mobile, 32px tablet, 48px desktop
         boxSizing: "border-box",
       }}
     >
@@ -34,7 +34,7 @@ const Footer: FunctionComponent = () => {
         {/* Sección superior */}
         <Grid
           container
-          spacing={{ xs: 2, md: 3 }} // Espaciado menor en mobile
+          spacing={{ xs: 1, sm: 2, md: 3 }} // Espaciado consistente: 8px mobile, 16px tablet, 24px desktop
           sx={{ width: "100%", margin: 0 }}
           alignItems="flex-start"
         >
@@ -77,7 +77,7 @@ const Footer: FunctionComponent = () => {
         {/* Sección inferior */}
         <Grid
           container
-          spacing={{ xs: 2, md: 3 }}
+          spacing={{ xs: 1, sm: 2, md: 3 }}
           sx={{ width: "100%", margin: 0 }}
           alignItems="center"
         >

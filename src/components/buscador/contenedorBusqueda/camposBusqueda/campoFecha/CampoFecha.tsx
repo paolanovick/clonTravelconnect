@@ -13,7 +13,9 @@ interface CampoFechaProps {
 const CampoFecha: React.FC<CampoFechaProps> = ({ label }) => {
   const buscador = useBuscador();
   const datosGenerales = useDatosGenerales();
-  const { fechaSalida, setFechaSalida } = useFormulario();
+  const { fechaSalida, setFechaSalida, uiValues, setUIValues, errors } = useFormulario();
+  
+  const fieldError = errors.fechaSalida;
 
   useEffect(() => {
     if (!fechaSalida) {
@@ -23,11 +25,26 @@ const CampoFecha: React.FC<CampoFechaProps> = ({ label }) => {
         if (fechaGuardada) {
           const fecha = new Date(fechaGuardada);
           setFechaSalida(fecha);
+          setUIValues({ fechaSalidaDisplay: dayjs(fecha).format('DD/MM/YYYY') });
         }
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  
+  // Sincronizar display value cuando cambia fechaSalida - solo si display está vacío
+  useEffect(() => {
+    const currentDisplay = uiValues.fechaSalidaDisplay;
+    
+    if (fechaSalida && !currentDisplay) {
+      // Solo actualizar display si está vacío y hay fecha en contexto
+      setUIValues({ fechaSalidaDisplay: dayjs(fechaSalida).format('DD/MM/YYYY') });
+    } else if (!fechaSalida && currentDisplay) {
+      // Solo limpiar display si no hay fecha en contexto pero sí hay display
+      setUIValues({ fechaSalidaDisplay: '' });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fechaSalida]);
 
   if (!datosGenerales) return null;
 
@@ -58,7 +75,15 @@ const CampoFecha: React.FC<CampoFechaProps> = ({ label }) => {
   const fechaDayjs = fechaSalida ? dayjs(fechaSalida) : null;
 
   const handleChangeFecha = (newValue: dayjs.Dayjs | null) => {
-    setFechaSalida(newValue ? newValue.toDate() : null);
+    const fecha = newValue ? newValue.toDate() : null;
+    setFechaSalida(fecha);
+    
+    // Actualizar display value
+    if (fecha) {
+      setUIValues({ fechaSalidaDisplay: dayjs(fecha).format('DD/MM/YYYY') });
+    } else {
+      setUIValues({ fechaSalidaDisplay: '' });
+    }
   };
 
   return (
@@ -80,19 +105,33 @@ const CampoFecha: React.FC<CampoFechaProps> = ({ label }) => {
               fullWidth: true,
               variant: "outlined",
               size: "small",
+              error: Boolean(fieldError),
+              helperText: fieldError,
               sx: {
                 backgroundColor: fondoInput,
                 borderRadius: "25px",
                 fontFamily: tipografia,
                 "& .MuiOutlinedInput-root": {
                   color: colorTexto,
-                  "& fieldset": { borderColor: "transparent" }, // ❌ sin borde
-                  "&:hover fieldset": { borderColor: "transparent" }, // ❌ sin borde hover
-                  "&.Mui-focused fieldset": { borderColor: "transparent" }, // ❌ sin borde focus
+                  "& fieldset": { 
+                    borderColor: fieldError ? "#f44336" : "transparent" 
+                  },
+                  "&:hover fieldset": { 
+                    borderColor: fieldError ? "#f44336" : "transparent" 
+                  },
+                  "&.Mui-focused fieldset": { 
+                    borderColor: fieldError ? "#f44336" : "transparent" 
+                  },
                 },
                 "& .MuiSvgIcon-root": {
                   color: colorTexto,
                 },
+                "& .MuiFormHelperText-root": {
+                  color: "#f44336",
+                  fontSize: "0.75rem",
+                  marginLeft: 1,
+                  marginTop: 0.5
+                }
               },
             },
           }}

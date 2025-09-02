@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { AppBar, Toolbar, Box } from "@mui/material";
+import { AppBar, Toolbar, Box, useTheme, useMediaQuery } from "@mui/material";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useHeader, useDatosGenerales } from "../../contextos/agencia/DatosAgenciaContext";
@@ -10,6 +10,12 @@ const Header: React.FC = () => {
   const header = useHeader();
   const datosGenerales = useDatosGenerales();
   const navigate = useNavigate();
+  const theme = useTheme();
+  
+  // Responsive breakpoints
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoError, setVideoError] = useState(false);
@@ -57,7 +63,7 @@ const Header: React.FC = () => {
       sx={{
         backgroundColor: debeMostrarVideo || posterSrc ? "transparent" : fondoBase,
         boxShadow: "none",
-        height: window.innerWidth < 600 ? "100vh" : window.innerWidth < 900 ? "75vh" : "65vh",
+        height: { xs: "100vh", sm: "75vh", md: "65vh" },
         width: "100%",
         maxWidth: "100vw",
         top: 0,
@@ -138,7 +144,7 @@ const Header: React.FC = () => {
           justifyContent: { xs: "center", sm: "flex-start" },
           width: "100%",
           height: "100%",
-          px: { xs: 0, sm: 4, md: 6 },
+          px: { xs: 2, sm: 4, md: 6 },
           pt: { xs: 2, sm: 3, md: 4 },
           position: "relative",
           zIndex: 2,
@@ -161,7 +167,7 @@ const Header: React.FC = () => {
                 (e.currentTarget as HTMLImageElement).style.display = "none";
               }}
               style={{
-                height: window.innerWidth < 600 ? "120px" : window.innerWidth < 900 ? "160px" : "200px",
+                height: isMobile ? "120px" : isTablet ? "160px" : "200px",
                 width: "auto",
                 maxWidth: "90vw",
                 cursor: "pointer",

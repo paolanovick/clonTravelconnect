@@ -18,39 +18,65 @@ interface CampoBusquedaProps {
 const CampoBusqueda: React.FC<CampoBusquedaProps> = ({ label }) => {
   const buscador = useBuscador();
   const datosGenerales = useDatosGenerales();
-  const { ciudadOrigen, destino, setCiudadOrigen, setDestino } = useFormulario();
+  const { 
+    ciudadOrigen, 
+    destino, 
+    setCiudadOrigen, 
+    setDestino, 
+    uiValues, 
+    setUIValues, 
+    errors, 
+    validateField 
+  } = useFormulario();
 
-  const [inputValue, setInputValue] = useState<string>("");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
   const [opcionesFiltradas, setOpcionesFiltradas] = useState<UbicacionIATA[]>([]);
+  
+  // Determinar el valor actual del input desde el contexto
+  const isOrigin = label === "Ciudad de Salida";
+  const currentValue = isOrigin ? ciudadOrigen : destino;
+  const displayValue = isOrigin ? uiValues.ciudadOrigenDisplay : uiValues.destinoDisplay;
+  // ✅ Usar solo displayValue, sin fallback que cause auto-restauración
+  const inputValue = displayValue;
+  const fieldError = isOrigin ? errors.ciudadOrigen : errors.destino;
 
+  // Sincronizar valores desde localStorage solo al montar
   useEffect(() => {
     const valoresGuardados = localStorage.getItem("valoresPrevios");
-    const yaHayValor = label === "Ciudad de Salida" ? ciudadOrigen : destino;
+    const yaHayValor = isOrigin ? ciudadOrigen : destino;
+    const yaHayDisplayValue = isOrigin ? uiValues.ciudadOrigenDisplay : uiValues.destinoDisplay;
 
-    if (!yaHayValor && valoresGuardados) {
+    // Solo restaurar si no hay valor en contexto NI en display
+    if (!yaHayValor && !yaHayDisplayValue && valoresGuardados) {
       const { ciudadOrigen: guardadoOrigen, destino: guardadoDestino } = JSON.parse(valoresGuardados);
-      if (label === "Ciudad de Salida" && guardadoOrigen) {
-        setInputValue(guardadoOrigen);
+      if (isOrigin && guardadoOrigen) {
         setCiudadOrigen(guardadoOrigen);
-      } else if (label === "Ciudad de Destino" && guardadoDestino) {
-        setInputValue(guardadoDestino);
+        setUIValues({ ciudadOrigenDisplay: guardadoOrigen });
+      } else if (!isOrigin && guardadoDestino) {
         setDestino(guardadoDestino);
+        setUIValues({ destinoDisplay: guardadoDestino });
       }
-    } else {
-      if (label === "Ciudad de Salida") {
-        setInputValue(ciudadOrigen ?? "");
-      } else if (label === "Ciudad de Destino") {
-        setInputValue(destino ?? "");
+    } else if (yaHayValor && !yaHayDisplayValue) {
+      // Sincronizar display con contexto solo si display está vacío
+      if (isOrigin) {
+        setUIValues({ ciudadOrigenDisplay: yaHayValor });
+      } else {
+        setUIValues({ destinoDisplay: yaHayValor });
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  
+  // Sincronizar opciones filtradas cuando cambia el input
   useEffect(() => {
-    setOpcionesFiltradas(obtenerUbicaciones(inputValue || ""));
+    if (inputValue) {
+      setOpcionesFiltradas(obtenerUbicaciones(inputValue));
+    } else {
+      setOpcionesFiltradas([]);
+    }
   }, [inputValue]);
+
 
   if (!datosGenerales) return null;
 
@@ -65,18 +91,28 @@ const CampoBusqueda: React.FC<CampoBusquedaProps> = ({ label }) => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    setInputValue(value);
+    
+    // Actualizar UI display value
+    if (isOrigin) {
+      setUIValues({ ciudadOrigenDisplay: value });
+    } else {
+      setUIValues({ destinoDisplay: value });
+    }
+    
+    // Filtrar opciones
     filtrarOpciones(value);
   };
 
   const handleSelect = (ubicacion: UbicacionIATA) => {
     const valor = `${ubicacion.nombre} (${ubicacion.codigo})`;
-    setInputValue(valor);
     
-    if (label === "Ciudad de Salida") {
+    // Actualizar tanto el valor del contexto como el display
+    if (isOrigin) {
       setCiudadOrigen(valor);
+      setUIValues({ ciudadOrigenDisplay: valor });
     } else {
       setDestino(valor);
+      setUIValues({ destinoDisplay: valor });
     }
     
     setOpen(false);
@@ -123,29 +159,53 @@ const CampoBusqueda: React.FC<CampoBusquedaProps> = ({ label }) => {
           </Typography>
         </Box>
 
-        <Box display="flex">
+        <Box display="flex" flexDirection="column">
           <TextField
             fullWidth
             variant="outlined"
             placeholder="Seleccionar"
             value={inputValue}
+            error={Boolean(fieldError)}
+            helperText={fieldError}
             sx={{
               backgroundColor: fondoColor,
               borderRadius: "25px",
               fontFamily: tipografia,
               "& .MuiOutlinedInput-root": {
                 color: tipografiaColorTexto,
-                "& fieldset": { borderColor: "transparent" },
-                "&:hover fieldset": { borderColor: "transparent" },
-                "&.Mui-focused fieldset": { borderColor: "transparent" },
+                "& fieldset": { 
+                  borderColor: fieldError ? "#f44336" : "transparent" 
+                },
+                "&:hover fieldset": { 
+                  borderColor: fieldError ? "#f44336" : "transparent" 
+                },
+                "&.Mui-focused fieldset": { 
+                  borderColor: fieldError ? "#f44336" : "transparent" 
+                },
               },
               "& .MuiInputBase-input::placeholder": {
                 color: tipografiaColorTexto,
                 opacity: 0.7,
               },
+              "& .MuiFormHelperText-root": {
+                color: "#f44336",
+                fontSize: "0.75rem",
+                marginLeft: 1,
+                marginTop: 0.5
+              }
             }}
             onChange={handleChange}
             onFocus={handleFocus}
+            onBlur={() => {
+              // Validar al perder el foco solo si hay contenido
+              const valueToValidate = isOrigin ? ciudadOrigen : destino;
+              if (valueToValidate) {
+                const error = validateField(isOrigin ? 'ciudadOrigen' : 'destino', valueToValidate);
+                if (error) {
+                  // El error se maneja automáticamente por el contexto
+                }
+              }
+            }}
             size="small"
           />
         </Box>

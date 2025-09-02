@@ -25,7 +25,7 @@ const Home: React.FC = () => {
     >
       <TopHeader />
       
-      <Box sx={{ height: "100vh" }} />
+      <Box sx={{ height: { xs: "100vh", md: "80vh" } }} />
       <Divisor/>
 
       

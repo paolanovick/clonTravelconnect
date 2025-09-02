@@ -39,7 +39,7 @@ const ContenedorBusqueda: React.FC = () => {
         flexDirection: 'column',
         alignItems: 'center',
         pt: { xs: 3, sm: 4 },
-        px: { xs: 2, sm: 4 },
+        px: { xs: 2, sm: 4, md: 6 },
         pb: { xs: 5, sm: 6 },
         minHeight: '125px',
         margin: '0 auto',

@@ -99,7 +99,7 @@ const PaquetesBusqueda = () => {
     >
       <HeaderTop />
       <Divisor />
-      <Box sx={{ height: "100vh" }} />
+      <Box sx={{ height: { xs: "100vh", md: "80vh" } }} />
 
       <Container maxWidth="xl" sx={{ flexGrow: 1, mt: 3 }}>
         <Grid container spacing={4}>

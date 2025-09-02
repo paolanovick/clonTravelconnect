@@ -88,11 +88,15 @@ const CartaMesContenido: React.FC<CartaMesContenidoProps> = ({ nombre, cargando 
     <CardContent
       sx={{
         backgroundColor: "#FFFFFF",
-        padding: "16px",
+        padding: { xs: "12px", sm: "16px", md: "16px" },
         textAlign: "center",
         opacity: cargando ? 0 : 1,
         fontFamily: tipografia,
         flexGrow: 1,
+        minHeight: { xs: "80px", sm: "90px", md: "100px" },
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
       }}
     >
       <Tooltip title={fullTitle} arrow enterDelay={700}>
@@ -100,7 +104,7 @@ const CartaMesContenido: React.FC<CartaMesContenidoProps> = ({ nombre, cargando 
           variant="h5"
           sx={{
             fontWeight: "bold",
-            fontSize: "2rem",
+            fontSize: { xs: "1.6rem", sm: "1.8rem", md: "2rem" },
             color: tipografiaColorTitulo,
             fontFamily: tipografia,
             display: "-webkit-box",

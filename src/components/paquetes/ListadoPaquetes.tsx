@@ -83,7 +83,7 @@ const ListadoPaquetes: React.FC<ListadoPaquetesProps> = ({ paquetes: paquetesPro
                 sm={12}
                 md={12}
                 key={paquete.id}
-                sx={{ display: "flex", justifyContent: "center", mb: index !== listaFinal.length - 1 ? 3 : 0 }}
+                sx={{ display: "flex", justifyContent: "center", mb: index !== listaFinal.length - 1 ? { xs: 2, sm: 3, md: 3 } : 0 }}
               >
                 <TarjetaPaquete paquete={paquete} cargando={false} />
               </Grid>

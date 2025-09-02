@@ -44,14 +44,15 @@ const CartaMes: React.FC<CartaMesProps> = ({ paquete }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      style={{ width: "100%", height: "100%" }}
+      style={{ width: "100%", height: "100%", maxWidth: "100%" }}
     >
       <Card
         onClick={handleClick}
         sx={{
           width: "100%",
           height: "100%",
-          minHeight: "400px",
+          maxWidth: "100%",
+          minHeight: { xs: "380px", sm: "400px", md: "420px" },
           borderRadius: "16px",
           boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
           transition: "transform 0.3s ease-in-out",
@@ -68,6 +69,7 @@ const CartaMes: React.FC<CartaMesProps> = ({ paquete }) => {
           outline: "none",
           position: "relative",
           overflow: "hidden",
+          boxSizing: "border-box",
         }}
       >
         <CartaMesImagen

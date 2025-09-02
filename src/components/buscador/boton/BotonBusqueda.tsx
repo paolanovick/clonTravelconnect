@@ -6,7 +6,7 @@ import { useBuscador, useDatosGenerales, useTarjetas } from "../../../contextos/
 import { useFormulario } from "../../../contextos/formulario/FormularioContext";
 
 const BotonBusqueda: React.FC = () => {
-  const { enviarFormulario, resetFormulario } = useFormulario();
+  const { enviarFormulario, isValid, errors } = useFormulario();
   const { loading, handleClick } = useBusqueda();
   const buscador = useBuscador();
   const datosGenerales = useDatosGenerales();
@@ -24,9 +24,12 @@ const BotonBusqueda: React.FC = () => {
     buscador?.color?.primario || datosGenerales?.color?.primario || "#007BFF";
 
   const handleBusqueda = () => {
-    enviarFormulario();
-    handleClick();
-    resetFormulario();
+    // Solo proceder si la validación es exitosa
+    const isFormValid = enviarFormulario();
+    if (isFormValid) {
+      handleClick();
+      // El reset se maneja en useBusqueda después del éxito
+    }
   };
 
   return (
@@ -43,17 +46,21 @@ const BotonBusqueda: React.FC = () => {
           padding: { xs: "14px 36px", md: "16px 48px" },
           fontSize: { xs: "18px", md: "22px" },
           fontWeight: "bold",
-          backgroundColor: colorPrimario,
-          color: textoColor,
+          backgroundColor: (!isValid || loading) ? "#cccccc" : colorPrimario,
+          color: (!isValid || loading) ? "#666666" : textoColor,
           fontFamily: tipografia,
           boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.3)",
           transition: "all 0.3s ease-in-out",
           "&:hover": {
-            backgroundColor: textoColor, // 🔄 El color de fondo pasa a ser el del texto
-            color: colorPrimario,        // 🔄 El color del texto pasa a ser el del fondo original
+            backgroundColor: (!isValid || loading) ? "#cccccc" : textoColor,
+            color: (!isValid || loading) ? "#666666" : colorPrimario,
           },
+          "&:disabled": {
+            backgroundColor: "#cccccc",
+            color: "#666666"
+          }
         }}
-        disabled={loading}
+        disabled={loading || !isValid}
       >
         {loading ? (
           <CircularProgress size={24} sx={{ color: textoColor }} />

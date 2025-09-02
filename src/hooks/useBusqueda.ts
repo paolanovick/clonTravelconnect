@@ -65,10 +65,12 @@ export const useBusqueda = () => {
       console.log("📦 Paquetes recibidos:", paquetes);
 
       localStorage.setItem("resultadosBusqueda", JSON.stringify(paquetes));
+      // ✅ Guardar valores ANTES del reset para persistir la última búsqueda
       guardarValoresPrevios();
-      resetFormulario();
       window.dispatchEvent(new Event("actualizarPaquetes"));
       navigate("/paquetes-busqueda");
+      // ✅ Reset DESPUÉS de guardar y navegar
+      resetFormulario();
     } catch (error) {
       console.error("❌ Error en la búsqueda:", error);
       alert("Hubo un error en la búsqueda. Por favor, intenta nuevamente.");

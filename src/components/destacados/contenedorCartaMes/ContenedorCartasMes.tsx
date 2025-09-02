@@ -86,27 +86,27 @@ const ContenedorCartasMes: React.FC = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: 3,
+        gap: { xs: 2, sm: 3, md: 4 },
         width: "100%",
-        maxWidth: { xs: "100%", sm: "95%", md: "90%", lg: "1200px" },
+        maxWidth: { xs: "100%", sm: "95%", md: "95%", lg: "1400px", xl: "1600px" },
         margin: "0 auto",
         overflow: "hidden",
         backgroundColor: "transparent",
-        px: 0,
+        px: { xs: 0, sm: 0, md: 0 },
       }}
     >
       {paquetes.length > 0 ? (
         <>
           <Grid
             container
-            spacing={{ xs: 0, sm: 3 }}
+            spacing={{ xs: 1.5, sm: 3, md: 3 }}
             justifyContent="center"
             sx={{
               width: "100%",
-              maxWidth: { xs: "100%", sm: "95%", md: "90%", lg: "1200px" },
+              maxWidth: { xs: "100%", sm: "95%", md: "95%", lg: "1400px", xl: "1600px" },
               alignItems: "stretch",
               margin: "0 auto",
-              px: 0,
+              px: { xs: 0, sm: 0, md: 0 },
               mx: 0,
             }}
           >
@@ -130,7 +130,7 @@ const ContenedorCartasMes: React.FC = () => {
                     "0%": { opacity: 0, transform: "translateY(20px)" },
                     "100%": { opacity: 1, transform: "translateY(0)" },
                   },
-                  px: { xs: 2, sm: 0 },
+                  px: { xs: 0, sm: 0 },
                 }}
               >
                 <CartaMes paquete={paquete} />

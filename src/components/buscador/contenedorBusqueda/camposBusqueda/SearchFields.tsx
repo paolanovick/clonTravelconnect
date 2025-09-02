@@ -12,8 +12,8 @@ import type {} from "@mui/x-date-pickers/themeAugmentation";
 const SearchInputs: React.FC = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Box sx={{ backgroundColor: "transparent", p: 2, borderRadius: "25px" }}>
-        <Grid container spacing={2} alignItems="center" justifyContent="space-between">
+      <Box sx={{ backgroundColor: "transparent", p: { xs: 1, sm: 2, md: 2 }, borderRadius: "25px" }}>
+        <Grid container spacing={{ xs: 1, sm: 2, md: 2 }} alignItems="center" justifyContent="space-between">
           <Grid item xs={12} sm={6} md={3} sx={{ minWidth: "220px" }}>
             <CampoBusqueda label="Ciudad de Salida" />
           </Grid>
