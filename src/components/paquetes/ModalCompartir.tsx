@@ -19,6 +19,9 @@ import {
   EmailIcon,
 } from "react-share";
 
+import { useDatosGenerales } from "../../contextos/agencia/DatosAgenciaContext";
+import { generarUrlCompartir } from "../../utils/compartir/generarUrlCompartir";
+
 interface ModalCompartirProps {
   open: boolean;
   onClose: () => void;
@@ -26,7 +29,8 @@ interface ModalCompartirProps {
 }
 
 const ModalCompartir: React.FC<ModalCompartirProps> = ({ open, onClose, paqueteId }) => {
-  const url = `${window.location.origin}/paquetes-busqueda/${paqueteId}`;
+  const datosGenerales = useDatosGenerales();
+  const url = generarUrlCompartir(paqueteId, datosGenerales?.dominio, datosGenerales?.url);
 
   useEffect(() => {
     if (open && typeof navigator.share === "function") {

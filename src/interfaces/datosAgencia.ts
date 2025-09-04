@@ -2,6 +2,8 @@ export interface DatosAgencia {
   /** 🔥 Datos Generales */
   idAgencia: number;
   nombreAgencia: string;
+  dominio: string | null;
+  url: string | null;
   logoAgencia: string | null;
   tipografiaAgencia: string | null;
   colorTipografiaAgencia: string | null;

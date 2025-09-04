@@ -53,8 +53,8 @@ const BotonEliminarFiltros = () => {
       variant="outlined"
       startIcon={<RestartAltIcon />}
       sx={{
-        borderColor: colorPrimario,
-        color: colorPrimario,
+        borderColor: colorTexto,
+        color: colorTexto,
         fontWeight: "bold",
         fontFamily: tipografia,
         borderRadius: "50px",
@@ -62,8 +62,8 @@ const BotonEliminarFiltros = () => {
         py: { xs: 0.8, sm: 1 },
         fontSize: { xs: "0.8rem", sm: "0.9rem" },
         "&:hover": {
-          borderColor: `${colorPrimario}cc`,
-          backgroundColor: `${colorPrimario}14`,
+          borderColor: `${colorTexto}cc`,
+          backgroundColor: `${colorTexto}14`,
         },
       }}
     >

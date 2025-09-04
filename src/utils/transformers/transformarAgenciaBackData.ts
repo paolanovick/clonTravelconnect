@@ -7,6 +7,8 @@ export function transformarAgenciaBackData(data: AgenciaBackData): DatosAgencia 
     /** 🔹 Datos Generales */
     idAgencia: Number(data.idAgencia),
     nombreAgencia: data.nombre || "",
+    dominio: data.dominio || null,
+    url: data.url || null,
     logoAgencia: data.logo || null,
     tipografiaAgencia: data.tipografia_agencia || null,
     colorTipografiaAgencia: data.color_tipografia_agencia || null,

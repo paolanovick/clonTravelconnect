@@ -55,6 +55,8 @@ export const useDatosGenerales = () => {
     ? {
         idAgencia: datosAgencia.idAgencia,
         nombreAgencia: datosAgencia.nombreAgencia,
+        dominio: datosAgencia.dominio,
+        url: datosAgencia.url,
         logoAgencia: datosAgencia.logoAgencia,
         tipografiaAgencia: datosAgencia.tipografiaAgencia,
         colorTipografiaAgencia: datosAgencia.colorTipografiaAgencia,

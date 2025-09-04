@@ -362,12 +362,41 @@ const ModalFiltros = ({ open, onClose }: ModalFiltrosProps) => {
 
         {/* Botones */}
         <Stack direction="row" spacing={2} justifyContent="center" mt={4}>
-          <Button variant="outlined" onClick={handleReiniciar}>
+          <Button 
+            variant="outlined" 
+            onClick={handleReiniciar}
+            sx={{
+              borderColor: colorPrimario,
+              color: colorPrimario,
+              fontWeight: "bold",
+              fontFamily: tipografia,
+              borderRadius: "50px",
+              px: { xs: 2, sm: 3 },
+              py: { xs: 0.8, sm: 1 },
+              fontSize: { xs: "0.8rem", sm: "0.9rem" },
+              "&:hover": {
+                borderColor: `${colorPrimario}cc`,
+                backgroundColor: `${colorPrimario}14`,
+              },
+            }}
+          >
             Reiniciar filtros
           </Button>
           <Button
             variant="contained"
-            sx={{ backgroundColor: colorPrimario }}
+            sx={{ 
+              backgroundColor: colorPrimario,
+              color: tarjetas?.tipografiaColor || "#fff",
+              fontWeight: "bold",
+              fontFamily: tipografia,
+              borderRadius: "50px",
+              px: { xs: 2, sm: 3 },
+              py: { xs: 0.8, sm: 1 },
+              fontSize: { xs: "0.8rem", sm: "0.9rem" },
+              "&:hover": {
+                backgroundColor: `${colorPrimario}cc`,
+              },
+            }}
             onClick={handleAplicarFiltros}
           >
             Filtrar paquetes
