@@ -7,8 +7,13 @@ import {
   InputAdornment,
   Container,
   Grid,
+  Fade,
+  Grow,
+  Slide,
 } from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   useBannerRegistro,
   useDatosGenerales,
@@ -44,6 +49,7 @@ const BannerRegistro: React.FC = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [fieldError, setFieldError] = useState<string | null>(null);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const validarEmail = (v: string) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim().toLowerCase());
@@ -67,6 +73,9 @@ const BannerRegistro: React.FC = () => {
     if (res.type === "success") {
       setEmail("");
       setFieldError(null);
+      setShowSuccess(true);
+      // Ocultar mensaje de éxito después de 4 segundos
+      setTimeout(() => setShowSuccess(false), 4000);
     } else if (res.type === "duplicate") {
       setFieldError("El email ya está registrado para esta agencia.");
     } else if (res.type === "validation") {
@@ -241,6 +250,145 @@ const BannerRegistro: React.FC = () => {
             )}
           </Grid>
         </Grid>
+
+        {/* 🎉 Mensaje de Éxito con Diseño Experto */}
+        <AnimatePresence>
+          {showSuccess && (
+            <motion.div
+              initial={{ opacity: 0, y: 50, scale: 0.8 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.9 }}
+              transition={{
+                type: "spring",
+                stiffness: 300,
+                damping: 25,
+                duration: 0.6
+              }}
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                zIndex: 1000,
+              }}
+            >
+              <Box
+                sx={{
+                  background: "linear-gradient(135deg, #4CAF50 0%, #45a049 100%)",
+                  borderRadius: "20px",
+                  padding: { xs: "24px 32px", md: "32px 48px" },
+                  boxShadow: "0 20px 40px rgba(76, 175, 80, 0.3), 0 8px 16px rgba(0, 0, 0, 0.1)",
+                  border: "2px solid rgba(255, 255, 255, 0.2)",
+                  backdropFilter: "blur(10px)",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 2,
+                  maxWidth: { xs: "320px", sm: "400px" },
+                  width: "90vw",
+                }}
+              >
+                <motion.div
+                  initial={{ scale: 0, rotate: -180 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 15,
+                    delay: 0.2
+                  }}
+                >
+                  <CheckCircleIcon
+                    sx={{
+                      fontSize: { xs: 32, md: 40 },
+                      color: "#fff",
+                      filter: "drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))"
+                    }}
+                  />
+                </motion.div>
+                
+                <Box sx={{ flex: 1 }}>
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.4, duration: 0.5 }}
+                  >
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        color: "#fff",
+                        fontWeight: "bold",
+                        fontSize: { xs: "1.1rem", md: "1.3rem" },
+                        fontFamily: tipografia,
+                        textShadow: "0 1px 2px rgba(0, 0, 0, 0.1)",
+                        mb: 0.5
+                      }}
+                    >
+                      ¡Correo Registrado con Éxito!
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: "rgba(255, 255, 255, 0.9)",
+                        fontSize: { xs: "0.85rem", md: "0.9rem" },
+                        fontFamily: tipografia,
+                        lineHeight: 1.4
+                      }}
+                    >
+                      Te notificaremos sobre ofertas exclusivas y promociones especiales
+                    </Typography>
+                  </motion.div>
+                </Box>
+              </Box>
+
+              {/* Partículas de celebración */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ delay: 0.3 }}
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  pointerEvents: "none",
+                  zIndex: -1,
+                }}
+              >
+                {[...Array(8)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ 
+                      scale: 0,
+                      x: 0,
+                      y: 0,
+                      opacity: 1
+                    }}
+                    animate={{
+                      scale: [0, 1, 0],
+                      x: Math.cos((i * Math.PI * 2) / 8) * 100,
+                      y: Math.sin((i * Math.PI * 2) / 8) * 100,
+                      opacity: [0, 1, 0]
+                    }}
+                    transition={{
+                      duration: 2,
+                      delay: 0.5,
+                      ease: "easeOut"
+                    }}
+                    style={{
+                      position: "absolute",
+                      width: "8px",
+                      height: "8px",
+                      backgroundColor: "#4CAF50",
+                      borderRadius: "50%",
+                      boxShadow: "0 0 10px rgba(76, 175, 80, 0.6)"
+                    }}
+                  />
+                ))}
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </Container>
     </Box>
   );

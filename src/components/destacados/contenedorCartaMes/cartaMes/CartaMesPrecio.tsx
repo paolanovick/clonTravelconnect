@@ -37,6 +37,7 @@ const CartaMesPrecio: React.FC<CartaMesPrecioProps> = ({ precio, moneda }) => {
   const textoContraste = getContrastingColor(colorPrimario);
 
   const codigoMoneda = moneda?.trim().toUpperCase() || "";
+  const mostrarConsultar = !precio || precio === 0;
 
   return (
     <Box
@@ -58,7 +59,7 @@ const CartaMesPrecio: React.FC<CartaMesPrecioProps> = ({ precio, moneda }) => {
         fontWeight="bold"
         sx={{ fontSize: { xs: "1rem", sm: "1.1rem", md: "1.2rem" }, color: textoContraste }}
       >
-        Desde
+        {mostrarConsultar ? "" : "Desde"}
       </Typography>
       <Typography
         variant="h4"
@@ -71,10 +72,16 @@ const CartaMesPrecio: React.FC<CartaMesPrecioProps> = ({ precio, moneda }) => {
           color: textoContraste,
         }}
       >
-        <span style={{ fontFamily: tipografia, color: textoContraste }}>
-          {codigoMoneda}
-        </span>
-        {Math.round(precio).toLocaleString("es-AR")}
+        {mostrarConsultar ? (
+          "Consultar"
+        ) : (
+          <>
+            <span style={{ fontFamily: tipografia, color: textoContraste }}>
+              {codigoMoneda}
+            </span>
+            {Math.round(precio).toLocaleString("es-AR")}
+          </>
+        )}
       </Typography>
     </Box>
   );
