@@ -2,12 +2,13 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 
-// 🔧 Agregamos configuración de Vitest
+// 🔧 Configuración de Vite
 export default defineConfig({
   plugins: [react()],
   define: {
     'process.env': {},
   },
+  base: './', // <- agregado para producción en Vercel
   json: {
     namedExports: true,
     stringify: false,
@@ -25,5 +26,4 @@ export default defineConfig({
       '@assets': path.resolve(__dirname, 'assets'),
     },
   },
-  
 });
