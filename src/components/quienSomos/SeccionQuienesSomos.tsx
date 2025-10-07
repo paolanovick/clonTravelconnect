@@ -5,13 +5,18 @@ import ExploreIcon from "@mui/icons-material/Explore";
 import HikingIcon from "@mui/icons-material/Hiking";
 import { motion } from "framer-motion";
 import BotonAnimado from "./BotonAnimado";
+import { Variants, Transition } from "framer-motion";
 
-const fadeInUp = {
+const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 40 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: i * 0.2, duration: 0.6, ease: "easeOut" },
+    transition: {
+      delay: i * 0.2,
+      duration: 0.6,
+      ease: [0.42, 0, 0.58, 1], // cubic-bezier compatible con TS
+    } as Transition,
   }),
 };
 
